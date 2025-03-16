@@ -1,0 +1,45 @@
+@startuml Mentora_DFD_Level0
+
+skinparam component {
+    BackgroundColor #FF00A2
+    BorderColor Black
+    FontColor Black
+    ArrowColor Black
+}
+
+left to right direction
+
+'============= LEFT ENTITIES =============
+actor Student #Black
+actor Instructor #Black
+actor Admin #Black
+
+'============= CENTER PROCESS =============
+component "Mentora Mobile App" as MENTORA #FF00A2;line:Black
+
+'============= RIGHT DATA STORES =============
+database "Course Database" as COURSES #White
+database "User Profiles" as USERS #White
+database "Analytics" as ANALYTICS #White
+
+'============= LEFT-SIDE INTERACTIONS =============
+Student --> MENTORA : Login/Credentials\nSubmit Assignments\nProgress Sync
+MENTORA --> Student : Recommendations\nCourse Content\nGraded Assessments\nProgress Analytics
+
+Instructor --> MENTORA : Upload Materials\nAnswer Keys\nGrading Rules
+MENTORA --> Instructor : Performance Reports\nGradebook Data
+
+Admin --> MENTORA : System Config\nUser Management
+MENTORA --> Admin : Usage Analytics\nSystem Health
+
+'============= RIGHT-SIDE DATA FLOWS =============
+MENTORA --> COURSES : Store/Retrieve Courses
+COURSES --> MENTORA : Module Structure
+
+MENTORA --> USERS : Verify Profiles\nCache Preferences
+USERS --> MENTORA : Auth Data
+
+MENTORA --> ANALYTICS : Store Progress\nLearning Patterns
+ANALYTICS --> MENTORA : Historical Data
+
+@enduml

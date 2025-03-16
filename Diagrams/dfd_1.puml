@@ -1,0 +1,72 @@
+@startuml Mentora_DFD_Level1
+
+skinparam component {
+    BackgroundColor #FF00A2
+    BorderColor Black
+    FontColor Black
+    ArrowColor Black
+}
+
+left to right direction
+
+'============= EXTERNAL ENTITIES =============
+actor Student #Black
+actor Instructor #Black
+actor Admin #Black
+
+'============= DATA STORES =============
+database "Course Database" as COURSE_DB #White
+database "User Database" as USER_DB #White
+database "Analytics Database" as ANALYTICS_DB #White
+
+'============= MAIN PROCESSES =============
+component "User Authentication" as UA #FF00A2
+component "Course Management" as CM #FF00A2
+component "Adaptive Engine" as AE #FF00A2
+component "Progress Tracker" as PT #FF00A2
+component "Assessment Handler" as AH #FF00A2
+component "Notification System" as NS #FF00A2
+
+'============= STUDENT FLOWS =============
+Student --> UA : Login Credentials
+UA --> USER_DB : Verify Credentials
+USER_DB --> UA : Validation Result
+UA --> Student : Authentication Status
+
+Student --> CM : Browse Courses\nEnroll Requests
+CM --> COURSE_DB : Query Catalog
+COURSE_DB --> CM : Course Data
+CM --> Student : Course Content\nRecommendations
+
+Student --> AH : Submit Assignments\nTake Quizzes
+AH --> PT : Update Scores
+PT --> ANALYTICS_DB : Store Progress
+AH --> ANALYTICS_DB : Record Attempts
+ANALYTICS_DB --> AE : Performance Data
+AE --> CM : Difficulty Adjustment\nModule Suggestions
+
+'============= ADAPTIVE SYSTEM FLOWS =============
+AE --> NS : Recommendation Alerts
+NS --> Student : Notifications\nReminders
+PT --> NS : Progress Updates
+
+'============= INSTRUCTOR FLOWS =============
+Instructor --> CM : Upload Course Materials
+CM --> COURSE_DB : Update Content
+Instructor --> AH : Set Answer Keys\nRubrics
+AH --> ANALYTICS_DB : Store Grading Rules
+ANALYTICS_DB --> Instructor : Performance Reports
+
+'============= ADMIN FLOWS =============
+Admin --> UA : Manage User Accounts
+UA --> USER_DB : Update Profiles
+Admin --> CM : Configure System\nCourses
+CM --> Admin : Usage Statistics
+
+'============= DATA SYNCHRONIZATION =============
+PT --> AE : Learning Patterns
+AE --> PT : Adaptation Rules
+CM --> AE : Course Structure
+AH --> AE : Assessment Results
+
+@enduml

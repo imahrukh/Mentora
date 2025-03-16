@@ -1,0 +1,100 @@
+@startuml Mentora_Use_Case_Diagram
+
+skinparam usecase {
+    BackgroundColor #FF00A2
+    BorderColor Black
+    FontColor Black
+}
+
+skinparam component {
+    BackgroundColor #FF00A2
+    BorderColor Black
+    FontColor Black
+}
+
+skinparam actor {
+    BackgroundColor White
+    BorderColor Black
+    FontColor Black
+}
+
+left to right direction
+
+'============= ACTORS =============
+actor Student as S #Black
+actor Instructor as I #Black
+actor Admin as A #Black
+
+'============= SYSTEM BOUNDARY =============
+rectangle "Mentora Mobile App" {
+    '============= RECOMMENDATION SYSTEM =============
+    rectangle "Adaptive Engine" #FF00A2;line:Black {
+        component [Analyze Performance] as AD1 #FF00A2
+        component [Adjust Difficulty] as AD2 #FF00A2
+        component [Generate Learning Path] as AD3 #FF00A2
+        
+        AD1 -down-> AD2
+        AD2 -down-> AD3
+    }
+    
+    '============= CORE USE CASES =============
+    (Get Recommendations) as UC8
+    
+    (Register/Login) as UC1
+    (Browse Catalog) as UC2
+    (Enroll Course) as UC3
+    (Complete Module) as UC4
+    (Take Quiz) as UC5
+    (Submit Work) as UC6
+    (View Progress) as UC7
+    (Forum Access) as UC9
+    (Offline Content) as UC10
+    
+    (Create Course) as UC11
+    (Upload Material) as UC12
+    (Grade Work) as UC13
+    (Monitor Progress) as UC14
+    (Update Keys) as UC15
+    
+    (Manage Users) as UC16
+    (Configure System) as UC17
+    (Generate Reports) as UC18
+    (Maintain DB) as UC19
+    
+    '============= RELATIONSHIPS =============
+    UC1 <|.. (Forgot Password) : <<extend>>
+    UC3 <|.. UC2 : <<include>>
+    UC4 <|.. (Video Lectures) : <<include>>
+    UC4 <|.. (Exercises) : <<include>>
+    UC5 <|.. AD1 : <<include>>
+    UC8 <|.. AD3 : <<include>>
+    UC7 <|.. (Metrics) : <<extend>>
+    UC10 <|.. AD2 : <<include>>
+    
+    AD3 --> UC8
+}
+
+'============= ACTOR CONNECTIONS =============
+S --> UC1
+S --> UC2
+S --> UC3
+S --> UC4
+S --> UC5
+S --> UC6
+S --> UC7
+S --> UC8
+S --> UC9
+S --> UC10
+
+I --> UC11
+I --> UC12
+I --> UC13
+I --> UC14
+I --> UC15
+
+A --> UC16
+A --> UC17
+A --> UC18
+A --> UC19
+
+@enduml

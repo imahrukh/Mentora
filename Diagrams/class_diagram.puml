@@ -1,0 +1,137 @@
+@startuml Mentora_Class_Diagram
+
+skinparam class {
+    BackgroundColor #ff00a2
+    BorderColor Black
+    ArrowColor Black
+    FontColor Black
+}
+
+'============= CORE ENTITIES =============
+class User  {
+  + {static} userCount: int
+  # userId: String
+  - password: String
+  + name: String
+  + email: String
+  + register()
+  + login()
+  # encryptPassword()
+}
+
+class Student {
+  + learningStyle: String
+  # preferredPace: int
+  + trackProgress()
+  + submitAssignment()
+}
+
+class Course {
+  + courseId: String
+  + title: String
+  + difficultyLevel: int
+  + getCourseStructure()
+}
+
+class Module {
+  + moduleId: String
+  + complexityScore: double
+  + updateDynamicDifficulty()
+}
+
+'============= ASSESSMENT SYSTEM =============
+class GradableItem {
+  + {abstract} evaluate()
+}
+
+class Quiz {
+  + timeLimit: int
+  + adaptiveQuestionPool: List<Question>
+  + autoGrade()
+}
+
+class Assignment {
+  + submissionDate: DateTime
+  + attachedFiles: List<File>
+  + plagiarismCheck()
+}
+
+class Project {
+  + groupMembers: List<Student>
+  + rubric: Map<String, int>
+  + peerReview()
+}
+
+'============= ADAPTIVE SYSTEM =============
+class AdaptiveEngine  {
+  + performanceThreshold: double
+  + timeThreshold: double
+  + assessmentAttemptThreshold: int
+  + analyzeLearningPatterns()
+  + generateInProgressRecommendations()
+  + generatePostCompletionRecommendations()
+}
+
+interface RecommendationStrategy  {
+  + {abstract} generateRecommendation()
+}
+
+class CourseCompletionRecommendation {
+  + suggestAdvancedCourses()
+  + suggestComplementarySubjects()
+}
+
+class InProgressRecommendation  {
+  + suggestRemedialContent()
+  + adjustPacing()
+}
+
+'============= MOBILE COMPONENTS =============
+class MobileUI  {
+  + renderAdaptiveComponents()
+  + handleTouchGestures()
+  + optimizeForScreenSize()
+}
+
+class OfflineContentCache  {
+  - cachedModules: List<Module>
+  + checkContentValidity()
+  + manageStorage()
+}
+
+'============= RELATIONSHIPS =============
+User <|-- Student
+User <|-- Instructor
+
+Course "1" *-- "1..*" Module
+Module "1" *-- "0..*" GradableItem
+
+GradableItem <|-- Quiz
+GradableItem <|-- Assignment
+GradableItem <|-- Project
+
+AdaptiveEngine "1" -- "1..*" RecommendationStrategy
+RecommendationStrategy <|.. CourseCompletionRecommendation
+RecommendationStrategy <|.. InProgressRecommendation
+
+Student "1" -- "1" OfflineContentCache : uses >
+MobileUI "1" -- "1" AdaptiveEngine : triggers >
+
+class Gradebook  {
+  + studentGrades: Map<Student, Double>
+  + calculateOverallScore()
+  + generateProgressReport()
+}
+
+class Instructor {
+  + expertiseArea: String
+  + createCourse()
+  + gradeAssignment()
+  + generateAnswerKey()
+}
+
+Gradebook "1" -- "0..*" GradableItem : aggregates >
+Instructor "1" -- "0..*" GradableItem : grades >
+Student "1" -- "0..*" GradableItem : submits >
+
+@enduml
