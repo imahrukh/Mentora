@@ -1,0 +1,117 @@
+To comprehensively document the functionalities of the Mentora Mobile App, it's essential to create detailed use case tables for each identified use case. These tables provide a structured overview of each use case, ensuring clarity in system design and analysis. Below are the use case tables for the specified functionalities:
+
+1. Register/Login
+
+Use Case ID	UC1
+Use Case Name	Register/Login
+Actor(s)	Student (S)
+Description	Allows a student to create a new account or access an existing one.
+Preconditions	The student has the Mentora app installed and internet connectivity.
+Postconditions	The student is authenticated and redirected to their dashboard.
+Main Flow	1. Student opens the app.
+2. Selects 'Register' or 'Login'.
+3. Enters required credentials.
+4. System verifies credentials.
+5. Access granted to the dashboard.
+Alternate Flow	3a. If credentials are incorrect, an error message is displayed, and the student is prompted to retry.
+Exceptions	3b. If the student forgets the password, they can initiate a password recovery process.
+2. Browse Catalog
+
+Use Case ID	UC2
+Use Case Name	Browse Catalog
+Actor(s)	Student (S)
+Description	Enables students to view available courses.
+Preconditions	The student is logged in.
+Postconditions	The student has a list of courses to consider for enrollment.
+Main Flow	1. Student navigates to the course catalog.
+2. System displays courses categorized by subject.
+Alternate Flow	2a. Student uses search or filter options to refine course listings.
+Exceptions	None.
+3. Enroll Course
+
+Use Case ID	UC3
+Use Case Name	Enroll Course
+Actor(s)	Student (S)
+Description	Allows students to enroll in selected courses.
+Preconditions	The student is logged in and has selected a course.
+Postconditions	The student is enrolled and can access course materials.
+Main Flow	1. Student selects a course.
+2. Clicks 'Enroll'.
+3. System confirms enrollment and updates the student's course list.
+Alternate Flow	None.
+Exceptions	3a. If enrollment fails (e.g., course is full), an error message is displayed.
+4. Complete Module
+
+Use Case ID	UC4
+Use Case Name	Complete Module
+Actor(s)	Student (S)
+Description	Facilitates students in completing course modules.
+Preconditions	The student is enrolled in the course.
+Postconditions	The module is marked as completed, and progress is updated.
+Main Flow	1. Student accesses the module.
+2. Engages with content (videos, exercises).
+3. Completes module assessment.
+4. System records completion and updates progress.
+Alternate Flow	2a. Student can pause and resume module content.
+Exceptions	3a. If assessment is not passed, the student is prompted to retry.
+5. Take Quiz
+
+Use Case ID	UC5
+Use Case Name	Take Quiz
+Actor(s)	Student (S)
+Description	Allows students to participate in quizzes.
+Preconditions	The student is enrolled and has accessed the relevant module.
+Postconditions	Quiz results are recorded, and feedback is provided.
+Main Flow	1. Student starts the quiz.
+2. Answers questions within the time limit.
+3. Submits quiz.
+4. System evaluates and provides immediate feedback.
+Alternate Flow	2a. If time expires, the quiz auto-submits.
+Exceptions	4a. If technical issues occur, the student can resume the quiz from the last saved point.
+6. Submit Work
+
+Use Case ID	UC6
+Use Case Name	Submit Work
+Actor(s)	Student (S)
+Description	Enables students to submit assignments or projects.
+Preconditions	The student has completed the assignment or project.
+Postconditions	Submission is recorded, and the instructor is notified for grading.
+Main Flow	1. Student uploads the completed work.
+2. Adds any necessary comments.
+3. Clicks 'Submit'.
+4. System confirms submission and notifies the instructor.
+Alternate Flow	1a. Student can save a draft before final submission.
+Exceptions	4a. If submission fails, an error message is displayed, and the student is prompted to retry.
+7. View Progress
+
+Use Case ID	UC7
+Use Case Name	View Progress
+Actor(s)	Student (S)
+Description	Allows students to monitor their learning progress.
+Preconditions	The student is enrolled in at least one course.
+Postconditions	The student gains insights into their performance and areas needing improvement.
+Main Flow	1. Student navigates to the progress dashboard.
+2. System displays metrics like completed modules, grades, and recommendations.
+Alternate Flow	2a. Student can filter or sort metrics based on preferences.
+Exceptions	None.
+8. Get Recommendations
+
+Use Case ID	UC8
+Use Case Name	Get Recommendations
+Actor(s)	Student (S)
+Description	Provides personalized course or module suggestions.
+Preconditions	The student has completed some modules or courses.
+Postconditions	The student receives tailored recommendations to enhance learning.
+Main Flow	1. Student accesses the recommendations section.
+2. System analyzes performance and preferences.
+3. Displays suggested courses or modules.
+Alternate Flow	2a. Student can provide feedback to refine recommendations.
+Exceptions	None.
+9. Forum Access
+
+Use Case ID	UC9
+Use Case Name	Forum Access
+Actor(s)	Student (S)
+Description	Enables students to participate in course-related discussions.
+Preconditions	The student is enrolled in the course.
+Postconditions	The student engages in community
