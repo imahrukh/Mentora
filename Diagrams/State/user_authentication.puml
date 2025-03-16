@@ -1,0 +1,13 @@
+@startuml Auth_States
+skinparam BackgroundColor #FFFFFF
+skinparam StateFontColor Black
+skinparam StateBackgroundColor #FF00A2
+skinparam StateBorderColor Black
+
+[*] -> Logged_Out
+Logged_Out --> Logging_In : Login attempt
+Logging_In --> Authenticated : Credentials valid
+Authenticated --> Session_Expired : Inactivity timeout
+Session_Expired --> Logged_Out : Re-authentication needed
+Authenticated --> Logged_Out : Explicit logout
+@enduml

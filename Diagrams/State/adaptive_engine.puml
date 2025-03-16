@@ -1,0 +1,12 @@
+@startuml Adaptive_Engine_States
+skinparam BackgroundColor #FFFFFF
+skinparam StateFontColor Black
+skinparam StateBackgroundColor #FF00A2
+skinparam StateBorderColor Black
+
+[*] -> Idle
+Idle --> Analyzing_Performance : Trigger event
+Analyzing_Performance --> Generating_Recommendations : Analysis complete
+Generating_Recommendations --> Updating_Learning_Path : Recommendations ready
+Updating_Learning_Path --> Idle : Path updated
+@enduml

@@ -1,0 +1,14 @@
+@startuml Student_Progress_States
+skinparam BackgroundColor #FFFFFF
+skinparam StateFontColor Black
+skinparam StateBackgroundColor #FF00A2
+skinparam StateBorderColor Black
+
+[*] -> Not_Enrolled
+Not_Enrolled --> Enrolled : Enroll in course
+Enrolled --> In_Progress : Start module
+In_Progress --> Completed_Module : Finish module
+Completed_Module --> In_Progress : Next module
+Completed_Module --> Course_Completed : All modules done
+Course_Completed --> [*] : Course closure
+@enduml

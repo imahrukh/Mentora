@@ -1,0 +1,19 @@
+@startuml User_Session_States
+skinparam BackgroundColor #FFFFFF
+skinparam StateFontColor Black
+skinparam StateBackgroundColor #FF00A2
+skinparam StateBorderColor Black
+
+[*] -> Guest : Initial
+Guest --> Registered : Register
+Guest --> LoggedIn : Login (existing)
+LoggedIn --> Enrolled : Enroll Course
+Enrolled --> ActiveLearning : Start Module
+ActiveLearning --> Completed : Finish Module
+Completed --> Enrolled : Next Module
+LoggedIn --> LoggedOut : Logout
+LoggedOut --> [*] : Exit
+LoggedIn --> OfflineMode : Lose Connection
+OfflineMode --> Syncing : Regain Connection
+Syncing --> LoggedIn : Sync Complete
+@enduml

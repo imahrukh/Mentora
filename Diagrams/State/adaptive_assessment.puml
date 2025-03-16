@@ -1,0 +1,35 @@
+@startuml Assessment_States
+skinparam BackgroundColor #FFFFFF
+skinparam StateFontColor Black
+skinparam StateBackgroundColor #FF00A2
+skinparam StateBorderColor Black
+
+left to right direction
+
+[*] --> Unlocked : Available
+
+state Unlocked
+state Attempting
+state Submitted
+state Graded
+state Archived
+state Reviewed
+state Paused
+
+Unlocked --> Attempting : Student starts
+Attempting --> Submitted : Time expires\nor manual submit
+
+Submitted --> Graded : Auto-grade
+Graded --> Archived : Course ends
+Graded --> Reviewed : Instructor override
+
+Attempting --> Paused : App minimized
+Paused --> Attempting : Resume
+
+' Layout organization
+Unlocked -[hidden]-> Archived
+Submitted -[hidden]-> Graded
+Graded -[hidden]-> Reviewed
+Attempting -[hidden]-> Paused
+
+@enduml

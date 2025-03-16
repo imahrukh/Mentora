@@ -1,0 +1,12 @@
+@startuml Module_States
+skinparam BackgroundColor #FFFFFF
+skinparam StateFontColor Black
+skinparam StateBackgroundColor #FF00A2
+skinparam StateBorderColor Black
+
+[*] -> Locked
+Locked --> Unlocked : Prerequisites met
+Unlocked --> In_Progress : Student starts
+In_Progress --> Completed : Module finished
+Completed --> [*] : Final state
+@enduml
