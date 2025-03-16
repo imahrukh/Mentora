@@ -1,0 +1,19 @@
+@startuml Learning_Path_Sequence
+skinparam BackgroundColor #FFFFFF
+actor Student #Black
+participant "Mobile UI" as MobileUI #FF00A2
+participant "Adaptive Engine" as AE #FF00A2
+participant "Recommender" as RS #FF00A2
+database "Database" as DB #White
+
+Student -> MobileUI: Request recommendations
+MobileUI -> AE: Analyze progress
+AE -> DB: Fetch performance data
+DB --> AE: Learning patterns
+AE -> RS: Generate suggestions
+RS -> DB: Query courses
+DB --> RS: Available options
+RS --> AE: Recommendations
+AE --> MobileUI: Personalized paths
+MobileUI --> Student: Display suggestions
+@enduml

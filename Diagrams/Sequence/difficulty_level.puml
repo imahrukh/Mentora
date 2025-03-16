@@ -1,0 +1,18 @@
+@startuml Module_Difficulty_Sequence
+skinparam BackgroundColor #FFFFFF
+actor Student #Black
+participant "Mobile UI" as MobileUI #FF00A2
+participant "Module Service" as Module #FF00A2
+participant "Adaptive Engine" as AE #FF00A2
+database "Database" as DB #White
+
+Student -> MobileUI: Access module
+MobileUI -> Module: Load content
+Module -> AE: Get difficulty level
+AE -> DB: Fetch performance data
+DB --> AE: Learning history
+AE -> AE: Calculate new difficulty
+AE --> Module: Adjusted content
+Module --> MobileUI: Serve module
+MobileUI --> Student: Display content
+@enduml

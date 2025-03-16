@@ -1,0 +1,18 @@
+@startuml Instructor_Grading_Sequence
+skinparam BackgroundColor #FFFFFF
+actor Instructor #Black
+participant "Mobile UI" as MobileUI #FF00A2
+participant "Gradable Item" as GI #FF00A2
+participant "Gradebook" as GB #FF00A2
+database "Database" as DB #White
+
+Instructor -> MobileUI: Access submission
+MobileUI -> GI: Fetch work
+GI --> MobileUI: Student work
+Instructor -> MobileUI: Input grade
+MobileUI -> GB: Record grade
+GB -> DB: Update records
+DB --> GB: Confirmation
+GB --> MobileUI: Grade posted
+MobileUI --> Instructor: Grading complete
+@enduml

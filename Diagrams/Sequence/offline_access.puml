@@ -1,0 +1,19 @@
+@startuml Offline_Access_Sequence
+skinparam BackgroundColor #FFFFFF
+actor Student #Black
+participant "Mobile UI" as MobileUI #FF00A2
+participant "Content Cache" as Cache #FF00A2
+participant "Module Service" as Module #FF00A2
+
+Student -> MobileUI: Access content offline
+MobileUI -> Cache: Check availability
+alt Cached content valid
+    Cache --> MobileUI: Local content
+    MobileUI --> Student: Display module
+else Content outdated
+    Cache -> Module: Request update
+    Module --> Cache: Fresh content
+    Cache --> MobileUI: Updated module
+    MobileUI --> Student: Display module
+end
+@enduml

@@ -1,0 +1,15 @@
+@startuml Auto_Grading_Sequence
+skinparam BackgroundColor #FFFFFF
+actor Student #Black
+participant "Mobile UI" as MobileUI #FF00A2
+participant "Gradable Item" as GI #FF00A2
+database "Database" as DB #White
+
+Student -> MobileUI: Submit assessment
+MobileUI -> GI: Process submission
+GI -> GI: Auto-grade answers
+GI -> DB: Record score
+DB --> GI: Confirmation
+GI --> MobileUI: Grading results
+MobileUI --> Student: Display score
+@enduml

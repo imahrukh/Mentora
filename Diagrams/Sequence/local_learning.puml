@@ -1,0 +1,17 @@
+@startuml Local_Learning_Flow
+skinparam BackgroundColor #FFFFFF
+actor Student #Black
+participant MobileUI #FF00A2
+participant ContentCache #FF00A2
+participant AdaptiveEngine #FF00A2
+
+Student -> MobileUI: Start Module
+MobileUI -> ContentCache: Load Cached Content
+ContentCache --> MobileUI: Return Module
+MobileUI -> Student: Display Material
+Student -> MobileUI: Complete Quiz
+MobileUI -> AdaptiveEngine: Grade Locally
+AdaptiveEngine -> ContentCache: Update Progress
+ContentCache --> MobileUI: Confirm Save
+MobileUI -> Student: Show Results
+@enduml

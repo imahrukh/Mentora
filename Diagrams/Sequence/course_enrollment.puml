@@ -1,0 +1,20 @@
+@startuml Course_Enrollment_Sequence
+skinparam BackgroundColor #FFFFFF
+actor Student #Black
+participant "Mobile UI" as MobileUI #FF00A2
+participant "Course Service" as Course #FF00A2
+database "Database" as DB #White
+
+Student -> MobileUI: Browse courses
+MobileUI -> Course: Fetch catalog
+Course -> DB: Query courses
+DB --> Course: Course list
+Course --> MobileUI: Catalog data
+MobileUI -> Student: Display courses
+Student -> MobileUI: Select course
+MobileUI -> Course: Enroll request
+Course -> DB: Record enrollment
+DB --> Course: Enrollment status
+Course --> MobileUI: Confirmation
+MobileUI --> Student: Course access granted
+@enduml

@@ -1,0 +1,15 @@
+@startuml Progress_Tracking_Sequence
+skinparam BackgroundColor #FFFFFF
+actor Student #Black
+participant "Mobile UI" as MobileUI #FF00A2
+participant "Gradebook" as GB #FF00A2
+database "Database" as DB #White
+
+Student -> MobileUI: View dashboard
+MobileUI -> GB: Request progress
+GB -> DB: Fetch records
+DB --> GB: Performance data
+GB -> GB: Calculate metrics
+GB --> MobileUI: Analytics report
+MobileUI --> Student: Display progress
+@enduml

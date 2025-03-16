@@ -1,0 +1,16 @@
+@startuml Adaptive_Assessment_Sequence
+skinparam BackgroundColor #FFFFFF
+actor Student #Black
+participant "Mobile UI" as MobileUI #FF00A2
+participant "Adaptive Engine" as AE #FF00A2
+participant "Assessment" as GI #FF00A2
+database "Database" as DB #White
+
+Student -> MobileUI: Start assessment
+MobileUI -> AE: Get pathway
+AE -> DB: Query knowledge level
+DB --> AE: Performance history
+AE -> GI: Configure questions
+GI --> MobileUI: Adaptive test
+MobileUI --> Student: Present questions
+@enduml

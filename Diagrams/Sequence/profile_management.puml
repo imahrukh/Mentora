@@ -1,0 +1,17 @@
+@startuml User_Registration_Sequence
+skinparam BackgroundColor #FFFFFF
+actor User #Black
+participant "Mobile UI" as MobileUI #FF00A2
+participant "Auth Service" as Auth #FF00A2
+database "Database" as DB #White
+
+User -> MobileUI: Submit registration form
+MobileUI -> Auth: Validate inputs
+Auth -> DB: Check email uniqueness
+DB --> Auth: Email status
+Auth -> Auth: Encrypt password
+Auth -> DB: Create profile
+DB --> Auth: Profile created
+Auth --> MobileUI: Success
+MobileUI --> User: Show dashboard
+@enduml

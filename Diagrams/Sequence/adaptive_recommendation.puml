@@ -1,0 +1,19 @@
+@startuml Adaptive_Recommendation_Sequence
+skinparam BackgroundColor #FFFFFF
+actor Student #Black
+participant MobileApp #FF00A2
+participant AdaptiveEngine #FF00A2
+participant AnalyticsDB #White
+participant CourseDB #White
+
+Student -> MobileApp: Complete Module
+MobileApp -> AnalyticsDB: Store Performance Data
+AnalyticsDB -> AdaptiveEngine: Trigger Analysis
+AdaptiveEngine -> AnalyticsDB: Fetch Historical Data
+AnalyticsDB --> AdaptiveEngine: Performance Metrics
+AdaptiveEngine -> CourseDB: Query Available Modules
+CourseDB --> AdaptiveEngine: Module Metadata
+AdaptiveEngine -> AdaptiveEngine: Calculate Difficulty Adjustment
+AdaptiveEngine -> MobileApp: Return Recommendation
+MobileApp -> Student: Show Personalized Suggestions
+@enduml

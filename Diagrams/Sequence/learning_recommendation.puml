@@ -1,0 +1,16 @@
+@startuml Learning_Style_Sequence
+skinparam BackgroundColor #FFFFFF
+actor Student #Black
+participant "Mobile UI" as MobileUI #FF00A2
+participant "Adaptive Engine" as AE #FF00A2
+database "Database" as DB #White
+
+Student -> MobileUI: Access recommendations
+MobileUI -> AE: Analyze learning style
+AE -> DB: Get preferences
+DB --> AE: Style metadata
+AE -> DB: Query matching content
+DB --> AE: Filtered courses
+AE --> MobileUI: Tailored suggestions
+MobileUI --> Student: Display recommendations
+@enduml

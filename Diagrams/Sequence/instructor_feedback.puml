@@ -1,0 +1,18 @@
+@startuml Instructor_Feedback_Sequence
+skinparam BackgroundColor #FFFFFF
+actor Instructor #Black
+participant Gradebook #FF00A2
+participant Analytics #FF00A2
+participant AdaptiveEngine #FF00A2
+database CourseDB #White
+
+Instructor -> Gradebook: Review Assignments
+Gradebook -> Analytics: Aggregate Performance
+Analytics --> Gradebook: Class Statistics
+Gradebook -> Instructor: Show Heatmap
+Instructor -> AdaptiveEngine: Adjust Course Rules
+AdaptiveEngine -> CourseDB: Update Difficulty Parameters
+CourseDB --> AdaptiveEngine: Confirm Update
+AdaptiveEngine -> Gradebook: Notify Changes
+Gradebook -> Instructor: Display Confirmation
+@enduml

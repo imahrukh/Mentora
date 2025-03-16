@@ -1,0 +1,14 @@
+@startuml Local_Auth_Flow
+skinparam BackgroundColor #FFFFFF
+actor Student #Black
+participant MobileUI #FF00A2
+participant LocalAuth #FF00A2
+database DeviceStorage #White
+
+Student -> MobileUI: Launch App (Offline)
+MobileUI -> LocalAuth: Check Biometric
+LocalAuth -> DeviceStorage: Verify Fingerprint
+DeviceStorage --> LocalAuth: Auth Confirmation
+LocalAuth --> MobileUI: Grant Access
+MobileUI -> Student: Show Dashboard
+@enduml
