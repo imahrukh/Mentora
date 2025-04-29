@@ -31,7 +31,7 @@ public class SplashActivity extends Activity {
 
         // Delay for splash screen duration
         new Handler().postDelayed(() -> {
-            Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
+            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         }, 2500); // 2.5 seconds
