@@ -8,4 +8,7 @@
     <string name="signup_redirect">Do not have an account already?</string>
     <string name="hintEmail">Enter your email</string>
     <string name="hintPassword">Enter your password</string>
+    <string name="hintName"> Enter your name</string>
+    <string name="name">Name: </string>
+    <string name="login_redirect">Already have an account?</string>
 </resources>

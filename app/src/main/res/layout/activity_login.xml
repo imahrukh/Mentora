@@ -35,7 +35,8 @@
         android:background="@android:drawable/edit_text"
         android:textColor="@color/black"
         android:hint="@string/hintEmail"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:layout_marginTop="8dp"/>
 
     <!-- Password Text Field -->
     <TextView
@@ -53,7 +54,8 @@
         android:background="@android:drawable/edit_text"
         android:textColor="@color/black"
         android:hint="@string/hintPassword"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:layout_marginTop="8dp"/>
 
     <!-- Log In Button -->
     <Button
