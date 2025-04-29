@@ -3,4 +3,9 @@
     <string name="logo">  Mentora</string>
     <string name="login"> Log In</string>
     <string name="signup">Sign Up</string>
+    <string name="email">Email:</string>
+    <string name="password">Password:</string>
+    <string name="signup_redirect">Do not have an account already?</string>
+    <string name="hintEmail">Enter your email</string>
+    <string name="hintPassword">Enter your password</string>
 </resources>
