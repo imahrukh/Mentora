@@ -50,8 +50,8 @@ public class LoginActivity extends AppCompatActivity {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
 
-                                // TODO: Redirect to Dashboard or Main screen
-                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                // TODO: Redirect to Main screen
+                                Intent intent = new Intent(LoginActivity.this, ExploreActivity.class);
                                 startActivity(intent);
                                 finish();
                             } else {
@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         signupRedirect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(intent);
             }
         });

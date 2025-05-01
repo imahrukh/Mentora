@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.graphics.Color;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -61,20 +61,21 @@ public class ExploreActivity extends AppCompatActivity {
 
         // 4. Bottom Navigation Handling
         BottomNavigationView navBar = findViewById(R.id.bottomNav);
-        navBar.setSelectedItemId(R.id.explore);
-
+        navBar.setSelectedItemId(R.id.nav_explore);
         navBar.setOnItemSelectedListener(item -> {
-            int id = item.getItemId();
-            if (id == R.id.explore) {
-                return true; // already here
-            } else if (id == R.id.profile) {
-                startActivity(new Intent(this, ProfileActivity.class));
-                return true;
-            } else if (id == R.id.settings) {
-                startActivity(new Intent(this, SettingsActivity.class));
-                return true;
+            switch (item.getItemId()) {
+                case R.id.nav_courses:
+                    startActivity(new Intent(this, CoursesActivity.class));
+                    return true;
+                case R.id.nav_search:
+                    startActivity(new Intent(this, SearchActivity.class));
+                    return true;
+                case R.id.nav_profile:
+                    startActivity(new Intent(this, ProfileActivity.class));
+                    return true;
+                default:
+                    return true;
             }
-            return false;
         });
     }
 
