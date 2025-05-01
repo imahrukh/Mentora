@@ -1,17 +1,20 @@
 package com.fast.mentor;
 
 public class Course {
-    private int imageResId;
     private String title;
     private String provider;
+    private String moduleTitle;
+    private String moduleProgress;
 
-    public Course(int imageResId, String title, String provider) {
-        this.imageResId = imageResId;
+    public Course(String title, String provider, String moduleTitle, String moduleProgress) {
         this.title = title;
         this.provider = provider;
+        this.moduleTitle = moduleTitle;
+        this.moduleProgress = moduleProgress;
     }
 
-    public int getImageResId() { return imageResId; }
     public String getTitle() { return title; }
     public String getProvider() { return provider; }
+    public String getModuleTitle() { return moduleTitle; }
+    public String getModuleProgress() { return moduleProgress; }
 }

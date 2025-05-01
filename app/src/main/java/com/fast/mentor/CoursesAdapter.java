@@ -13,15 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseViewHolder> {
-    private List<Course> courseList;
+    private List<Courses> courseList;
     private Context context;
 
-    public CoursesAdapter(Context context, List<Course> courseList) {
+    public CoursesAdapter(Context context, List<Courses> courseList) {
         this.context = context;
         this.courseList = courseList;
     }
 
-    public CoursesAdapter(List<Course> courseList, ExploreActivity exploreActivity) {
+    public CoursesAdapter(List<Courses> courseList, ExploreActivity exploreActivity) {
     }
 
     @NonNull
@@ -33,7 +33,7 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
 
     @Override
     public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
-        Course course = courseList.get(position);
+        Courses course = courseList.get(position);
         holder.title.setText(course.getTitle());
         holder.provider.setText(course.getProvider());
         holder.image.setImageResource(course.getImageResId());

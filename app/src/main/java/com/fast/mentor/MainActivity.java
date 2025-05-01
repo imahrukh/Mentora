@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         signupText.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, SignupActivity.class);
+            Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
             startActivity(intent);
         });
     }

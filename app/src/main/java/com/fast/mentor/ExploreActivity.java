@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExploreActivity extends AppCompatActivity {
-
+    private DatabaseHelper dbHelper;
     private LinearLayout topicLayout;
     private RecyclerView courseRecyclerView, projectRecyclerView;
-    private List<Course> courseList;
+    private List<Courses> courseList;
     private List<Project> projectList;
     private CoursesAdapter coursesAdapter;
     private ProjectsAdapter projectsAdapter;
@@ -37,15 +37,17 @@ public class ExploreActivity extends AppCompatActivity {
         topicLayout = findViewById(R.id.topicLayout);
         courseRecyclerView = findViewById(R.id.courseRecycler);
         projectRecyclerView = findViewById(R.id.projectRecycler);
-
+        dbHelper = new DatabaseHelper(this);
+        loadCourses();
+        loadProjects();
         // 1. Display Topics
         displayTopics();
 
         // 2. Setup Courses RecyclerView
         courseList = new ArrayList<>();
-        courseList.add(new Course(R.drawable.course1, "Intro to AI", "Coursera"));
-        courseList.add(new Course(R.drawable.course1, "Data Science Basics", "edX"));
-        courseList.add(new Course(R.drawable.course1, "Machine Learning", "Udacity"));
+        courseList.add(new Courses(R.drawable.course1, "Intro to AI", "Coursera"));
+        courseList.add(new Courses(R.drawable.course1, "Data Science Basics", "edX"));
+        courseList.add(new Courses(R.drawable.course1, "Machine Learning", "Udacity"));
         coursesAdapter = new CoursesAdapter(this,courseList);
         courseRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         courseRecyclerView.setAdapter(coursesAdapter);
@@ -65,7 +67,7 @@ public class ExploreActivity extends AppCompatActivity {
         navBar.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.nav_courses:
-                    startActivity(new Intent(this, CoursesActivity.class));
+                    startActivity(new Intent(this, LearnActivity.class));
                     return true;
                 case R.id.nav_search:
                     startActivity(new Intent(this, SearchActivity.class));
@@ -103,6 +105,19 @@ public class ExploreActivity extends AppCompatActivity {
 
             topicLayout.addView(button);
         }
+    }
+    private void loadCourses() {
+        courseList = dbHelper.getAllCourses();
+        coursesAdapter = new CoursesAdapter(this, courseList);
+        courseRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        courseRecyclerView.setAdapter(coursesAdapter);
+    }
+
+    private void loadProjects() {
+        projectList = dbHelper.getAllProjects();
+        projectsAdapter = new ProjectsAdapter(this, projectList);
+        projectRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        projectRecyclerView.setAdapter(projectsAdapter);
     }
 }
 

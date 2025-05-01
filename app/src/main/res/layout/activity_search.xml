@@ -34,8 +34,9 @@
             android:queryHint="@string/searchHint"
             android:iconifiedByDefault="false"
             app:iconTint="@color/red"
-            app:queryBackground="@android:color/transparent"
-            android:background="@drawable/searchview_border"/>
+                app:queryTextAppearance="@style/SearchView.RedText"
+            android:background="@drawable/searchview_border" />
+
             <!-- Recent Searches -->
             <LinearLayout
                 android:layout_width="match_parent"
