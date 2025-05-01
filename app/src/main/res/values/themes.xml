@@ -9,5 +9,22 @@
         <item name="android:windowBackground">#000000</item>
         <item name ="android:textColor">#FFFFFF</item>
     </style>
+
+    <style name="RedSearchView" parent="Widget.AppCompat.SearchView">
+        <!-- Text colors -->
+        <item name="queryTextColor">@color/red</item>
+        <item name="android:textColorHint">@color/red</item>
+
+        <!-- Icon tints -->
+        <item name="closeIconTint">@color/red</item>
+        <item name="searchIconTint">@color/red</item>
+
+        <!-- EditText style -->
+        <item name="android:editTextStyle">@style/RedSearchView.EditText</item>
+    </style>
+    <style name="RedSearchView.EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:textColor">@color/red</item>
+        <item name="android:textColorHint">@color/red</item>
+    </style>
 </resources>
 

@@ -27,6 +27,9 @@
     <string name="projectTitle">Project Title</string>
     <string name="projectProvider">by Provider</string>
     <string name="projectGuidedTitle">Guided Project</string>
-
+    <string name="popularSearches">Popular Searches</string>
+    <string name="recentSearches">Recent Searches</string>
+    <string name="clear">Clear</string>
+    <string name="searchHint">What do you want to study?</string>
 
 </resources>

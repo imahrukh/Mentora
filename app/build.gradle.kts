@@ -61,10 +61,11 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(platform(libs.firebase.bom) )// Use latest BOM
+    implementation(platform(libs.firebase.bom) )
     implementation (libs.firebase.auth)
     implementation (libs.firebase.firestore)
     implementation(libs.recyclerview)
     annotationProcessor(libs.glide)
+    implementation(libs.android.flexbox)
 
 }
