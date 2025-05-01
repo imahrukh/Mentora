@@ -11,4 +11,13 @@
     <string name="hintName"> Enter your name</string>
     <string name="name">Name: </string>
     <string name="login_redirect">Already have an account?</string>
+    <string name = "explore">Explore</string>
+    <string name = "courses">Courses</string>
+    <string name = "search">Search</string>
+    <string name = "profile">Profile</string>
+    <string name = "topics">Topics</string>
+    <string name="projects">Guided Projects for you</string>
+    <string name="popular">Popular in Data Science</string>
+    <string name="data_analytics">Data Analytics</string>
+    <string name="see">See All</string>
 </resources>

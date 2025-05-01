@@ -64,4 +64,6 @@ dependencies {
     implementation(platform(libs.firebase.bom) )// Use latest BOM
     implementation (libs.firebase.auth)
     implementation (libs.firebase.firestore)
+    implementation(libs.recyclerview)
+
 }
