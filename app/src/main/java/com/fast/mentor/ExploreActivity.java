@@ -2,20 +2,32 @@ package com.fast.mentor;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import android.view.Gravity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
-import android.graphics.Color;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExploreActivity extends AppCompatActivity {
 
     private LinearLayout topicLayout;
-    private RecyclerView courseRecycler, projectRecycler;
-    private String[] topics = {"Data Science", "Computer Science", "AI", "Web Dev", "Mobile", "Health"};
+    private RecyclerView courseRecyclerView, projectRecyclerView;
+    private List<Course> courseList;
+    private List<Project> projectList;
+    private CoursesAdapter coursesAdapter;
+    private ProjectsAdapter projectsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,63 +35,73 @@ public class ExploreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_explore);
 
         topicLayout = findViewById(R.id.topicLayout);
-        courseRecycler = findViewById(R.id.courseRecycler);
-        projectRecycler = findViewById(R.id.projectRecycler);
-        BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
+        courseRecyclerView = findViewById(R.id.courseRecycler);
+        projectRecyclerView = findViewById(R.id.projectRecycler);
 
-        setupTopics();
-        setupCourseRecycler();
-        setupProjectRecycler();
+        // 1. Display Topics
+        displayTopics();
 
-        bottomNav.setSelectedItemId(R.id.nav_explore);
-        bottomNav.setOnItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.nav_courses:
-                    startActivity(new Intent(this, CoursesActivity.class));
-                    return true;
-                case R.id.nav_search:
-                    startActivity(new Intent(this, SearchActivity.class));
-                    return true;
-                case R.id.nav_profile:
-                    startActivity(new Intent(this, ProfileActivity.class));
-                    return true;
-                default:
-                    return true;
+        // 2. Setup Courses RecyclerView
+        courseList = new ArrayList<>();
+        courseList.add(new Course(R.drawable.course1, "Intro to AI", "Coursera"));
+        courseList.add(new Course(R.drawable.course1, "Data Science Basics", "edX"));
+        courseList.add(new Course(R.drawable.course1, "Machine Learning", "Udacity"));
+        coursesAdapter = new CoursesAdapter(this,courseList);
+        courseRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        courseRecyclerView.setAdapter(coursesAdapter);
+
+        // 3. Setup Projects RecyclerView
+        projectList = new ArrayList<>();
+        projectList.add(new Project(R.drawable.project1, "Stock Predictor", "FAST-NUCES", "Guided Project"));
+        projectList.add(new Project(R.drawable.project1, "AI Chatbot", "GLI", "Guided Project"));
+        projectList.add(new Project(R.drawable.project1, "Resume Parser", "Mentora", "Guided Project"));
+        projectsAdapter = new ProjectsAdapter(this, projectList);
+        projectRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        projectRecyclerView.setAdapter(projectsAdapter);
+
+        // 4. Bottom Navigation Handling
+        BottomNavigationView navBar = findViewById(R.id.bottomNav);
+        navBar.setSelectedItemId(R.id.explore);
+
+        navBar.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.explore) {
+                return true; // already here
+            } else if (id == R.id.profile) {
+                startActivity(new Intent(this, ProfileActivity.class));
+                return true;
+            } else if (id == R.id.settings) {
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
             }
+            return false;
         });
     }
 
-    private void setupTopics() {
+    private void displayTopics() {
+        String[] topics = {"AI", "Data Science", "Web Dev", "Android", "Cloud", "ML", "Cybersecurity", "Design", "IoT"};
         for (String topic : topics) {
-            Button btn = new Button(this);
-            btn.setText(topic);
-            btn.setBackgroundColor(Color.parseColor("#ff3e6b"));
-            btn.setTextColor(Color.WHITE);
-            btn.setAllCaps(false);
+            Button button = new Button(this);
+            button.setText(topic);
+            button.setTextColor(ContextCompat.getColor(this, android.R.color.white));
+            button.setBackgroundColor(Color.parseColor("#FF3E6B"));
+            button.setAllCaps(false);
+            button.setPadding(40, 10, 40, 10);
+
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setMargins(8, 8, 8, 8);
-            btn.setLayoutParams(params);
-            btn.setOnClickListener(v -> Toast.makeText(this, "Feature not available yet", Toast.LENGTH_SHORT).show());
-            topicLayout.addView(btn);
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(10, 10, 10, 10);
+            button.setLayoutParams(params);
+
+            button.setOnClickListener(view -> {
+                Toast toast = Toast.makeText(this, "Feature not available yet", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 300);
+                toast.show();
+            });
+
+            topicLayout.addView(button);
         }
     }
-
-    private void setupCourseRecycler() {
-        courseRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        ArrayList<Course> courses = new ArrayList<>();
-        courses.add(new Course("Data Analytics", "Google"));
-        courses.add(new Course("R Programming", "Harvard"));
-        courses.add(new Course("Advanced AI", "DeepLearning.AI"));
-        courseRecycler.setAdapter(new CoursesAdapter(courses, this));
-    }
-
-    private void setupProjectRecycler() {
-        projectRecycler.setLayoutManager(new LinearLayoutManager(this));
-        ArrayList<Project> projects = new ArrayList<>();
-        projects.add(new Project("Build app w/ Azure", "Microsoft"));
-        projects.add(new Project("MS Excel", "Coursera Network"));
-        projects.add(new Project("AWS S3", "Coursera Network"));
-        projectRecycler.setAdapter(new ProjectsAdapter(projects, this));
-    }
 }
+

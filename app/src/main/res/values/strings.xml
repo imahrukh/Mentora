@@ -20,4 +20,13 @@
     <string name="popular">Popular in Data Science</string>
     <string name="data_analytics">Data Analytics</string>
     <string name="see">See All</string>
+    <string name="courseImage">Course Image</string>
+    <string name="courseTitle">Course Title</string>
+    <string name="courseProvider">by Provider</string>
+    <string name="projectImage">Project Image</string>
+    <string name="projectTitle">Project Title</string>
+    <string name="projectProvider">by Provider</string>
+    <string name="projectGuidedTitle">Guided Project</string>
+
+
 </resources>
