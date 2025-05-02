@@ -53,6 +53,15 @@
     <string name="delete_account">Delete Account</string>
     <string name="verification_code">Verification Code</string>
     <string name="_123456">123456</string>
+    <string name="supervised_learning">Supervised Learning</string>
+    <string name="offered_by">Offered by</string>
+    <string name="about_this_course">About this Course</string>
+    <string name="courseAbout">Supervised Learning is a paradigm to discriminative models from labeled training data. Regression, and classification are useful main machine learning modules.</string>
+    <string name="course_details">Course Details</string>
+    <string name="skills_you_ll_learn">Skills You\'ll Learn</string>
+    <string name="see_enrollment_options">See Enrollment Options</string>
+    <string name="_100_online">100% Online</string>
+    <string name="prompt_engineering">Prompt Engineering</string>
     <string-array name="video_quality_options">
         <item>HD</item>
         <item>720p</item>

@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$PROJECT_DIR$/../../../Downloads/Apps/Android/SDK/icons/material/materialicons/add_reaction/baseline_add_reaction_24.xml" />
+                                      <entry key="url" value="file:/$PROJECT_DIR$/../../../Downloads/Apps/Android/SDK/icons/material/materialicons/arrow_back/baseline_arrow_back_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -29,7 +29,8 @@
                         <option name="values">
                           <map>
                             <entry key="autoMirrored" value="true" />
-                            <entry key="outputName" value="ic_profile" />
+                            <entry key="color" value="e50041" />
+                            <entry key="outputName" value="ic_arrow_back" />
                             <entry key="sourceFile" value="D:\6-sem\SMD\Mentora" />
                           </map>
                         </option>
