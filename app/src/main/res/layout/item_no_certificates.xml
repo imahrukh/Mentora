@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/noCertificatesImage"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:src="@drawable/course1" />
+
+    <TextView
+        android:id="@+id/noCertificatesView1"
+        android:text="@string/noCertificates1"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/noCertificatesView2"
+        android:text="@string/noCertificates2"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textColor="@color/grey"
+        android:textAlignment="center"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/startLearningBtn"
+        android:text="@string/startLearning"
+        android:backgroundTint="@color/red"
+        android:textColor="@color/white"
+        android:layout_marginTop="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>

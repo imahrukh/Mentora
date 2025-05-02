@@ -37,4 +37,11 @@
     <string name="courseModule1">Supervised Machine Learning: Regression and Classification</string>
     <string name="moduleProgress">Module 1 of 3</string>
     <string name="getBack">Get Back Into It</string>
+    <string name="userName">David Malan</string>
+    <string name="userEmail">davidjmalan@gmail.com</string>
+    <string name="startLearning">Start Learning Now</string>
+    <string name ="edit">Edit</string>
+    <string name="avator">Avator</string>
+    <string name="noCertificates1">That feeling of completion is just around the corner</string>
+    <string name="noCertificates2">Your completed courses and certificates will be here</string>
 </resources>
