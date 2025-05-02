@@ -5,6 +5,11 @@
       <config />
     </shared>
     <layouts>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_edit_profile.xml">
+        <config>
+          <theme>@style/Theme.MentoraApp</theme>
+        </config>
+      </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_explore.xml">
         <config>
           <theme>@style/Theme.MentoraApp</theme>
@@ -45,6 +50,16 @@
           <theme>@style/Theme.MentoraApp</theme>
         </config>
       </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/dialog_edit_field.xml">
+        <config>
+          <theme>@style/Theme.MentoraApp</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/dialog_verify_code.xml">
+        <config>
+          <theme>@style/Theme.MentoraApp</theme>
+        </config>
+      </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/item_certificate.xml">
         <config>
           <theme>@style/Theme.MentoraApp</theme>
@@ -70,6 +85,11 @@
           <theme>@style/Theme.MentoraApp</theme>
         </config>
       </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/recycler_certificates.xml">
+        <config>
+          <theme>@style/Theme.MentoraApp</theme>
+        </config>
+      </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/menu/bottom_nav_menu.xml">
         <config>
           <theme>@style/Theme.MentoraApp</theme>
@@ -82,17 +102,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="003c7798-3973-450b-ad1f-e77afe559551" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/Certificate.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/CertificateAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/EditProfileActivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/ProfileActivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/certificate.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_edit.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_profile.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/item_certificate.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/item_no_certificates.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/recycler_certificates.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_profile.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_search.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_edit_profile.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_edit_field.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_verify_code.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/EditProfileActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/EditProfileActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_profile.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_search.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -114,8 +132,8 @@
       <list>
         <option value="layoutResourceFile_vertical" />
         <option value="valueResourceFile" />
-        <option value="resourceFile" />
         <option value="Class" />
+        <option value="resourceFile" />
         <option value="layoutResourceFile" />
       </list>
     </option>
@@ -293,12 +311,12 @@
       <map>
         <entry key="com.fast.mentor">
           <value>
-            <CheckInfo lastCheckTimestamp="1746078385886" />
+            <CheckInfo lastCheckTimestamp="1746181189581" />
           </value>
         </entry>
         <entry key="com.fast.mentor.test">
           <value>
-            <CheckInfo lastCheckTimestamp="1746078385886" />
+            <CheckInfo lastCheckTimestamp="1746181189581" />
           </value>
         </entry>
       </map>

@@ -44,4 +44,19 @@
     <string name="avator">Avator</string>
     <string name="noCertificates1">That feeling of completion is just around the corner</string>
     <string name="noCertificates2">Your completed courses and certificates will be here</string>
+    <string name="profile_picture">Profile picture</string>
+    <string name="name_david_malan">Name: David Malan</string>
+    <string name="email_david_jmalan_harvard_edu">Email: david.jmalan@harvard.edu</string>
+    <string name="password1">Password: ********</string>
+    <string name="edit_personal_details">Edit Personal Details</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="verification_code">Verification Code</string>
+    <string name="_123456">123456</string>
+    <string-array name="video_quality_options">
+        <item>HD</item>
+        <item>720p</item>
+        <item>480p</item>
+        <item>360p</item>
+    </string-array>
 </resources>
