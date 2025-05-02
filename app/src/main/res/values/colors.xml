@@ -12,5 +12,9 @@
     <color name="grey1">#FF666666</color>
     <color name="grey">#808080</color>
     <color name="grey2">#404040</color>
-    <color name= "dark_grey">#333333</color>"
+    <color name= "dark_grey">#333333</color>
+    <color name="teal"> #009688</color>
+    <color name="blue">#90CAF9</color>
+    <color name="green">#A5D6A7</color>
+    "
 </resources>

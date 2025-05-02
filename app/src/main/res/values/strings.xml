@@ -62,6 +62,16 @@
     <string name="see_enrollment_options">See Enrollment Options</string>
     <string name="_100_online">100% Online</string>
     <string name="prompt_engineering">Prompt Engineering</string>
+    <string name="home">Home</string>
+    <string name="grades">Grades</string>
+    <string name="notes">Notes</string>
+    <string name="recommendations">Recommendations</string>
+    <string name="info">Info</string>
+    <string name="introduction">Introduction</string>
+    <string name="optional">OPTIONAL</string>
+    <string name="assignment">Assignment</string>
+    <string name="week_1">Week 1</string>
+    <string name="module_title">Module Title</string>
     <string-array name="video_quality_options">
         <item>HD</item>
         <item>720p</item>

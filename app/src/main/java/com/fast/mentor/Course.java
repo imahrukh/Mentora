@@ -13,8 +13,9 @@ public class Course {
     private String level;
     private String duration;
     private List<String> skills;
+    private List<Week> weeks;
 
-    public Course(String title, String provider, String moduleTitle, String moduleProgress, String description, boolean online, String level, String duration, List<String> skills) {
+    public Course(String title, String provider, String moduleTitle, String moduleProgress, String description, boolean online, String level, String duration, List<String> skills, List<Week> weeks) {
         this.title = title;
         this.provider = provider;
         this.moduleTitle = moduleTitle;
@@ -24,6 +25,7 @@ public class Course {
         this.level = level;
         this.duration = duration;
         this.skills = skills;
+        this.weeks = weeks;
     }
 
     public String getTitle() { return title; }
@@ -35,4 +37,5 @@ public class Course {
     public String getLevel() { return level; }
     public String getDuration() { return duration; }
     public List<String> getSkills() { return skills; }
+    public List<Week> getWeeks() { return weeks; }
 }
