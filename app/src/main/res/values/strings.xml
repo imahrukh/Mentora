@@ -72,6 +72,11 @@
     <string name="assignment">Assignment</string>
     <string name="week_1">Week 1</string>
     <string name="module_title">Module Title</string>
+    <string name="course_progress">Course Progress</string>
+    <string name="_10">10%</string>
+    <string name="weight_2">Weight:2%</string>
+    <string name="practice_quiz_1_supervised_learning_vs_unsupervised_learning">Practice Quiz 1: Supervised Learning vs Unsupervised Learning</string>
+    <string name="quiz">Quiz</string>
     <string-array name="video_quality_options">
         <item>HD</item>
         <item>720p</item>
