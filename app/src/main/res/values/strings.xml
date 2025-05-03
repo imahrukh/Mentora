@@ -77,6 +77,8 @@
     <string name="weight_2">Weight:2%</string>
     <string name="practice_quiz_1_supervised_learning_vs_unsupervised_learning">Practice Quiz 1: Supervised Learning vs Unsupervised Learning</string>
     <string name="quiz">Quiz</string>
+    <string name="course_instructors">Course Instructors</string>
+    <string name="course_description">Course Description</string>
     <string-array name="video_quality_options">
         <item>HD</item>
         <item>720p</item>
