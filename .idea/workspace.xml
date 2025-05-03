@@ -85,6 +85,11 @@
           <theme>@style/Theme.MentoraApp</theme>
         </config>
       </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_recommendations.xml">
+        <config>
+          <theme>@style/Theme.MentoraApp</theme>
+        </config>
+      </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/item_certificate.xml">
         <config>
           <theme>@style/Theme.MentoraApp</theme>
@@ -130,6 +135,11 @@
           <theme>@style/Theme.MentoraApp</theme>
         </config>
       </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/item_recommendation.xml">
+        <config>
+          <theme>@style/Theme.MentoraApp</theme>
+        </config>
+      </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/item_registered_course.xml">
         <config>
           <theme>@style/Theme.MentoraApp</theme>
@@ -162,12 +172,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="003c7798-3973-450b-ad1f-e77afe559551" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_deadline.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_language.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/ModulePerformance.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/Recommendation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/RecommendationAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/RecommendationEngine.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/RecommendationsFragment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/UserProgress.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_recommendations.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/item_recommendation.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/dialog_edit_field.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_edit_field.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/dialog_verify_code.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_verify_code.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/item_instructor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/item_instructor.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/Course.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/Module.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/Module.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/ModuleItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/ModuleItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

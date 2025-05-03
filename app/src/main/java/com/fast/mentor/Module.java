@@ -31,5 +31,17 @@ public class Module {
     public void setModuleId(String moduleId) {
         this.moduleId = moduleId;
     }
+
+    public String getId() {
+        return moduleId;
+    }
+
+    public long getExpectedDuration() {
+        long totalDuration = 0;
+        for (ModuleItem item : items) {
+            totalDuration += item.getDuration();
+        }
+        return totalDuration;
+    }
 }
 

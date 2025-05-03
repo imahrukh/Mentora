@@ -34,4 +34,8 @@ public class ModuleItem {
     public boolean isCompleted() {
         return completed;
     }
+
+    public int getDuration() {
+        return 0;
+    }
 }

@@ -79,6 +79,15 @@
     <string name="quiz">Quiz</string>
     <string name="course_instructors">Course Instructors</string>
     <string name="course_description">Course Description</string>
+    <string name="learning_insights">Learning Insights</string>
+    <string name="current_performance">Current Performance:</string>
+    <string name="intermediate">Intermediate</string>
+    <string name="focus_area_algorithm_optimization">Focus Area: Algorithm Optimization</string>
+    <string name="recommended_modules">Recommended Modules</string>
+    <string name="next_steps_after_completion">Next Steps After Completion</string>
+    <string name="basic_concepts_of_algorithms">Basic concepts of algorithms</string>
+    <string name="duration_2_hrs">Duration: 2 hrs</string>
+    <string name="introduction_to_algorithms">Introduction to Algorithms</string>
     <string-array name="video_quality_options">
         <item>HD</item>
         <item>720p</item>
