@@ -4,13 +4,13 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/black"
+    android:background="@color/grey1"
     android:padding="16dp">
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColorHint="@color/black"
+        android:textColorHint="@color/white"
         app:backgroundTint="@color/grey2"
         app:boxBackgroundColor="@color/grey2"
         android:hint="@string/verification_code">
@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:text="@string/_123456"/>
 
     </com.google.android.material.textfield.TextInputLayout>
