@@ -44,25 +44,5 @@ public class LearnActivity extends AppCompatActivity {
             recyclerCourses.setAdapter(adapter);
         }
     }
-    // 1. Register in onStart()
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
 
-    // 2. Unregister in onStop()
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
-
-    // 3. Event handler method
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onProgressUpdate(ProgressUpdateEvent event) {
-        // Update UI here
-        updateProgressBar(event.getProgressPercentage());
-        refreshRecommendations();
-    }
 }

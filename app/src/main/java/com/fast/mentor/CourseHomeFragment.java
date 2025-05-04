@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,11 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 import java.util.Map;
 
 public class CourseHomeFragment extends Fragment {
     private Course course;
+    private ProgressBar courseProgressBar;
+    private String currentCourseId;
     private RecyclerView rvWeeks, rvModules;
     private WeeksAdapter weeksAdapter;
     private ModuleAdapter moduleAdapter;
@@ -54,7 +61,35 @@ public class CourseHomeFragment extends Fragment {
         moduleAdapter = new ModuleAdapter(course.getWeeks().get(0).getModules(), progressMap);
         rvModules.setAdapter(moduleAdapter);
     }
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onProgressUpdate(ProgressUpdateEvent event) {
+        if (event.getCourseId().equals(currentCourseId)) {
+            updateProgress(event.getProgressPercentage());
+            markModuleComplete(event.getModuleId());
+        }
+    }
+
+    private void updateProgress(int progress) {
+        courseProgressBar.setProgress(progress);
+        // Update any other progress-related UI
+    }
+
+    public void markModuleComplete(String moduleId) {
+        // Update specific module item's UI
+    }
+}
     private void onWeekSelected(int weekPosition) {
         List<Module> modules = course.getWeeks().get(weekPosition).getModules();
         moduleAdapter.updateModules(modules);

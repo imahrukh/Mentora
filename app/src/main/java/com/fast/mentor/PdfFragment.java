@@ -106,20 +106,16 @@ public class PdfFragment extends Fragment {
     private void updateCourseProgress() {
         db.collection("courses").document(courseId)
                 .collection("enrollments").document(getCurrentUserId())
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    long currentProgress = documentSnapshot.getLong("progress") != null
-                            ? documentSnapshot.getLong("progress") : 0;
-                    int newProgress = (int) (currentProgress + 5);
-
+                .update("progress", FieldValue.increment(5))
+                .addOnSuccessListener(aVoid -> {
                     // Post event with actual progress data
-                    EventBus.getDefault().post(new ProgressUpdateEvent(courseId, newProgress));
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(requireContext(), "Failed to get progress: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    EventBus.getDefault().post(new ProgressUpdateEvent(
+                            courseId,
+                            moduleId,
+                            newProgressValue
+                    ));
                 });
     }
-
     private String getCurrentUserId() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }

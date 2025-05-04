@@ -14,6 +14,12 @@
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
+    <ProgressBar
+        android:id="@+id/course_progress_bar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100" />
     <!-- Modules List -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvModules"

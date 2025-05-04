@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,4 +74,15 @@ public class RecommendationsFragment extends Fragment {
         // Implementation to find most recommended area
         return "Algorithm Optimization";
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onProgressUpdate(ProgressUpdateEvent event) {
+        if (event.getCourseId().equals(currentCourseId)) {
+            refreshRecommendations(event.getProgressPercentage());
+        }
+    }
+
+    private void refreshRecommendations(int progress) {
+        // Fetch new recommendations based on progress
+    }
+}
 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,11 +17,17 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class CourseDetailActivity extends AppCompatActivity {
+    private ProgressBar courseProgressBar;
+    private String currentCourseId;
 
     private FirebaseFirestore db;
     private String courseId;
@@ -30,6 +37,8 @@ public class CourseDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_detail);
+        currentCourseId = getIntent().getStringExtra("COURSE_ID");
+        courseProgressBar = findViewById(R.id.course_progress_bar);
 
         // Initialize Firebase
         db = FirebaseFirestore.getInstance();
@@ -108,4 +117,34 @@ public class CourseDetailActivity extends AppCompatActivity {
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Enrollment failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onProgressUpdate(ProgressUpdateEvent event) {
+        if (event.getCourseId().equals(currentCourseId)) {
+            // Update course-specific progress
+            courseProgressBar.setProgress(event.getProgressPercentage());
+            refreshModuleCompletion(event.getModuleId());
+        }
+    }
+
+    private void refreshModuleCompletion(String moduleId) {
+        // Update UI for completed module
+        CourseHomeFragment homeFragment = (CourseHomeFragment) getSupportFragmentManager()
+                .findFragmentByTag("HomeFragment");
+        if (homeFragment != null) {
+            homeFragment.markModuleComplete(moduleId);
+        }
+    }
+}
 }
