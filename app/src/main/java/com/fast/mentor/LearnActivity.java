@@ -10,6 +10,10 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 
 public class LearnActivity extends AppCompatActivity {
@@ -39,5 +43,26 @@ public class LearnActivity extends AppCompatActivity {
             RegisteredCourseAdapter adapter = new RegisteredCourseAdapter(this, courses);
             recyclerCourses.setAdapter(adapter);
         }
+    }
+    // 1. Register in onStart()
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    // 2. Unregister in onStop()
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    // 3. Event handler method
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onProgressUpdate(ProgressUpdateEvent event) {
+        // Update UI here
+        updateProgressBar(event.getProgressPercentage());
+        refreshRecommendations();
     }
 }

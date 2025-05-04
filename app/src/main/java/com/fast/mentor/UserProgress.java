@@ -1,5 +1,8 @@
 package com.fast.mentor;
 
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,5 +56,16 @@ public class UserProgress {
     }
     public Date getLastUpdated() {
         return lastUpdated;
+    }
+
+    public static void updateProgress(String courseId, String itemId, boolean completed) {
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("progress." + itemId + ".completed", completed);
+        updates.put("progress." + itemId + ".timestamp", FieldValue.serverTimestamp());
+
+        FirebaseFirestore.getInstance()
+                .collection("users").document(userId)
+                .collection("enrolledCourses").document(courseId)
+                .update(updates);
     }
 }

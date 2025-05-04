@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("com.google.gms.google-services")
+
 }
 
 android {
@@ -37,6 +38,8 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig =true
+        viewBinding =true
     }
 }
 
@@ -54,6 +57,9 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.navigation.fragment.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -67,5 +73,10 @@ dependencies {
     implementation(libs.recyclerview)
     annotationProcessor(libs.glide)
     implementation(libs.android.flexbox)
-
+    implementation(libs.navigation.fragment)
+    implementation (libs.navigation.ui)
+    implementation(libs.youtube.player)
+    implementation(libs.pdf.viewer)
+    implementation(libs.pdf.viewer2)
+    implementation(libs.eventbus)
 }

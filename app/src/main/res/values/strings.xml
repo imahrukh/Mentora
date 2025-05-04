@@ -88,6 +88,7 @@
     <string name="basic_concepts_of_algorithms">Basic concepts of algorithms</string>
     <string name="duration_2_hrs">Duration: 2 hrs</string>
     <string name="introduction_to_algorithms">Introduction to Algorithms</string>
+    <string name="submit_quiz">Submit Quiz</string>
     <string-array name="video_quality_options">
         <item>HD</item>
         <item>720p</item>

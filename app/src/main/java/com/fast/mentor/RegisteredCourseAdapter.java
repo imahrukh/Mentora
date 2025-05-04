@@ -61,5 +61,9 @@ public class RegisteredCourseAdapter extends RecyclerView.Adapter<RegisteredCour
             btnContinue = view.findViewById(R.id.btnContinue);
         }
     }
+    public void setCourses(List<Course> newCourses) {
+        this.courses = newCourses;
+        notifyDataSetChanged();
+    }
 }
 

@@ -69,7 +69,31 @@ public class RecommendationEngine {
 
         return recommendations;
     }
+    public List<Recommendation> generateRecommendations(String courseId) {
+        List<Recommendation> recommendations = new ArrayList<>();
 
+        FirebaseFirestore.getInstance()
+                .collection("users").document(userId)
+                .collection("enrolledCourses").document(courseId)
+                .get()
+                .addOnSuccessListener(document -> {
+                    Map<String, Object> progress = document.getData();
+
+                    // Analyze time spent vs average
+                    long userTime = calculateAverageTime(progress);
+                    long courseAvg = getCourseAverage(courseId);
+
+                    if(userTime > courseAvg * 1.2) {
+                        recommendations.add(new Recommendation(
+                                "Foundational Concepts Review",
+                                "Based on your learning pace",
+                                "REMEDIAL"
+                        ));
+                    }
+                });
+
+        return recommendations;
+    }
     private Module findModuleById(Course course, String key) {
         for (Module module : course.getModules()) {
             if (module.getId().equals(key)) {
