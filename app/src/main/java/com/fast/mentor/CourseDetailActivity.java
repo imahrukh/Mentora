@@ -37,19 +37,14 @@ public class CourseDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_course_detail);
-        currentCourseId = getIntent().getStringExtra("COURSE_ID");
-        courseProgressBar = findViewById(R.id.course_progress_bar);
 
-        // Initialize Firebase
-        db = FirebaseFirestore.getInstance();
-        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        courseId = getIntent().getStringExtra("courseId");
+        if (getIntent() == null || !getIntent().hasExtra(IntentConstants.EXTRA_COURSE_ID)) {
+            Toast.makeText(this, "Invalid course", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
-        initializeViews();
-        loadCourseData();
-    }
-
+        courseId = getIntent().getStringExtra(IntentConstants.EXTRA_COURSE_ID);
     private void initializeViews() {
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
 

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/navigation/nav_graph.xml -->
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/splashScreen">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.fast.mentor.SplashActivity"
+        android:label="Splash">
+        <action
+            android:id="@+id/action_to_main"
+            app:destination="@id/main_nav_graph"/>
+    </fragment>
+
+    <!-- Nested graph for authenticated users -->
+    <navigation
+        android:id="@+id/main_nav_graph"
+        app:startDestination="@id/exploreFragment">
+
+        <fragment
+            android:id="@+id/exploreFragment"
+            android:name="com.fast.mentor.ExploreActivity"/>
+
+        <fragment
+            android:id="@+id/learnFragment"
+            android:name="com.fast.mentor.LearnActivity"/>
+
+        <fragment
+            android:id="@+id/learnFragment"
+            android:name="com.fast.mentor.ProfileActivity"/>
+    </navigation>
+</navigation>

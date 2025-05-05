@@ -1,5 +1,8 @@
 package com.fast.mentor;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,15 +22,18 @@ public class CoursesAdapter extends FirestoreRecyclerAdapter<Course, CoursesAdap
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull CourseViewHolder holder, int position, @NonNull Course course) {
-        holder.title.setText(course.getTitle());
-        holder.provider.setText(course.getProvider());
-
-        // Add click listener if needed
+    public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
         holder.itemView.setOnClickListener(v -> {
-            DocumentSnapshot snapshot = getSnapshots().getSnapshot(position);
-            String courseId = snapshot.getId();
-            // Handle click
+            Intent intent = new Intent(context, CourseDetailActivity.class);
+            intent.putExtra(IntentConstants.EXTRA_COURSE_ID, courseId);
+
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(
+                    (Activity) context,
+                    holder.imageView, // Shared element
+                    "course_image" // Transition name
+            );
+
+            context.startActivity(intent, options.toBundle());
         });
     }
 

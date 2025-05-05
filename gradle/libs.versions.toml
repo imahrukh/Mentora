@@ -26,7 +26,10 @@ navigationUiKtx = "2.8.9"
 navigationFragmentKtxVersion = "1.0.0"
 pdfViewer2 = "3.1.0-beta.3"
 eventbus = "3.3.1"
-firebase-ui-firestore = "8.0.0"
+firebase-ui-firestore = "9.0.0"
+shimmer = "0.5.0"
+
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
@@ -63,6 +66,7 @@ navigation-fragment-ktx = { group = "android.arch.navigation", name = "navigatio
 pdf-viewer2 = { group = "com.github.TalbotGooday", name = "AndroidPdfViewer", version.ref = "pdfViewer2" }
 eventbus = { group = "org.greenrobot", name = "eventbus", version.ref = "eventbus" }
 firebase-ui-firestore = { module = "com.firebaseui:firebase-ui-firestore", version.ref = "firebase-ui-firestore" }
+shimmer = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -71,3 +75,4 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 jitpack = { id = "com.github.barteksc.pdfviewer", version.ref = "pdfViewer" }
 googleServices = { id = "com.google.gms.google-services", version = "4.4.2" }
 navigationSafeArgs = { id = "androidx.navigation.safeargs", version.ref = "navigation" }
+hilt = { id = "com.google.dagger.hilt.android", version = "2.48" }

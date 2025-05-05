@@ -80,4 +80,5 @@ dependencies {
     implementation(libs.pdf.viewer2)
     implementation(libs.eventbus)
     implementation(libs.firebase.ui.firestore)
+    implementation(libs.shimmer)
 }
