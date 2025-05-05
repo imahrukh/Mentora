@@ -58,7 +58,7 @@ public class UserProgress {
         return lastUpdated;
     }
 
-    public static void updateProgress(String courseId, String itemId, boolean completed) {
+    public static void updateProgress(String userId, String courseId, String itemId, boolean completed) {
         Map<String, Object> updates = new HashMap<>();
         updates.put("progress." + itemId + ".completed", completed);
         updates.put("progress." + itemId + ".timestamp", FieldValue.serverTimestamp());

@@ -1,21 +1,34 @@
 package com.fast.mentor;
 
 import java.util.List;
+import com.google.firebase.firestore.PropertyName;
 
 public class Course {
+    @PropertyName("title")
     private String title;
+    @PropertyName("provider")
     private String provider;
+    @PropertyName("moduleTitle")
     private String moduleTitle;
+    @PropertyName("moduleProgress")
     private String moduleProgress;
-
+    @PropertyName("description")
     private String description;
+    @PropertyName("online")
     private boolean online;
+    @PropertyName("level")
     private String level;
+    @PropertyName("duration")
     private String duration;
+    @PropertyName("skills")
     private List<String> skills;
+    @PropertyName("weeks")
     private List<Week> weeks;
+    @PropertyName("prerequisites")
     private List<String> prerequisites;
+    @PropertyName("difficultyLevel")
     private String difficultyLevel;
+    @PropertyName("relatedCourses")
     private List<String> relatedCourses;
      public Course() {
          this.title = "";

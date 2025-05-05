@@ -1,48 +1,55 @@
 package com.fast.mentor;
 
 import android.os.Bundle;
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.List;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 public class LearnActivity extends AppCompatActivity {
-
-    RecyclerView recyclerCourses;
-    DatabaseHelper dbHelper;
-    List<Course> courses;
+    private RecyclerView recyclerCourses;
+    private RegisteredCourseAdapter adapter;
+    private FirebaseFirestore db;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_learn);
 
-        recyclerCourses = findViewById(R.id.recyclerCourses);
-        recyclerCourses.setLayoutManager(new LinearLayoutManager(this));
+        db = FirebaseFirestore.getInstance();
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        dbHelper = new DatabaseHelper(this);
-        courses = dbHelper.getAllCourses();
-
-        if (courses.isEmpty()) {
-            new AlertDialog.Builder(this)
-                    .setTitle("No Courses")
-                    .setMessage("You have not registered in any courses yet.")
-                    .setPositiveButton("OK", null)
-                    .show();
-        } else {
-            RegisteredCourseAdapter adapter = new RegisteredCourseAdapter(this, courses);
-            recyclerCourses.setAdapter(adapter);
-        }
+        setupRecyclerView();
     }
 
+    private void setupRecyclerView() {
+        Query query = db.collection("users").document(userId)
+                .collection("enrollments");
+
+        FirestoreRecyclerOptions<Course> options = new FirestoreRecyclerOptions.Builder<Course>()
+                .setQuery(query, Course.class)
+                .build();
+
+        adapter = new RegisteredCourseAdapter(options);
+        recyclerCourses = findViewById(R.id.recyclerCourses);
+        recyclerCourses.setLayoutManager(new LinearLayoutManager(this));
+        recyclerCourses.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapter.stopListening();
+    }
 }

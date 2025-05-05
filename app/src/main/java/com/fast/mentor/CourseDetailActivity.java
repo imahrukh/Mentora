@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.greenrobot.eventbus.EventBus;
@@ -103,16 +104,20 @@ public class CourseDetailActivity extends AppCompatActivity {
     }
 
     private void enrollInCourse() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         Map<String, Object> enrollment = new HashMap<>();
         enrollment.put("courseId", courseId);
-        enrollment.put("enrollmentDate", new Date());
+        enrollment.put("enrollmentDate", FieldValue.serverTimestamp());
+        enrollment.put("progress", 0);
 
         db.collection("users").document(userId)
                 .collection("enrollments").document(courseId)
                 .set(enrollment)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, "Enrollment successful!", Toast.LENGTH_SHORT).show();
-                    finish();
+                    Toast.makeText(this, "Enrolled successfully!", Toast.LENGTH_SHORT).show();
+                    // Update recommendations
+                    RecommendationEngine.updateEnrollment(userId, courseId);
                 })
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Enrollment failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());

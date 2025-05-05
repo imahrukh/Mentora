@@ -79,4 +79,5 @@ dependencies {
     implementation(libs.pdf.viewer)
     implementation(libs.pdf.viewer2)
     implementation(libs.eventbus)
+    implementation(libs.firebase.ui.firestore)
 }
