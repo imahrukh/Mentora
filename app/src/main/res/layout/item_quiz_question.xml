@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    app:cardBackgroundColor="@color/colorSurface"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Question number -->
+        <TextView
+            android:id="@+id/questionNumberTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle_background"
+            android:gravity="center"
+            android:minWidth="32dp"
+            android:minHeight="32dp"
+            android:textColor="@color/colorOnPrimary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="3" />
+
+        <!-- Question text -->
+        <TextView
+            android:id="@+id/questionTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textColor="@color/colorOnSurface"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/questionNumberTextView"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Which of the following is NOT a layout used in Android development?" />
+
+        <!-- Question image (optional) -->
+        <ImageView
+            android:id="@+id/questionImageView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/question_image"
+            android:scaleType="fitCenter"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/questionTextView"
+            tools:src="@drawable/ic_placeholder"
+            tools:visibility="visible" />
+
+        <!-- Multiple choice options container -->
+        <RadioGroup
+            android:id="@+id/optionsRadioGroup"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/questionImageView">
+
+            <!-- Option items will be added dynamically -->
+            <RadioButton
+                android:id="@+id/option1RadioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/badge_background_light"
+                android:button="@null"
+                android:padding="12dp"
+                android:textColor="#AAAAAA"
+                android:textSize="14sp"
+                tools:text="LinearLayout" />
+
+            <RadioButton
+                android:id="@+id/option2RadioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/badge_background_light"
+                android:button="@null"
+                android:padding="12dp"
+                android:textColor="#AAAAAA"
+                android:textSize="14sp"
+                tools:text="ConstraintLayout" />
+
+            <RadioButton
+                android:id="@+id/option3RadioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/badge_background_light"
+                android:button="@null"
+                android:padding="12dp"
+                android:textColor="#AAAAAA"
+                android:textSize="14sp"
+                tools:text="CircleLayout" />
+
+            <RadioButton
+                android:id="@+id/option4RadioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/badge_background_light"
+                android:button="@null"
+                android:padding="12dp"
+                android:textColor="#AAAAAA"
+                android:textSize="14sp"
+                tools:text="RelativeLayout" />
+        </RadioGroup>
+
+        <!-- Feedback section (shown in review mode) -->
+        <LinearLayout
+            android:id="@+id/feedbackContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/badge_popular_background"
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/optionsRadioGroup"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/feedbackHeaderTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorSuccess"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="Correct!" />
+
+            <TextView
+                android:id="@+id/feedbackTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/colorOnSurface"
+                android:textSize="14sp"
+                tools:text="CircleLayout is not a standard Android layout. The standard layouts are LinearLayout, RelativeLayout, ConstraintLayout, FrameLayout, and GridLayout." />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

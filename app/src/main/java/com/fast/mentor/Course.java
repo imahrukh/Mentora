@@ -1,94 +1,156 @@
 package com.fast.mentor;
 
 import java.util.List;
-import com.google.firebase.firestore.PropertyName;
+import java.util.Map;
 
 public class Course {
-    @PropertyName("title")
+    private String courseId;
     private String title;
-    @PropertyName("provider")
-    private String provider;
-    @PropertyName("moduleTitle")
-    private String moduleTitle;
-    @PropertyName("moduleProgress")
-    private String moduleProgress;
-    @PropertyName("description")
     private String description;
-    @PropertyName("online")
-    private boolean online;
-    @PropertyName("level")
-    private String level;
-    @PropertyName("duration")
-    private String duration;
-    @PropertyName("skills")
-    private List<String> skills;
-    @PropertyName("weeks")
+    private String category;
+    private String thumbnailUrl;
+    private int durationInHours;
+    private String level; // "Beginner", "Intermediate", "Advanced"
+    private boolean isPopular;
+    private boolean isNew;
+    private double rating;
+    private int reviewsCount;
+    private List<String> whatYouWillLearn;
+    private List<Map<String, Object>> instructors;
     private List<Week> weeks;
-    @PropertyName("prerequisites")
-    private List<String> prerequisites;
-    @PropertyName("difficultyLevel")
-    private String difficultyLevel;
-    @PropertyName("relatedCourses")
-    private List<String> relatedCourses;
-     public Course() {
-         this.title = "";
-         this.provider = "";
-         this.moduleTitle = "";
-         this.moduleProgress = "";
-         this.description = "";
-         this.online = false;
-         this.level = "";
-         this.duration = "";
-         this.skills = null;
-         this.weeks = null;
-         this.prerequisites = null;
-         this.difficultyLevel = "";
-         this.relatedCourses = null;
-     }
-    public Course(String title, String provider, String moduleTitle, String moduleProgress, String description, boolean online, String level, String duration, List<String> skills, List<Week> weeks, List<String> prerequisites, String difficultyLevel, List<String> relatedCourses) {
-        this.title = title;
-        this.provider = provider;
-        this.moduleTitle = moduleTitle;
-        this.moduleProgress = moduleProgress;
-        this.description = description;
-        this.online = online;
-        this.level = level;
-        this.duration = duration;
-        this.skills = skills;
-        this.weeks = weeks;
-        this.prerequisites = prerequisites;
-        this.difficultyLevel = difficultyLevel;
-        this.relatedCourses = relatedCourses;
+    private String createdAt;
+    private String updatedAt;
+
+    // Empty constructor required for Firestore
+    public Course() {
     }
-    public List<String> getPrerequisites() { return prerequisites; }
-    public String getDifficultyLevel() { return difficultyLevel; }
-    public List<String> getRelatedCourses() { return relatedCourses; }
-    public void setPrerequisites(List<String> prerequisites) { this.prerequisites = prerequisites; }
-    public void setDifficultyLevel(String difficultyLevel) { this.difficultyLevel = difficultyLevel; }
-    public void setRelatedCourses(List<String> relatedCourses) { this.relatedCourses = relatedCourses; }
-    public void setTitle(String title) { this.title = title; }
-    public void setProvider(String provider) { this.provider = provider; }
-    public void setModuleTitle(String moduleTitle) { this.moduleTitle = moduleTitle; }
-    public void setModuleProgress(String moduleProgress) { this.moduleProgress = moduleProgress; }
-    public void setDescription(String description) { this.description = description; }
-    public void setOnline(boolean online) { this.online = online; }
-    public void setLevel(String level) { this.level = level; }
-    public void setDuration(String duration) { this.duration = duration; }
-    public void setSkills(List<String> skills) { this.skills = skills; }
-    public void setWeeks(List<Week> weeks) { this.weeks = weeks; }
 
-    public String getTitle() { return title; }
-    public String getProvider() { return provider; }
-    public String getModuleTitle() { return moduleTitle; }
-    public String getModuleProgress() { return moduleProgress; }
-    public String getDescription() { return description; }
-    public boolean isOnline() { return online; }
-    public String getLevel() { return level; }
-    public String getDuration() { return duration; }
-    public List<String> getSkills() { return skills; }
-    public List<Week> getWeeks() { return weeks; }
+    // Getters and Setters
+    public String getCourseId() {
+        return courseId;
+    }
 
-    public Module[] getModules() {
-         return null;
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
+    }
+
+    public int getDurationInHours() {
+        return durationInHours;
+    }
+
+    public void setDurationInHours(int durationInHours) {
+        this.durationInHours = durationInHours;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public boolean isPopular() {
+        return isPopular;
+    }
+
+    public void setPopular(boolean popular) {
+        isPopular = popular;
+    }
+
+    public boolean isNew() {
+        return isNew;
+    }
+
+    public void setNew(boolean aNew) {
+        isNew = aNew;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public int getReviewsCount() {
+        return reviewsCount;
+    }
+
+    public void setReviewsCount(int reviewsCount) {
+        this.reviewsCount = reviewsCount;
+    }
+
+    public List<String> getWhatYouWillLearn() {
+        return whatYouWillLearn;
+    }
+
+    public void setWhatYouWillLearn(List<String> whatYouWillLearn) {
+        this.whatYouWillLearn = whatYouWillLearn;
+    }
+
+    public List<Map<String, Object>> getInstructors() {
+        return instructors;
+    }
+
+    public void setInstructors(List<Map<String, Object>> instructors) {
+        this.instructors = instructors;
+    }
+
+    public List<Week> getWeeks() {
+        return weeks;
+    }
+
+    public void setWeeks(List<Week> weeks) {
+        this.weeks = weeks;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

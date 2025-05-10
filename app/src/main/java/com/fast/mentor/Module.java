@@ -4,44 +4,70 @@ import java.util.List;
 
 public class Module {
     private String moduleId;
+    private String weekId;
     private String title;
+    private String description;
+    private int order;
     private List<ModuleItem> items;
 
-    Module(String moduleId, String title, List<ModuleItem> items) {
-        this.moduleId = moduleId;
-        this.title = title;
-        this.items = items;
-
+    // Empty constructor required for Firestore
+    public Module() {
     }
+
+    public Module(String moduleId, String weekId, String title, String description, int order) {
+        this.moduleId = moduleId;
+        this.weekId = weekId;
+        this.title = title;
+        this.description = description;
+        this.order = order;
+    }
+
+    // Getters and Setters
     public String getModuleId() {
         return moduleId;
     }
-    public String getTitle() {
-        return title;
-    }
-    public List<ModuleItem> getItems() {
-        return items;
-    }
-    public void setItems(List<ModuleItem> items) {
-        this.items = items;
-    }
-    public void setTitle(String title) {
-        this.title = title;
-    }
+
     public void setModuleId(String moduleId) {
         this.moduleId = moduleId;
     }
 
-    public String getId() {
-        return moduleId;
+    public String getWeekId() {
+        return weekId;
     }
 
-    public long getExpectedDuration() {
-        long totalDuration = 0;
-        for (ModuleItem item : items) {
-            totalDuration += item.getDuration();
-        }
-        return totalDuration;
+    public void setWeekId(String weekId) {
+        this.weekId = weekId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    public List<ModuleItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<ModuleItem> items) {
+        this.items = items;
     }
 }
-

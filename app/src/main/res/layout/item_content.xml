@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/badge_popular_background"
+    android:padding="12dp">
+
+    <ImageView
+        android:id="@+id/ivContentIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="@string/content_type"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@android:drawable/ic_media_play" />
+
+    <TextView
+        android:id="@+id/tvContentTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/ivCompletionStatus"
+        app:layout_constraintStart_toEndOf="@+id/ivContentIcon"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Introduction to Android Architecture Components" />
+
+    <TextView
+        android:id="@+id/tvContentInfo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="#AAAAAA"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/ivCompletionStatus"
+        app:layout_constraintStart_toStartOf="@+id/tvContentTitle"
+        app:layout_constraintTop_toBottomOf="@+id/tvContentTitle"
+        tools:text="Video • 10 min" />
+
+    <ImageView
+        android:id="@+id/ivCompletionStatus"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:contentDescription="@string/completion_status"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_completed"
+        android:backgroundTint="@color/primaryColor"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

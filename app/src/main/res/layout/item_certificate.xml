@@ -1,34 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_marginBottom="12dp"
-    android:padding="8dp"
-    android:background="@drawable/rounded_button"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    app:cardBackgroundColor="@color/colorSecondary"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp">
 
-    <ImageView
-        android:id="@+id/certImage"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/certificate" />
-
-    <TextView
-        android:id="@+id/courseName"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:text="@string/course1Title"
-        android:layout_marginTop="8dp" />
+        android:padding="16dp">
 
-    <TextView
-        android:id="@+id/provider"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="14sp"
-        android:text ="@string/courseProvider1"/>
-</LinearLayout>
+        <!-- Certificate icon -->
+        <ImageView
+            android:id="@+id/certificate_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/certificate"
+            android:src="@drawable/ic_certificate"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/red" />
+
+        <!-- Course name -->
+        <TextView
+            android:id="@+id/course_name_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/certificate_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Advanced Android Development" />
+
+        <!-- Issue date -->
+        <TextView
+            android:id="@+id/issue_date_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="#BBBBBB"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@id/course_name_text"
+            app:layout_constraintStart_toStartOf="@id/course_name_text"
+            app:layout_constraintTop_toBottomOf="@id/course_name_text"
+            tools:text="Issued on: May 5, 2025" />
+
+        <!-- Divider -->
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="#333333"
+            app:layout_constraintTop_toBottomOf="@id/issue_date_text" />
+
+        <!-- Course stats -->
+        <LinearLayout
+            android:id="@+id/stats_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/divider">
+
+            <!-- Duration -->
+            <TextView
+                android:id="@+id/duration_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:textColor="@color/colorSecondaryVariant"
+                android:textSize="14sp"
+                app:drawableStartCompat="@drawable/ic_time"
+                app:drawableTint="@color/colorSecondaryVariant"
+                tools:text="12 hours" />
+
+            <!-- Lessons count -->
+            <TextView
+                android:id="@+id/lessons_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:textColor="@color/colorSecondaryVariant"
+                android:textSize="14sp"
+                app:drawableStartCompat="@drawable/ic_lesson"
+                app:drawableTint="@color/colorSecondaryVariant"
+                tools:text="32 lessons" />
+
+        </LinearLayout>
+
+        <!-- Buttons container -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/stats_container">
+
+            <!-- View button -->
+            <ImageButton
+                android:id="@+id/view_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/view"
+                android:padding="8dp"
+                android:src="@drawable/ic_visibility"
+                app:tint="#FFFFFF" />
+
+            <!-- Share button -->
+            <ImageButton
+                android:id="@+id/share_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/share"
+                android:padding="8dp"
+                android:src="@drawable/ic_share"
+                app:tint="#FFFFFF" />
+
+            <!-- Download button -->
+            <ImageButton
+                android:id="@+id/download_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/download"
+                android:padding="8dp"
+                android:src="@drawable/ic_download"
+                app:tint="#FFFFFF" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

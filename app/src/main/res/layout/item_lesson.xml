@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/badge_popular_background"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:layout_marginBottom="12dp">
+
+    <!-- Lesson Type Icon (video, doc, quiz, etc.) -->
+    <ImageView
+        android:id="@+id/lessonTypeIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center_vertical"
+        android:contentDescription="@string/lesson_type_icon_description"
+        tools:src="@drawable/ic_video" />
+
+    <!-- Lesson Details -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="16dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/lessonTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorOnSurface"
+            android:textSize="14sp"
+            tools:text="Introduction to Android Studio" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:contentDescription="@string/duration"
+                android:src="@drawable/ic_time"
+                app:tint="@color/colorOnSurfaceVariant" />
+
+            <TextView
+                android:id="@+id/lessonDurationTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:textColor="@color/colorOnSurfaceVariant"
+                android:textSize="12sp"
+                tools:text="15 min" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Lesson completion status -->
+    <ImageView
+        android:id="@+id/lessonStatusIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center_vertical"
+        android:contentDescription="@string/lesson_status_icon_description"
+        android:visibility="gone"
+        tools:src="@drawable/ic_check_circle"
+        tools:visibility="visible" />
+</LinearLayout>

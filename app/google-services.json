@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "788396108842",
-    "project_id": "mentoraapp-2774d",
-    "storage_bucket": "mentoraapp-2774d.firebasestorage.app"
+    "project_number": "754325050824",
+    "project_id": "mentora-c5033",
+    "storage_bucket": "mentora-c5033.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:788396108842:android:2ec76d9731834a74aea753",
+        "mobilesdk_app_id": "1:754325050824:android:2a417ba355fe1bcb715cfd",
         "android_client_info": {
           "package_name": "com.fast.mentor"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBQS12qZJ4H5eezMaYWx8V93cLOBwq0MKY"
+          "current_key": "AIzaSyDJty1Do7PnQG4VzVkDO51YG15XpeQ_Fi8"
         }
       ],
       "services": {

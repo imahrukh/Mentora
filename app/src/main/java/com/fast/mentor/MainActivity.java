@@ -1,34 +1,55 @@
 package com.fast.mentor;
 
 import android.os.Bundle;
+import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import android.content.Intent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import androidx.fragment.app.Fragment;
 
+import com.fast.mentor.search.SearchFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    Button loginButton;
-    TextView signupText;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        loginButton = findViewById(R.id.loginButton);
-        signupText = findViewById(R.id.signupText);
+        // Initialize bottom navigation
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-        loginButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
-        });
+        // Set default selection
+        if (savedInstanceState == null) {
+            bottomNavigationView.setSelectedItemId(R.id.navigation_explore);
+        }
+    }
 
-        signupText.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
-            startActivity(intent);
-        });
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Fragment selectedFragment = null;
+
+        int itemId = item.getItemId();
+        if (itemId == R.id.navigation_explore) {
+            selectedFragment = new ExplorerFragment();
+        } else if (itemId == R.id.navigation_learn) {
+            selectedFragment = new LearnFragment();
+        } else if (itemId == R.id.navigation_search) {
+            selectedFragment = new SearchFragment();
+        } else if (itemId == R.id.navigation_profile) {
+            selectedFragment = new ProfileFragment();
+        }
+
+        if (selectedFragment != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, selectedFragment)
+                    .commit();
+            return true;
+        }
+        return false;
     }
 }

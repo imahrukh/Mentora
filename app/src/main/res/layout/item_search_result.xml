@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="8dp"
+    app:cardBackgroundColor="@color/colorSurface"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp"
+    app:contentPadding="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/image_search_result"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/placeholder_course" />
+
+        <TextView
+            android:id="@+id/text_search_type_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/badge_popular_background"
+            android:paddingStart="8dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="2dp"
+            android:textColor="@android:color/red"
+            android:textSize="10sp"
+            app:layout_constraintStart_toEndOf="@+id/image_search_result"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Course" />
+
+        <TextView
+            android:id="@+id/text_search_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_search_result"
+            app:layout_constraintTop_toBottomOf="@+id/text_search_type_badge"
+            tools:text="Flutter Development Bootcamp" />
+
+        <TextView
+            android:id="@+id/text_search_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="#AAAAAA"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_search_result"
+            app:layout_constraintTop_toBottomOf="@+id/text_search_title"
+            tools:text="Learn how to build beautiful, native apps with Flutter and Dart" />
+
+        <TextView
+            android:id="@+id/text_search_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/colorSecondaryVariant"
+            android:textSize="11sp"
+            app:layout_constraintStart_toEndOf="@+id/image_search_result"
+            app:layout_constraintTop_toBottomOf="@+id/text_search_description"
+            tools:text="Dr. Angela Yu" />
+
+        <TextView
+            android:id="@+id/text_search_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/badge_background_light"
+            android:paddingStart="6dp"
+            android:paddingTop="1dp"
+            android:paddingEnd="6dp"
+            android:paddingBottom="1dp"
+            android:textColor="@color/colorSecondaryVariant"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/text_search_author"
+            app:layout_constraintStart_toEndOf="@+id/text_search_author"
+            app:layout_constraintTop_toTopOf="@+id/text_search_author"
+            tools:text="Development" />
+
+        <TextView
+            android:id="@+id/text_search_metadata"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
+            android:drawablePadding="4dp"
+            android:textColor="@color/colorInfo"
+            android:textSize="11sp"
+            app:drawableStartCompat="@drawable/ic_time"
+            app:drawableTint="@color/colorInfo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_search_result"
+            app:layout_constraintTop_toBottomOf="@+id/text_search_author"
+            tools:text="24 lessons • 10 hours" />
+
+        <TextView
+            android:id="@+id/text_search_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorInfo"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:drawableStartCompat="@drawable/ic_star"
+            app:drawableTint="@color/colorInfo"
+            app:layout_constraintBottom_toBottomOf="@+id/text_search_metadata"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/text_search_metadata"
+            tools:text="4.8" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

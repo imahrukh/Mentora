@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("com.google.gms.google-services")
-
 }
 
 android {
@@ -12,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.fast.mentor"
-        minSdk = 24
+        minSdk = 25
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -38,9 +37,8 @@ android {
     }
     buildFeatures {
         compose = true
-        buildConfig =true
-        viewBinding =true
     }
+
 }
 
 dependencies {
@@ -53,32 +51,41 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
-    implementation(libs.navigation.fragment.ktx)
+    implementation(libs.firebase.storage)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
+
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(platform(libs.firebase.bom) )
-    implementation (libs.firebase.auth)
-    implementation (libs.firebase.firestore)
-    implementation(libs.recyclerview)
-    annotationProcessor(libs.glide)
-    implementation(libs.android.flexbox)
+    implementation(libs.appcompat)
+    implementation(libs.material)
+    implementation(libs.constraintlayout)
     implementation(libs.navigation.fragment)
-    implementation (libs.navigation.ui)
+    implementation(libs.navigation.ui)
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+
+    // PDF Viewer
+    implementation("com.github.barteksc:AndroidPdfViewer:master-SNAPSHOT")
+
+
+    // YouTube Player
     implementation(libs.youtube.player)
-    implementation(libs.pdf.viewer)
-    implementation(libs.pdf.viewer2)
-    implementation(libs.eventbus)
-    implementation(libs.firebase.ui.firestore)
-    implementation(libs.shimmer)
+
+    // Image loading
+    implementation(libs.glide)
+    annotationProcessor(libs.glide.compiler)
+
+    // CircleImageView
+    implementation(libs.circleimageview)
+
+    // Tests
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.espresso)
+
 }

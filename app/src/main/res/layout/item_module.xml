@@ -1,33 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:strokeWidth="1dp"
-    android:layout_marginBottom="8dp">
+    android:layout_marginBottom="8dp"
+    app:cardBackgroundColor="@color/colorSurface"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
 
-        <!-- Module Title -->
-        <TextView
-            android:id="@+id/tvModuleTitle"
+        <!-- Module Header -->
+        <LinearLayout
+            android:id="@+id/moduleHeaderLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:text="@string/module_title"
-            android:gravity="center"/>
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="horizontal"
+            android:padding="16dp">
 
-        <!-- Module Items RecyclerView -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvModuleItems"
+            <!-- Module Number and Title -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/moduleNumberTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="Module 1" />
+
+                <TextView
+                    android:id="@+id/moduleTitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@color/colorOnSurface"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:text="Introduction to Android Development" />
+
+                <!-- Progress text (only for enrolled courses) -->
+                <TextView
+                    android:id="@+id/moduleProgressTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@color/colorOnSurfaceVariant"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    tools:text="60% Complete"
+                    tools:visibility="visible" />
+            </LinearLayout>
+
+            <!-- Expand/Collapse Icon -->
+            <ImageView
+                android:id="@+id/expandCollapseIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@string/expand_module"
+                android:src="@drawable/ic_expand" />
+
+        </LinearLayout>
+
+        <!-- Module Content - Lessons RecyclerView -->
+        <LinearLayout
+            android:id="@+id/moduleContentLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"/>
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorSurfaceVariant" />
+
+            <!-- Lessons List -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/lessonsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_lesson" />
+        </LinearLayout>
     </LinearLayout>
-</com.google.android.material.card.MaterialCardView>
+</androidx.cardview.widget.CardView>

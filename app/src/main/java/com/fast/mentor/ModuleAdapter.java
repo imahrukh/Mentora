@@ -3,61 +3,98 @@ package com.fast.mentor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fast.mentor.R;
+
 import java.util.List;
-import java.util.Map;
 
-public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ViewHolder> {
-    private List<Module> modules;
-    private Map<String, ModuleProgress> progressMap;
+/**
+ * Adapter for displaying modules and their content items
+ */
+public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleViewHolder> {
 
-    public ModuleAdapter(List<Module> modules, Map<String, ModuleProgress> progressMap) {
+    private final List<Module> modules;
+    private final WeekAdapter.OnContentItemClickListener listener;
+
+    public ModuleAdapter(List<Module> modules, WeekAdapter.OnContentItemClickListener listener) {
         this.modules = modules;
-        this.progressMap = progressMap;
-    }
-
-    public void updateModules(List<Module> selectedWeekModules) {
-        modules = selectedWeekModules;
-        notifyDataSetChanged();
-
-    }
-
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvModuleTitle;
-        RecyclerView rvModuleItems;
-
-        ViewHolder(View view) {
-            super(view);
-            tvModuleTitle = view.findViewById(R.id.tvModuleTitle);
-            rvModuleItems = view.findViewById(R.id.rvModuleItems);
-        }
+        this.listener = listener;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ModuleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_module, parent, false);
-        return new ViewHolder(view);
+        return new ModuleViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ModuleViewHolder holder, int position) {
         Module module = modules.get(position);
-        holder.tvModuleTitle.setText(module.getTitle());
-
-        // Initialize nested RecyclerView
-        ModuleItemAdapter itemAdapter = new ModuleItemAdapter(module.getItems(), progressMap);
-        holder.rvModuleItems.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
-        holder.rvModuleItems.setAdapter(itemAdapter);
+        holder.bind(module, listener);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return modules.size();
+    }
+
+    static class ModuleViewHolder extends RecyclerView.ViewHolder {
+        private final TextView tvModuleTitle;
+        private final TextView tvModuleProgress;
+        private final ProgressBar progressBar;
+        private final ImageView ivExpand;
+        private final RecyclerView rvContentItems;
+        private final View contentItemsContainer;
+
+        public ModuleViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvModuleTitle = itemView.findViewById(R.id.tvModuleTitle);
+            tvModuleProgress = itemView.findViewById(R.id.tvModuleProgress);
+            progressBar = itemView.findViewById(R.id.progressBar);
+            ivExpand = itemView.findViewById(R.id.ivExpand);
+            rvContentItems = itemView.findViewById(R.id.rvContentItems);
+            contentItemsContainer = itemView.findViewById(R.id.contentItemsContainer);
+        }
+
+        public void bind(final Module module, final WeekAdapter.OnContentItemClickListener listener) {
+            // Set module details
+            tvModuleTitle.setText(module.getTitle());
+            tvModuleProgress.setText(module.getFormattedProgress());
+            progressBar.setProgress(Math.round(module.getProgressPercentage()));
+
+            // Setup expand/collapse functionality
+            updateExpandState(module);
+            
+            itemView.setOnClickListener(v -> {
+                module.toggleExpanded();
+                updateExpandState(module);
+            });
+
+            // Setup content items recyclerview
+            if (module.getItems() != null && !module.getItems().isEmpty()) {
+                ContentItemAdapter contentItemAdapter = new ContentItemAdapter(module.getItems(), listener);
+                rvContentItems.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
+                rvContentItems.setAdapter(contentItemAdapter);
+            }
+        }
+
+        private void updateExpandState(Module module) {
+            // Update UI based on expanded state
+            if (module.isExpanded()) {
+                ivExpand.setImageResource(R.drawable.ic_collapse);
+                contentItemsContainer.setVisibility(View.VISIBLE);
+            } else {
+                ivExpand.setImageResource(R.drawable.ic_expand);
+                contentItemsContainer.setVisibility(View.GONE);
+            }
+        }
     }
 }
