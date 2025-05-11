@@ -24,7 +24,7 @@
             android:layout_height="match_parent">
 
             <!-- ExoPlayer will be added programmatically -->
-            <com.google.android.exoplayer2.ui.PlayerView
+            <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
                 android:id="@+id/playerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

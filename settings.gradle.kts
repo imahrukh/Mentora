@@ -9,6 +9,9 @@ pluginManagement {
         }
         mavenCentral()
         gradlePluginPortal()
+        maven(url = "https://jitpack.io")
+        maven (url ="https://maven.google.com" )
+        jcenter()
     }
 }
 dependencyResolutionManagement {
@@ -16,11 +19,11 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url = uri("https://jitpack.io") }
+        maven(url = "https://jitpack.io")
+        maven (url ="https://maven.google.com" )
+        jcenter()
     }
+    rootProject.name = "Mentora"
+    include(":app")
 
 }
-
-rootProject.name = "MentoraApp"
-include(":app")
- 

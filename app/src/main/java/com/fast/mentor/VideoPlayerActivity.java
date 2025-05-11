@@ -14,9 +14,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fast.mentor.R;
-import com.fast.mentor.database.DatabaseHelper;
-import com.fast.mentor.model.Content;
-import com.fast.mentor.tracking.ContentTracker;
+import com.fast.mentor.DatabaseHelper;
+import com.fast.mentor.Content;
+import com.fast.mentor.ContentTracker;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
