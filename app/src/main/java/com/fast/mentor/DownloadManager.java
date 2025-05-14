@@ -12,7 +12,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.FileProvider;
 
 import com.fast.mentor.R;
-import com.fast.mentor.model.Resource;
+import com.fast.mentor.Resource;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;

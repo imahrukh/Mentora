@@ -1,5 +1,6 @@
 package com.fast.mentor;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,27 +12,33 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fast.mentor.R;
-
 import java.util.List;
 
 /**
  * Adapter for displaying modules and their content items
  */
 public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleViewHolder> {
-
+    private boolean isEnrolled;
     private final List<Module> modules;
+    private final Context context;
     private final WeekAdapter.OnContentItemClickListener listener;
 
-    public ModuleAdapter(List<Module> modules, WeekAdapter.OnContentItemClickListener listener) {
+    public ModuleAdapter(Context context, List<Module> modules, boolean isEnrolled, WeekAdapter.OnContentItemClickListener listener) {
+        this.context = context;
         this.modules = modules;
+        this.isEnrolled = isEnrolled;
         this.listener = listener;
+    }
+
+    public void setEnrolled(boolean enrolled) {
+        this.isEnrolled = enrolled;
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public ModuleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_module, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_module, parent, false);
         return new ModuleViewHolder(view);
     }
 
@@ -46,6 +53,12 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
         return modules.size();
     }
 
+    public void updateModules(List<Module> updatedModules) {
+        modules.clear();
+        modules.addAll(updatedModules);
+        notifyDataSetChanged();
+    }
+
     static class ModuleViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvModuleTitle;
         private final TextView tvModuleProgress;
@@ -56,29 +69,27 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
 
         public ModuleViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvModuleTitle = itemView.findViewById(R.id.tvModuleTitle);
-            tvModuleProgress = itemView.findViewById(R.id.tvModuleProgress);
+            tvModuleTitle = itemView.findViewById(R.id.moduleTitleTextView);
+            tvModuleProgress = itemView.findViewById(R.id.moduleProgressTextView);
             progressBar = itemView.findViewById(R.id.progressBar);
-            ivExpand = itemView.findViewById(R.id.ivExpand);
-            rvContentItems = itemView.findViewById(R.id.rvContentItems);
-            contentItemsContainer = itemView.findViewById(R.id.contentItemsContainer);
+            ivExpand = itemView.findViewById(R.id.expandCollapseIcon);
+            rvContentItems = itemView.findViewById(R.id.lessonsRecyclerView);
+            contentItemsContainer = itemView.findViewById(R.id.moduleContentLayout);
         }
 
         public void bind(final Module module, final WeekAdapter.OnContentItemClickListener listener) {
-            // Set module details
             tvModuleTitle.setText(module.getTitle());
             tvModuleProgress.setText(module.getFormattedProgress());
+            tvModuleProgress.setVisibility(View.VISIBLE);
             progressBar.setProgress(Math.round(module.getProgressPercentage()));
 
-            // Setup expand/collapse functionality
             updateExpandState(module);
-            
+
             itemView.setOnClickListener(v -> {
                 module.toggleExpanded();
                 updateExpandState(module);
             });
 
-            // Setup content items recyclerview
             if (module.getItems() != null && !module.getItems().isEmpty()) {
                 ContentItemAdapter contentItemAdapter = new ContentItemAdapter(module.getItems(), listener);
                 rvContentItems.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
@@ -87,7 +98,6 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
         }
 
         private void updateExpandState(Module module) {
-            // Update UI based on expanded state
             if (module.isExpanded()) {
                 ivExpand.setImageResource(R.drawable.ic_collapse);
                 contentItemsContainer.setVisibility(View.VISIBLE);

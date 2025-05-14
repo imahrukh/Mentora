@@ -16,6 +16,17 @@ public class Enrollment {
     // Empty constructor required for Firestore
     public Enrollment() {
     }
+    private int progress; // 0-100
+    private boolean completed;
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
+    }
+
 
     public Enrollment(String enrollmentId, String userId, String courseId) {
         this.enrollmentId = enrollmentId;
@@ -110,5 +121,18 @@ public class Enrollment {
 
     public void updateLastAccessed() {
         this.lastAccessedAt = String.valueOf(System.currentTimeMillis());
+    }
+
+    public void setId(String id) {
+        this.enrollmentId = id;
+
+    }
+    public String getId() {
+        return enrollmentId;
+    }
+
+    public void markAsCompleted() {
+        this.isCompleted = true;
+
     }
 }

@@ -3,11 +3,6 @@ package com.fast.mentor;
 import android.content.Context;
 import android.util.Log;
 
-import com.fast.mentor.database.DatabaseHelper;
-import com.fast.mentor.model.Course;
-import com.fast.mentor.model.UserMetrics;
-import com.fast.mentor.model.Recommendation;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,143 +12,125 @@ import java.util.List;
  */
 public class RecommendationEngine {
     private static final String TAG = "RecommendationEngine";
-    
+
     private static RecommendationEngine instance;
     private final DatabaseHelper dbHelper;
-    
+
     private RecommendationEngine(Context context) {
-        this.dbHelper = DatabaseHelper.getInstance(context);
+        this.dbHelper = DatabaseHelper.getInstance(context.getApplicationContext());
     }
-    
+
     public static synchronized RecommendationEngine getInstance(Context context) {
         if (instance == null) {
-            instance = new RecommendationEngine(context.getApplicationContext());
+            instance = new RecommendationEngine(context);
         }
         return instance;
     }
-    
+
     /**
      * Generate recommendations for a user based on their metrics
-     * @param userId the user ID
+     * @param userId the user ID (String)
      * @return list of recommended courses
      */
-    public List<Recommendation> generateRecommendations(int userId) {
+    public List<Recommendation> generateRecommendations(String userId) {
         Log.d(TAG, "Generating recommendations for user: " + userId);
-        
-        UserMetrics metrics = dbHelper.getUserMetrics(userId);
+
+        // 1) fetch metrics
+        UserMetrics metrics = dbHelper.getUserMetrics(Integer.parseInt(userId));
+
+        // 2) all courses & those not yet enrolled
         List<Course> allCourses = dbHelper.getAllCourses();
-        List<Integer> enrolledCourseIds = dbHelper.getEnrolledCourseIds(userId);
-        List<Recommendation> recommendations = new ArrayList<>();
-        
-        // Filter out courses the user is already enrolled in
-        List<Course> availableCourses = new ArrayList<>();
-        for (Course course : allCourses) {
-            if (!enrolledCourseIds.contains(course.getId())) {
-                availableCourses.add(course);
+        List<String> enrolledCourseIds = dbHelper.getEnrolledCourseIds(userId);
+
+        List<Recommendation> recs = new ArrayList<>();
+        List<Course> available = new ArrayList<>();
+        for (Course c : allCourses) {
+            if (!enrolledCourseIds.contains(c.getCourseId())) {
+                available.add(c);
             }
         }
-        
+
         if (metrics == null) {
-            // No metrics available, recommend popular courses
-            Log.d(TAG, "No user metrics available, recommending popular courses");
-            for (Course course : availableCourses) {
-                if (course.isPopular()) {
-                    Recommendation rec = new Recommendation();
-                    rec.setUserId(userId);
-                    rec.setCourseId(course.getId());
-                    rec.setReason("popular");
-                    rec.setStrength(3); // medium strength
-                    rec.setTimestamp(System.currentTimeMillis());
-                    recommendations.add(rec);
+            // no metrics → recommend popular
+            Log.d(TAG, "No user metrics, recommending popular courses");
+            for (Course c : available) {
+                if (c.isPopular()) {
+                    Recommendation r = new Recommendation();
+                    r.setUserId(Integer.parseInt(userId));
+                    r.setCourseId(Integer.parseInt(c.getCourseId()));
+                    r.setReason("popular");
+                    r.setStrength(3);
+                    r.setTimestamp(System.currentTimeMillis());
+                    recs.add(r);
                 }
             }
         } else {
-            // Generate personalized recommendations based on metrics
-            Log.d(TAG, "Generating personalized recommendations based on user metrics");
-            
-            // Recommend based on preferred difficulty
-            int preferredDifficulty = metrics.getPreferredDifficulty();
-            Log.d(TAG, "User preferred difficulty: " + preferredDifficulty);
-            
-            // Recommend based on learning pace
-            String learningPace = metrics.getLearningPace();
-            Log.d(TAG, "User learning pace: " + learningPace);
-            
-            for (Course course : availableCourses) {
-                int matchScore = 0;
+            // personalized
+            Log.d(TAG, "Personalized recommendations based on metrics");
+            int prefDiff = metrics.getPreferredDifficulty();
+            String pace = metrics.getLearningPace();
+
+            for (Course c : available) {
+                int match = 0;
                 String reason = "";
-                
-                // Check difficulty match
-                if (course.getDifficulty() == preferredDifficulty) {
-                    matchScore += 2;
+
+                // assume Course.getDifficulty() returns an int difficulty
+                int courseDiff = Integer.parseInt(c.getDifficulty());
+
+                if (courseDiff == prefDiff) {
+                    match += 2;
                     reason = "difficulty_match";
-                } else if (Math.abs(course.getDifficulty() - preferredDifficulty) == 1) {
-                    // Close difficulty match
-                    matchScore += 1;
+                } else if (Math.abs(courseDiff - prefDiff) == 1) {
+                    match += 1;
                 }
-                
-                // Check if course matches learning pace
-                if ("fast".equals(learningPace) && course.getDifficulty() > preferredDifficulty) {
-                    // Fast learners get recommended slightly more challenging courses
-                    matchScore += 1;
-                    reason = "pace_match_advanced";
-                } else if ("slow".equals(learningPace) && course.getDifficulty() < preferredDifficulty) {
-                    // Slower learners get recommended slightly easier courses
-                    matchScore += 1;
-                    reason = "pace_match_easier";
+
+                if ("fast".equals(pace) && courseDiff > prefDiff) {
+                    match += 1;
+                    reason = "pace_advanced";
+                } else if ("slow".equals(pace) && courseDiff < prefDiff) {
+                    match += 1;
+                    reason = "pace_easier";
                 }
-                
-                // Add recommendation if there's a reasonable match
-                if (matchScore > 0) {
-                    Recommendation rec = new Recommendation();
-                    rec.setUserId(userId);
-                    rec.setCourseId(course.getId());
-                    rec.setReason(reason);
-                    rec.setStrength(matchScore);
-                    rec.setTimestamp(System.currentTimeMillis());
-                    recommendations.add(rec);
-                    
-                    Log.d(TAG, "Added recommendation: " + course.getTitle() + 
-                            " with match score: " + matchScore);
+
+                if (match > 0) {
+                    Recommendation r = new Recommendation();
+                    r.setUserId(Integer.parseInt(userId));
+                    r.setCourseId(Integer.parseInt(c.getCourseId()));
+                    r.setReason(reason);
+                    r.setStrength(match);
+                    r.setTimestamp(System.currentTimeMillis());
+                    recs.add(r);
+                    Log.d(TAG, "Rec: " + c.getTitle() + " score=" + match);
                 }
             }
         }
-        
-        // Sort recommendations by strength (highest first)
-        Collections.sort(recommendations, (r1, r2) -> 
-                Integer.compare(r2.getStrength(), r1.getStrength()));
-        
-        // Save recommendations to database
-        for (Recommendation rec : recommendations) {
-            dbHelper.saveRecommendation(rec);
+
+        // sort & persist
+        Collections.sort(recs, (a,b) -> Integer.compare(b.getStrength(), a.getStrength()));
+        for (Recommendation r : recs) {
+            dbHelper.saveRecommendation(r);
         }
-        
-        return recommendations;
+        return recs;
     }
-    
+
     /**
-     * Get stored recommendations for a user
-     * @param userId the user ID
-     * @return list of course recommendations
+     * Retrieve stored recommendations for a user
      */
-    public List<Recommendation> getUserRecommendations(int userId) {
+    public List<Recommendation> getUserRecommendations(String userId) {
         return dbHelper.getUserRecommendations(userId);
     }
-    
+
     /**
-     * Track when a user views or clicks on a recommendation
-     * @param recommendationId the recommendation ID
-     * @param action "view" or "click"
+     * Track view/click actions
      */
     public void trackRecommendationAction(int recommendationId, String action) {
-        Recommendation rec = dbHelper.getRecommendation(recommendationId);
-        if (rec != null) {
-            if ("view".equals(action)) {
-                rec.setViewed(true);
-            } else if ("click".equals(action)) {
-                rec.setClicked(true);
-            }
-            dbHelper.updateRecommendation(rec);
+        Recommendation r = dbHelper.getRecommendation(recommendationId);
+        if (r == null) return;
+        if ("view".equals(action)) {
+            r.setViewed(true);
+        } else if ("click".equals(action)) {
+            r.setClicked(true);
         }
+        dbHelper.updateRecommendation(r);
     }
 }

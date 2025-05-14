@@ -38,10 +38,10 @@ import java.util.Map;
 public class AssignmentSubmissionActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_PICK_FILE = 101;
-    
+
     private ContentItem contentItem;
     private String courseId;
-    
+
     private Toolbar toolbar;
     private TextView tvTitle;
     private TextView tvDescription;
@@ -52,33 +52,33 @@ public class AssignmentSubmissionActivity extends AppCompatActivity {
     private Button btnSubmit;
     private ProgressBar progressBar;
     private TextView tvCompletionStatus;
-    
+
     private FirebaseFirestore firestore;
     private FirebaseUser currentUser;
     private FirebaseStorage storage;
-    
+
     private Uri selectedFileUri;
     private boolean isAssignmentSubmitted = false;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assignment_submission);
-        
+
         // Get data from intent
         contentItem = (ContentItem) getIntent().getSerializableExtra("contentItem");
         courseId = getIntent().getStringExtra("courseId");
-        
+
         if (contentItem == null) {
             finish();
             return;
         }
-        
+
         // Initialize Firebase
         firestore = FirebaseFirestore.getInstance();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         storage = FirebaseStorage.getInstance();
-        
+
         // Initialize views
         toolbar = findViewById(R.id.toolbar);
         tvTitle = findViewById(R.id.tvTitle);
@@ -90,12 +90,12 @@ public class AssignmentSubmissionActivity extends AppCompatActivity {
         btnSubmit = findViewById(R.id.btnSubmit);
         progressBar = findViewById(R.id.progressBar);
         tvCompletionStatus = findViewById(R.id.tvCompletionStatus);
-        
+
         // Setup toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
-        
+
         // Set assignment details
         tvTitle.setText(contentItem.getTitle());
         if (contentItem.getDescription() != null && !contentItem.getDescription().isEmpty()) {
@@ -104,10 +104,10 @@ public class AssignmentSubmissionActivity extends AppCompatActivity {
         } else {
             tvDescription.setVisibility(View.GONE);
         }
-        
+
         // Setup file attachment button
         btnAttachFile.setOnClickListener(v -> openFilePicker());
-        
+
         // Setup submit button
         btnSubmit.setOnClickListener(v -> {
             if (isAssignmentSubmitted) {
@@ -116,10 +116,10 @@ public class AssignmentSubmissionActivity extends AppCompatActivity {
                 submitAssignment();
             }
         });
-        
+
         // Load assignment details
         loadAssignmentDetails();
-        
+
         // Check if assignment is already submitted
         checkSubmissionStatus();
     }
@@ -148,12 +148,12 @@ public class AssignmentSubmissionActivity extends AppCompatActivity {
                     tvInstructions.setVisibility(View.GONE);
                 });
     }
-    
+
     private void checkSubmissionStatus() {
         if (currentUser == null) {
             return;
         }
-        
+
         firestore.collection("submissions")
                 .whereEqualTo("userId", currentUser.getUid())
                 .whereEqualTo("assignmentId", contentItem.getId())
@@ -162,34 +162,34 @@ public class AssignmentSubmissionActivity extends AppCompatActivity {
                     if (!queryDocumentSnapshots.isEmpty()) {
                         // Assignment already submitted
                         DocumentSnapshot submission = queryDocumentSnapshots.getDocuments().get(0);
-                        
+
                         // Check if approved
                         Boolean isApproved = submission.getBoolean("isApproved");
                         if (isApproved != null && isApproved) {
                             // Assignment is approved
                             contentItem.setCompleted(true);
                             tvCompletionStatus.setText(R.string.assignment_approved);
-                            tvCompletionStatus.setTextColor(getResources().getColor(R.color.success, null));
+                            tvCompletionStatus.setTextColor(getResources().getColor(R.color.colorSuccess, null));
                         } else {
                             // Assignment is submitted but pending approval
                             tvCompletionStatus.setText(R.string.assignment_submitted);
-                            tvCompletionStatus.setTextColor(getResources().getColor(R.color.warning, null));
+                            tvCompletionStatus.setTextColor(getResources().getColor(R.color.colorWarning, null));
                         }
-                        
+
                         tvCompletionStatus.setVisibility(View.VISIBLE);
                         isAssignmentSubmitted = true;
-                        
+
                         // Disable input fields
                         etAnswer.setEnabled(false);
                         btnAttachFile.setEnabled(false);
                         btnSubmit.setText(R.string.close);
-                        
+
                         // Show submitted answer
                         String answer = submission.getString("answer");
                         if (answer != null && !answer.isEmpty()) {
                             etAnswer.setText(answer);
                         }
-                        
+
                         // Show submitted file name if any
                         String fileName = submission.getString("fileName");
                         if (fileName != null && !fileName.isEmpty()) {
@@ -309,11 +309,11 @@ public class AssignmentSubmissionActivity extends AppCompatActivity {
                     // Progress tracking could be added here
                 });
     }
-    
+
     private void saveSubmission(String answer, String fileUrl, String fileName) {
         String userId = currentUser.getUid();
         String assignmentId = contentItem.getId();
-        
+
         // Create submission document
         Map<String, Object> submissionData = new HashMap<>();
         submissionData.put("userId", userId);
@@ -322,12 +322,12 @@ public class AssignmentSubmissionActivity extends AppCompatActivity {
         submissionData.put("answer", answer);
         submissionData.put("submittedAt", System.currentTimeMillis());
         submissionData.put("isApproved", false); // Initially not approved
-        
+
         if (fileUrl != null) {
             submissionData.put("fileUrl", fileUrl);
             submissionData.put("fileName", fileName);
         }
-        
+
         // Add to Firestore
         firestore.collection("submissions")
                 .document(userId + "_" + assignmentId)
@@ -335,22 +335,22 @@ public class AssignmentSubmissionActivity extends AppCompatActivity {
                 .addOnSuccessListener(aVoid -> {
                     // Set the progress record even though it's not yet approved
                     updateProgressRecord();
-                    
+
                     // Update UI
                     isAssignmentSubmitted = true;
                     showLoading(false);
-                    
+
                     // Show submitted status
                     tvCompletionStatus.setText(R.string.assignment_submitted);
-                    tvCompletionStatus.setTextColor(getResources().getColor(R.color.warning, null));
+                    tvCompletionStatus.setTextColor(getResources().getColor(R.color.colorWarning, null));
                     tvCompletionStatus.setVisibility(View.VISIBLE);
-                    
+
                     // Disable inputs
                     etAnswer.setEnabled(false);
                     btnAttachFile.setEnabled(false);
                     btnSubmit.setText(R.string.close);
-                    
-                    Toast.makeText(AssignmentSubmissionActivity.this, 
+
+                    Toast.makeText(AssignmentSubmissionActivity.this,
                             "Assignment submitted successfully", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {

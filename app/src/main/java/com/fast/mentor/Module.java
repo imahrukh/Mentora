@@ -8,7 +8,15 @@ public class Module {
     private String title;
     private String description;
     private int order;
-    private List<ModuleItem> items;
+    private List<ContentItem> items;
+    private List<Lesson>item;
+    public List<ContentItem> getItems() {
+        return items;
+    }
+
+    // UI-related state
+    private boolean expanded = false;  // For expand/collapse state
+    private float progressPercentage = 0f; // For module progress (0 - 100)
 
     // Empty constructor required for Firestore
     public Module() {
@@ -22,7 +30,8 @@ public class Module {
         this.order = order;
     }
 
-    // Getters and Setters
+    // --- Getters and Setters ---
+
     public String getModuleId() {
         return moduleId;
     }
@@ -63,11 +72,36 @@ public class Module {
         this.order = order;
     }
 
-    public List<ModuleItem> getItems() {
-        return items;
+
+    public void setItems(List<Lesson> item) {
+        this.item = item;
     }
 
-    public void setItems(List<ModuleItem> items) {
-        this.items = items;
+    // --- Progress Methods ---
+
+    public float getProgressPercentage() {
+        return progressPercentage;
+    }
+
+    public void setProgressPercentage(float progressPercentage) {
+        this.progressPercentage = progressPercentage;
+    }
+
+    public String getFormattedProgress() {
+        return String.format("%.0f%% Complete", progressPercentage);
+    }
+
+    // --- Expand/Collapse Methods ---
+
+    public boolean isExpanded() {
+        return expanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
+    }
+
+    public void toggleExpanded() {
+        this.expanded = !this.expanded;
     }
 }

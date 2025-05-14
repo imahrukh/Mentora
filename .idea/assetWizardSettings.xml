@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$PROJECT_DIR$/../Downloads/Apps/Android/SDK/icons/material/materialicons/auto_delete/baseline_auto_delete_24.xml" />
+                                      <entry key="url" value="file:/$PROJECT_DIR$/../Downloads/Apps/Android/SDK/icons/material/materialicons/article/baseline_article_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,7 +28,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_delete" />
+                            <entry key="outputName" value="ic_edit" />
                             <entry key="sourceFile" value="D:\6-sem" />
                           </map>
                         </option>

@@ -805,5 +805,27 @@ See https://github.com/adobe-type-tools/cmap-resources
 
     </div> <!-- outerContainer -->
     <div id="printContainer"></div>
+    <script>
+      (function() {
+        const application = window.PDFViewerApplication;
+        const bus = application.eventBus;
+
+        // 1) When all pages are loaded & render-ready
+        bus.on('pagesloaded', evt => {
+          const total = application.pdfViewer.pagesCount;
+          // call your Android bridge
+          Android.onDocumentLoaded(total);
+        });
+
+        // 2) Whenever the user changes page
+        bus.on('pagechanging', evt => {
+          // evt.pageNumber is 1-based
+          const currentPage = evt.pageNumber - 1;
+          const total       = application.pdfViewer.pagesCount;
+          Android.onPageChanged(currentPage, total);
+        });
+      })();
+    </script>
+
   </body>
 </html>

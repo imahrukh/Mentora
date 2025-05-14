@@ -74,7 +74,7 @@ public class CertificatesActivity extends AppCompatActivity implements Certifica
      * Load user certificates from database
      */
     private void loadCertificates() {
-        List<Certificate> certificates = certificateManager.getUserCertificates(userId);
+        List<Certificate> certificates = certificateManager.getUserCertificates(String.valueOf(userId));
         
         if (certificates == null || certificates.isEmpty()) {
             showEmptyState(true);
@@ -101,7 +101,7 @@ public class CertificatesActivity extends AppCompatActivity implements Certifica
     public void onViewCertificate(Certificate certificate) {
         // Open certificate PDF in viewer
         try {
-            File file = new File(certificate.getDownloadUrl());
+            File file = new File(certificate.getCertificateUrl());
             if (!file.exists()) {
                 Toast.makeText(this, "Certificate file not found", Toast.LENGTH_SHORT).show();
                 return;
@@ -126,7 +126,7 @@ public class CertificatesActivity extends AppCompatActivity implements Certifica
     @Override
     public void onShareCertificate(Certificate certificate) {
         try {
-            File file = new File(certificate.getDownloadUrl());
+            File file = new File(certificate.getCertificateUrl());
             if (!file.exists()) {
                 Toast.makeText(this, "Certificate file not found", Toast.LENGTH_SHORT).show();
                 return;
@@ -152,7 +152,7 @@ public class CertificatesActivity extends AppCompatActivity implements Certifica
             shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             
             // Mark certificate as shared
-            certificateManager.shareCertificate(certificate.getId());
+            certificateManager.shareCertificate(certificate.getCertificateId());
             
             startActivity(Intent.createChooser(shareIntent, "Share Certificate"));
         } catch (Exception e) {

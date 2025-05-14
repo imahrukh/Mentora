@@ -1,125 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    app:cardBackgroundColor="@color/colorSurfaceVariant"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="0dp">
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="1dp"
+    app:cardBackgroundColor="@color/colorSurface"
+    app:strokeColor="?attr/colorControlHighlight"
+    app:strokeWidth="1dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="12dp">
+        android:layout_height="wrap_content">
 
-        <!-- File icon based on type -->
-        <ImageView
-            android:id="@+id/fileIconImageView"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/circle_background"
-            android:contentDescription="@string/file_icon"
-            android:padding="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/white"
-            tools:src="@drawable/ic_document"
-            android:layout_marginBottom="10dp"/>
-
-        <!-- File name -->
-        <TextView
-            android:id="@+id/fileNameTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="8dp"
-            android:ellipsize="middle"
-            android:singleLine="true"
-            android:textColor="@color/colorOnSurface"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/actionsContainer"
-            app:layout_constraintStart_toEndOf="@id/fileIconImageView"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="MainActivity.java" />
-
-        <!-- File info (size, upload date) -->
-        <TextView
-            android:id="@+id/fileInfoTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="8dp"
-            android:textColor="@color/colorOnSurfaceVariant"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toStartOf="@id/actionsContainer"
-            app:layout_constraintStart_toEndOf="@id/fileIconImageView"
-            app:layout_constraintTop_toBottomOf="@id/fileNameTextView"
-            tools:text="Java • 4.3 KB • May 12, 2025" />
-
-        <!-- Action buttons container -->
         <LinearLayout
-            android:id="@+id/actionsContainer"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:padding="12dp">
 
-            <!-- View file button -->
-            <ImageButton
-                android:id="@+id/viewFileButton"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/view_file"
-                android:src="@drawable/ic_visibility"
-                app:tint="@color/colorPrimary" />
+            <ImageView
+                android:id="@+id/fileTypeImageView"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:contentDescription="File icon"
+                android:background="@color/red"
+                tools:src="@drawable/ic_file" />
 
-            <!-- Download file button -->
-            <ImageButton
-                android:id="@+id/downloadFileButton"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginStart="4dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/download_file"
-                android:src="@drawable/ic_download"
-                app:tint="@color/colorPrimary" />
+            <TextView
+                android:id="@+id/fileNameTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:ellipsize="middle"
+                android:singleLine="true"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="@color/white"
+                tools:text="assignment_document.pdf" />
 
-            <!-- Remove file button (shown only in edit mode) -->
             <ImageButton
-                android:id="@+id/removeFileButton"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginStart="4dp"
+                android:id="@+id/removeButton"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/remove_file"
-                android:src="@drawable/ic_delete"
-                android:visibility="gone"
-                app:tint="@color/colorError"
-                tools:visibility="visible" />
+                android:contentDescription="Remove file"
+                android:src="@drawable/ic_remove"
+                app:tint="?attr/colorError" />
+
         </LinearLayout>
 
-        <!-- Upload progress indicator (shown during upload) -->
         <ProgressBar
-            android:id="@+id/uploadProgressBar"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="0dp"
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
             android:layout_height="4dp"
-            android:layout_marginTop="4dp"
-            android:progressTint="@color/colorPrimary"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fileInfoTextView"
-            tools:progress="75"
-            tools:visibility="visible" />
+            android:layout_gravity="bottom"
+            android:indeterminate="true"
+            android:visibility="gone" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+    </FrameLayout>
+
+</com.google.android.material.card.MaterialCardView>

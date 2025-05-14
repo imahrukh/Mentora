@@ -15,8 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fast.mentor.R;
-import com.fast.mentor.model.Resource;
-import com.fast.mentor.util.FileUtils;
+import com.fast.mentor.Resource;
+import com.fast.mentor.FileUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -154,7 +154,7 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.Resour
                 case Resource.TYPE_CODE:
                     return R.drawable.ic_code;
                 case Resource.TYPE_LINK:
-                    return R.drawable.ic_link;
+                    return R.drawable.ic_code;
                 default:
                     return R.drawable.ic_file;
             }

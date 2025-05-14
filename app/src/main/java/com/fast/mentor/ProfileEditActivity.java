@@ -32,8 +32,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import com.bumptech.glide.Glide;
 import com.fast.mentor.R;
-import com.fast.mentor.models.UserProfile;
+import com.fast.mentor.UserProfile;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -144,7 +145,7 @@ public class ProfileEditActivity extends AppCompatActivity {
         initializeViews();
         setupToolbar();
         setupListeners();
-        
+
         // Load user profile data
         loadUserProfile();
     }
@@ -216,7 +217,7 @@ public class ProfileEditActivity extends AppCompatActivity {
 
     private void loadUserProfile() {
         showLoading(true);
-        
+
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if (currentUser == null) {
             Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show();
@@ -225,7 +226,7 @@ public class ProfileEditActivity extends AppCompatActivity {
         }
 
         String userId = currentUser.getUid();
-        firestore.collection("userProfiles").document(userId)
+        firestore.collection("users").document(userId)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
@@ -242,14 +243,14 @@ public class ProfileEditActivity extends AppCompatActivity {
                             userProfile.setPreferredLanguage((String) data.get("preferredLanguage"));
                             userProfile.setEmailNotifications((Boolean) data.getOrDefault("emailNotifications", true));
                             userProfile.setPushNotifications((Boolean) data.getOrDefault("pushNotifications", true));
-                            
+
                             // Get interests
                             List<String> interests = (List<String>) data.get("interests");
                             if (interests != null) {
                                 userProfile.setInterests(interests);
                                 selectedInterests = new ArrayList<>(interests);
                             }
-                            
+
                             // Other stats
                             if (data.get("coursesCompleted") != null) {
                                 userProfile.setCoursesCompleted(((Long) data.get("coursesCompleted")).intValue());
@@ -260,7 +261,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                             if (data.get("certificatesEarned") != null) {
                                 userProfile.setCertificatesEarned(((Long) data.get("certificatesEarned")).intValue());
                             }
-                            
+
                             // Populate UI with data
                             populateUI();
                         }
@@ -270,13 +271,13 @@ public class ProfileEditActivity extends AppCompatActivity {
                         userProfile.setId(Integer.parseInt(userId));
                         userProfile.setEmail(currentUser.getEmail());
                         userProfile.setFullName(currentUser.getDisplayName());
-                        userProfile.setUsername(currentUser.getEmail() != null ? 
+                        userProfile.setUsername(currentUser.getEmail() != null ?
                                 currentUser.getEmail().split("@")[0] : "user" + userId);
                     }
                     showLoading(false);
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(ProfileEditActivity.this, 
+                    Toast.makeText(ProfileEditActivity.this,
                             "Error loading profile: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     showLoading(false);
                 });
@@ -298,7 +299,7 @@ public class ProfileEditActivity extends AppCompatActivity {
         if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
             // In a real app, you would use a library like Glide or Picasso to load the image
             // For example:
-            // Glide.with(this).load(profilePictureUrl).into(ivProfilePicture);
+            Glide.with(this).load(profilePictureUrl).into(ivProfilePicture);
         }
 
         // Load interests chips
@@ -307,7 +308,7 @@ public class ProfileEditActivity extends AppCompatActivity {
 
     private void updateInterestsChips() {
         chipGroupInterests.removeAllViews();
-        
+
         // Add all selected interests as chips
         if (selectedInterests != null && !selectedInterests.isEmpty()) {
             for (String interest : selectedInterests) {
@@ -326,7 +327,7 @@ public class ProfileEditActivity extends AppCompatActivity {
         // Add an "Add" chip at the end
         Chip addChip = new Chip(this);
         addChip.setText("+ Add");
-        addChip.setChipBackgroundColorResource(R.color.surfaceColor);
+        addChip.setChipBackgroundColorResource(R.color.colorSurface);
         addChip.setTextColor(getResources().getColor(R.color.primaryColor, null));
         addChip.setOnClickListener(v -> showSelectInterestsDialog());
         chipGroupInterests.addView(addChip);
@@ -344,9 +345,9 @@ public class ProfileEditActivity extends AppCompatActivity {
 
         // Prepare interest categories and interests
         Map<String, List<String>> interestCategories = new HashMap<>();
-        interestCategories.put("Technology", Arrays.asList("Programming", "Mobile Development", 
+        interestCategories.put("Technology", Arrays.asList("Programming", "Mobile Development",
                 "Web Development", "Artificial Intelligence", "Data Science"));
-        interestCategories.put("Business", Arrays.asList("Marketing", "Finance", 
+        interestCategories.put("Business", Arrays.asList("Marketing", "Finance",
                 "Entrepreneurship", "Leadership"));
         interestCategories.put("Design", Arrays.asList("Graphic Design", "UX Design", "Web Design"));
         interestCategories.put("Languages", Arrays.asList("English", "Spanish", "French", "Chinese"));
@@ -390,13 +391,13 @@ public class ProfileEditActivity extends AppCompatActivity {
         Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_profile_photo_options);
-        
+
         // Get dialog views
         LinearLayout llTakePhoto = dialog.findViewById(R.id.llTakePhoto);
         LinearLayout llChooseFromGallery = dialog.findViewById(R.id.llChooseFromGallery);
         LinearLayout llRemovePhoto = dialog.findViewById(R.id.llRemovePhoto);
         Button btnCancel = dialog.findViewById(R.id.btnCancel);
-        
+
         // Setup click listeners
         llTakePhoto.setOnClickListener(v -> {
             if (checkCameraPermission()) {
@@ -404,65 +405,65 @@ public class ProfileEditActivity extends AppCompatActivity {
             }
             dialog.dismiss();
         });
-        
+
         llChooseFromGallery.setOnClickListener(v -> {
             if (checkGalleryPermission()) {
                 chooseFromGallery();
             }
             dialog.dismiss();
         });
-        
+
         llRemovePhoto.setOnClickListener(v -> {
             removeProfilePhoto();
             dialog.dismiss();
         });
-        
+
         btnCancel.setOnClickListener(v -> dialog.dismiss());
-        
+
         dialog.show();
     }
-    
+
     private boolean checkCameraPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, 
+            ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
             return false;
         }
         return true;
     }
-    
+
     private boolean checkGalleryPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, 
+            ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_GALLERY_PERMISSION);
             return false;
         }
         return true;
     }
-    
+
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, 
-                                          @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 takePhoto();
             } else {
-                Toast.makeText(this, "Camera permission is required to take photos", 
+                Toast.makeText(this, "Camera permission is required to take photos",
                         Toast.LENGTH_SHORT).show();
             }
         } else if (requestCode == REQUEST_GALLERY_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 chooseFromGallery();
             } else {
-                Toast.makeText(this, "Storage permission is required to access gallery", 
+                Toast.makeText(this, "Storage permission is required to access gallery",
                         Toast.LENGTH_SHORT).show();
             }
         }
     }
-    
+
     private void takePhoto() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -475,7 +476,7 @@ public class ProfileEditActivity extends AppCompatActivity {
             } catch (IOException ex) {
                 Toast.makeText(this, "Error creating image file", Toast.LENGTH_SHORT).show();
             }
-            
+
             if (photoFile != null) {
                 currentPhotoUri = FileProvider.getUriForFile(this,
                         "com.fast.mentor.fileprovider", photoFile);
@@ -484,12 +485,12 @@ public class ProfileEditActivity extends AppCompatActivity {
             }
         }
     }
-    
+
     private void chooseFromGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         pickImageLauncher.launch(intent);
     }
-    
+
     private void removeProfilePhoto() {
         ivProfilePicture.setImageResource(R.drawable.ic_launcher_foreground); // Default image
         currentPhotoUri = null;
@@ -501,7 +502,7 @@ public class ProfileEditActivity extends AppCompatActivity {
         if (!validateInputs()) return;
 
         showLoading(true);
-        
+
         // Get current user
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if (currentUser == null) {
@@ -509,9 +510,9 @@ public class ProfileEditActivity extends AppCompatActivity {
             showLoading(false);
             return;
         }
-        
+
         String userId = currentUser.getUid();
-        
+
         // Prepare profile data
         Map<String, Object> profileData = new HashMap<>();
         profileData.put("fullName", Objects.requireNonNull(etFullName.getText()).toString().trim());
@@ -522,7 +523,7 @@ public class ProfileEditActivity extends AppCompatActivity {
         profileData.put("emailNotifications", switchEmailNotifications.isChecked());
         profileData.put("pushNotifications", switchPushNotifications.isChecked());
         profileData.put("interests", selectedInterests);
-        
+
         // Update email in Firebase Auth if changed
         if (!profileData.get("email").equals(currentUser.getEmail())) {
             currentUser.updateEmail((String) profileData.get("email"))
@@ -530,12 +531,12 @@ public class ProfileEditActivity extends AppCompatActivity {
                         // Continue with profile update
                     })
                     .addOnFailureListener(e -> {
-                        Toast.makeText(ProfileEditActivity.this, 
+                        Toast.makeText(ProfileEditActivity.this,
                                 "Failed to update email: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         showLoading(false);
                     });
         }
-        
+
         // Upload profile picture if changed
         if (isPhotoChanged && currentPhotoUri != null) {
             uploadProfilePicture(userId, profileData);
@@ -548,23 +549,23 @@ public class ProfileEditActivity extends AppCompatActivity {
             updateFirestoreProfile(userId, profileData);
         }
     }
-    
+
     private void uploadProfilePicture(String userId, Map<String, Object> profileData) {
         try {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), currentPhotoUri);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
             byte[] data = baos.toByteArray();
-            
+
             StorageReference imageRef = storageRef.child("profile_pictures/" + userId + ".jpg");
             UploadTask uploadTask = imageRef.putBytes(data);
-            uploadTask.addOnSuccessListener(taskSnapshot -> 
-                    imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                        profileData.put("profilePictureUrl", uri.toString());
-                        updateFirestoreProfile(userId, profileData);
-                    }))
+            uploadTask.addOnSuccessListener(taskSnapshot ->
+                            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                                profileData.put("profilePictureUrl", uri.toString());
+                                updateFirestoreProfile(userId, profileData);
+                            }))
                     .addOnFailureListener(e -> {
-                        Toast.makeText(ProfileEditActivity.this, 
+                        Toast.makeText(ProfileEditActivity.this,
                                 R.string.image_upload_failed, Toast.LENGTH_SHORT).show();
                         showLoading(false);
                     });
@@ -574,50 +575,50 @@ public class ProfileEditActivity extends AppCompatActivity {
             showLoading(false);
         }
     }
-    
+
     private void updateFirestoreProfile(String userId, Map<String, Object> profileData) {
         firestore.collection("userProfiles").document(userId)
                 .set(profileData)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(ProfileEditActivity.this, 
+                    Toast.makeText(ProfileEditActivity.this,
                             R.string.profile_updated, Toast.LENGTH_SHORT).show();
                     hasChanges = false;
                     showLoading(false);
                     finish();
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(ProfileEditActivity.this, 
+                    Toast.makeText(ProfileEditActivity.this,
                             R.string.error_updating_profile, Toast.LENGTH_SHORT).show();
                     showLoading(false);
                 });
     }
-    
+
     private boolean validateInputs() {
         String fullName = Objects.requireNonNull(etFullName.getText()).toString().trim();
         String username = Objects.requireNonNull(etUsername.getText()).toString().trim();
         String email = Objects.requireNonNull(etEmail.getText()).toString().trim();
-        
+
         if (fullName.isEmpty()) {
             TextInputLayout tilFullName = findViewById(R.id.tilFullName);
             tilFullName.setError("Full name is required");
             return false;
         }
-        
+
         if (username.isEmpty()) {
             TextInputLayout tilUsername = findViewById(R.id.tilUsername);
             tilUsername.setError("Username is required");
             return false;
         }
-        
+
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             TextInputLayout tilEmail = findViewById(R.id.tilEmail);
             tilEmail.setError("Valid email is required");
             return false;
         }
-        
+
         return true;
     }
-    
+
     private void showLoading(boolean isLoading) {
         if (isLoading) {
             btnSaveChanges.setEnabled(false);
@@ -627,7 +628,7 @@ public class ProfileEditActivity extends AppCompatActivity {
             progressBar.setVisibility(View.GONE);
         }
     }
-    
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -636,7 +637,7 @@ public class ProfileEditActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    
+
     @Override
     public void onBackPressed() {
         if (hasChanges) {

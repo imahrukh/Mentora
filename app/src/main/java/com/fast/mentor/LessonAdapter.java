@@ -7,12 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fast.mentor.R;
-import com.fast.mentor.model.Lesson;
+import com.fast.mentor.Lesson;
 
 import java.util.List;
 
@@ -129,19 +130,15 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.LessonView
         }
         
         private void openLessonContent(Lesson lesson) {
-            // TODO: Navigate to appropriate lesson content activity based on type
-            // For now, just show a toast or navigate to a placeholder activity
-            
-            // Example navigation to LessonContentActivity
-            // Intent intent = new Intent(context, LessonContentActivity.class);
-            // intent.putExtra(LessonContentActivity.EXTRA_LESSON_ID, lesson.getId());
-            // context.startActivity(intent);
+            Intent intent = new Intent(context, LessonContentActivity.class);
+            intent.putExtra("lessonId", lesson.getId());
+            intent.putExtra("lessonTitle", lesson.getTitle());
+            intent.putExtra("lessonType", lesson.getType().name());
+            context.startActivity(intent);
         }
         
         private void showEnrollmentRequiredMessage() {
-            // Show a message that user needs to enroll in the course first
-            // For now, just show a toast message
-            // Toast.makeText(context, "Please enroll in this course to access lessons", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please enroll in this course to access lessons", Toast.LENGTH_SHORT).show();
         }
     }
 }

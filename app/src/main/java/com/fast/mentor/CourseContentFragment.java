@@ -298,7 +298,7 @@ public class CourseContentFragment extends Fragment implements CourseModuleAdapt
     }
     
     private void launchVideoPlayer(ContentItem contentItem) {
-        Intent intent = new Intent(getActivity(), VideoPlayerActivity.class);
+        Intent intent = new Intent(getActivity(), VideoLessonActivity.class);
         intent.putExtra("contentItem", contentItem);
         intent.putExtra("courseId", courseId);
         startActivity(intent);
@@ -312,7 +312,7 @@ public class CourseContentFragment extends Fragment implements CourseModuleAdapt
     }
     
     private void launchQuizActivity(ContentItem contentItem) {
-        Intent intent = new Intent(getActivity(), QuizActivity.class);
+        Intent intent = new Intent(getActivity(), PDFViewerActivity.class);
         intent.putExtra("contentItem", contentItem);
         intent.putExtra("courseId", courseId);
         startActivity(intent);

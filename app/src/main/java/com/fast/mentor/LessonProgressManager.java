@@ -1,6 +1,6 @@
 package com.fast.mentor;
 
-import com.fast.mentor.course.CourseService;
+import com.fast.mentor.CourseService;
 
 /**
  * Manages tracking and updating of lesson progress.
@@ -90,7 +90,7 @@ public class LessonProgressManager {
         // Calculate the user's overall progress in the course
         courseService.getUserCourseProgress(userId, courseId, progress -> {
             // Update enrollment with new progress
-            courseService.updateCourseProgress(userId, courseId, progress, 
+            courseService.updateCourseProgress(userId, courseId, (int) progress,
                 enrollment -> {
                     if (callback != null) {
                         callback.onSuccess();

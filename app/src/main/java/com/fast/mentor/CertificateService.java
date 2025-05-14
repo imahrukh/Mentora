@@ -53,7 +53,7 @@ public class CertificateService {
      * @param courseId Course ID
      * @return true if certificate was awarded
      */
-    public boolean processCourseCompletion(int userId, int courseId) {
+    public boolean processCourseCompletion(String userId, String courseId) {
         Log.d(TAG, "Processing course completion for user " + userId + ", course " + courseId);
         
         // Check if course is actually completed

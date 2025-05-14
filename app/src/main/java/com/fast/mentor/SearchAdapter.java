@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.fast.mentor.R;
-import com.fast.mentor.model.SearchResult;
-import com.fast.mentor.ui.CourseDetailActivity;
+import com.fast.mentor.SearchResult;
+import com.fast.mentor.CourseDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,11 +70,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                 break;
             case LESSON:
                 typeBadge = "Lesson";
-                badgeColor = R.color.colorAccent;
+                badgeColor = R.color.primaryColor;
                 break;
             case RESOURCE:
                 typeBadge = "Resource";
-                badgeColor = R.color.colorTertiary;
+                badgeColor = R.color.colorSecondaryVariant;
                 break;
         }
         

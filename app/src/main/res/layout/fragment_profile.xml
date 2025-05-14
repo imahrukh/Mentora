@@ -98,5 +98,21 @@
         app:layout_constraintTop_toBottomOf="@+id/card_profile" />
 
     <!-- Other profile options can be added here -->
+    <!-- after your button_certificates -->
+    <Button
+        android:id="@+id/buttonEditProfile"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/edit_profile"
+        app:icon="@drawable/ic_edit"
+        app:iconTint="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_certificates" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

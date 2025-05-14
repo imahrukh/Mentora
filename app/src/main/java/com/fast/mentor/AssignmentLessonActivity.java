@@ -10,12 +10,14 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +26,7 @@ import com.fast.mentor.Assignment;
 import com.fast.mentor.AssignmentSubmission;
 import com.fast.mentor.SubmissionFile;
 import com.fast.mentor.*;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,150 +34,154 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Activity for assignment-based lessons.
- */
-public class AssignmentLessonActivity extends LessonContentActivity 
-        implements SubmissionFileAdapter.SubmissionFileListener {
 
-    private TextView assignmentTitleTextView;
-    private TextView assignmentDescriptionTextView;
+/**
+ * Activity for displaying and submitting assignments.
+ */
+public class AssignmentLessonActivity extends AppCompatActivity {
+
+    private static final int REQUEST_PICK_FILES = 1001;
+    private static final int SUBMISSION_VIEW_NOT_SUBMITTED = 0;
+    private static final int SUBMISSION_VIEW_SUBMITTED = 1;
+    private static final int SUBMISSION_VIEW_GRADED = 2;
+
+    // Views
+    private TextView titleTextView;
+    private TextView descriptionTextView;
+    private TextView instructionsTextView;
     private TextView pointsTextView;
     private TextView deadlineTextView;
-    private TextView statusTextView;
-    private WebView instructionsWebView;
     private ViewFlipper submissionViewFlipper;
-    private Button uploadButton;
-    private RecyclerView submissionFilesRecyclerView;
-    private EditText submissionCommentEditText;
-    private Button addFilesButton;
-    private Button submitButton;
-    private TextView gradeTextView;
-    private TextView maxPointsTextView;
+    private RecyclerView filesRecyclerView;
+    private Button actionButton;
+    private EditText commentEditText;
+    private TextView submissionStatusTextView;
     private TextView submissionDateTextView;
-    private TextView feedbackTextView;
-    private RecyclerView gradedFilesRecyclerView;
-    
-    private SubmissionFileAdapter submissionFileAdapter;
-    private SubmissionFileAdapter gradedFileAdapter;
-    
+    private TextView gradeTextView;
+    private RecyclerView submittedFilesRecyclerView;
+    private ProgressBar loadingProgressBar;
+    private View contentLayout;
+    private View errorLayout;
+    private Button retryButton;
+
+    // Data
+    private String lessonId;
+    private String userId;
+    private Lesson lesson;
     private Assignment assignment;
     private AssignmentSubmission submission;
-    private List<Uri> selectedFileUris = new ArrayList<>();
-    
-    private static final int SUBMISSION_VIEW_NOT_SUBMITTED = 0;
-    private static final int SUBMISSION_VIEW_EDIT = 1;
-    private static final int SUBMISSION_VIEW_GRADED = 2;
-    
-    private static final int REQUEST_CODE_SELECT_FILES = 101;
-
-    /**
-     * Create intent to launch this activity
-     */
-    public static Intent createIntent(Context context, String lessonId, String moduleId, 
-                                     String courseId, boolean isFirstLesson, boolean isLastLesson,
-                                     String previousLessonId, String nextLessonId) {
-        Intent intent = new Intent(context, AssignmentLessonActivity.class);
-        intent.putExtra(EXTRA_LESSON_ID, lessonId);
-        intent.putExtra(EXTRA_MODULE_ID, moduleId);
-        intent.putExtra(EXTRA_COURSE_ID, courseId);
-        intent.putExtra(EXTRA_IS_FIRST_LESSON, isFirstLesson);
-        intent.putExtra(EXTRA_IS_LAST_LESSON, isLastLesson);
-        intent.putExtra(EXTRA_PREVIOUS_LESSON_ID, previousLessonId);
-        intent.putExtra(EXTRA_NEXT_LESSON_ID, nextLessonId);
-        return intent;
-    }
+    private List<Uri> selectedFiles = new ArrayList<>();
+    private SubmissionFileAdapter fileAdapter;
+    private SubmissionFileAdapter submittedFileAdapter;
+    private CourseService courseService;
+    private boolean isEditMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        // Inflate assignment content layout into content container
-        LayoutInflater.from(this).inflate(R.layout.content_assignment_lesson, contentContainer, true);
-        
-        // Initialize assignment-specific views
-        initializeAssignmentViews();
-        
-        // Restore state if needed
-        if (savedInstanceState != null) {
-            ArrayList<String> savedUriStrings = savedInstanceState.getStringArrayList("selectedFileUris");
-            if (savedUriStrings != null) {
-                selectedFileUris.clear();
-                for (String uriString : savedUriStrings) {
-                    selectedFileUris.add(Uri.parse(uriString));
-                }
-            }
+        setContentView(R.layout.activity_assignment_lesson);
+
+        // Get lesson ID from intent
+        lessonId = getIntent().getStringExtra("LESSON_ID");
+        lesson = getIntent().getParcelableExtra("LESSON");
+
+        if (lessonId == null && lesson != null) {
+            lessonId = lesson.getId();
         }
+
+        if (lessonId == null) {
+            showError("Lesson ID not provided");
+            return;
+        }
+
+        // Get current user ID
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        // Initialize services
+        courseService = new CourseService();
+
+        // Initialize views
+        initViews();
+
+        // Load lesson and assignment data
+        loadData();
     }
 
     /**
-     * Initialize assignment-specific views
+     * Initialize views
      */
-    private void initializeAssignmentViews() {
-        assignmentTitleTextView = findViewById(R.id.assignmentTitleTextView);
-        assignmentDescriptionTextView = findViewById(R.id.assignmentDescriptionTextView);
+    private void initViews() {
+        // Toolbar
+        setSupportActionBar(findViewById(R.id.toolbar));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        // Assignment info views
+        titleTextView = findViewById(R.id.titleTextView);
+        descriptionTextView = findViewById(R.id.descriptionTextView);
+        instructionsTextView = findViewById(R.id.instructionsTextView);
         pointsTextView = findViewById(R.id.pointsTextView);
         deadlineTextView = findViewById(R.id.deadlineTextView);
-        statusTextView = findViewById(R.id.statusTextView);
-        instructionsWebView = findViewById(R.id.instructionsWebView);
-        submissionViewFlipper = findViewById(R.id.submissionViewFlipper);
-        uploadButton = findViewById(R.id.uploadButton);
-        submissionFilesRecyclerView = findViewById(R.id.submissionFilesRecyclerView);
-        submissionCommentEditText = findViewById(R.id.submissionCommentEditText);
-        addFilesButton = findViewById(R.id.addFilesButton);
-        submitButton = findViewById(R.id.submitButton);
-        gradeTextView = findViewById(R.id.gradeTextView);
-        maxPointsTextView = findViewById(R.id.maxPointsTextView);
-        submissionDateTextView = findViewById(R.id.submissionDateTextView);
-        feedbackTextView = findViewById(R.id.feedbackTextView);
-        gradedFilesRecyclerView = findViewById(R.id.gradedFilesRecyclerView);
-        
-        // Setup WebView for instructions
-        WebSettings webSettings = instructionsWebView.getSettings();
-        webSettings.setJavaScriptEnabled(false);
-        webSettings.setLoadWithOverviewMode(true);
-        webSettings.setUseWideViewPort(true);
-        
-        // Setup recycler views
-        submissionFilesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        submissionFileAdapter = new SubmissionFileAdapter(this, true, this);
-        submissionFilesRecyclerView.setAdapter(submissionFileAdapter);
-        
-        gradedFilesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        gradedFileAdapter = new SubmissionFileAdapter(this, false, null);
-        gradedFilesRecyclerView.setAdapter(gradedFileAdapter);
-        
-        // Setup buttons
-        uploadButton.setOnClickListener(v -> selectFiles());
-        addFilesButton.setOnClickListener(v -> selectFiles());
-        submitButton.setOnClickListener(v -> submitAssignment());
-    }
 
-    @Override
-    protected void initializeLessonContent() {
-        // Set lesson title
-        setTitle(lesson.getTitle());
-        
-        // Load assignment
-        loadAssignment();
+        // Submission views
+        submissionViewFlipper = findViewById(R.id.submissionViewFlipper);
+        filesRecyclerView = findViewById(R.id.filesRecyclerView);
+        actionButton = findViewById(R.id.actionButton);
+        commentEditText = findViewById(R.id.commentEditText);
+        submissionStatusTextView = findViewById(R.id.submissionStatusTextView);
+        submissionDateTextView = findViewById(R.id.submissionDateTextView);
+        gradeTextView = findViewById(R.id.gradeTextView);
+        submittedFilesRecyclerView = findViewById(R.id.submittedFilesRecyclerView);
+
+        // Loading and error views
+        loadingProgressBar = findViewById(R.id.loadingProgressBar);
+        contentLayout = findViewById(R.id.contentLayout);
+        errorLayout = findViewById(R.id.errorLayout);
+        retryButton = findViewById(R.id.retryButton);
+
+        // Set up file adapters
+        fileAdapter = new SubmissionFileAdapter(this, true, position -> {
+            // File removed by user, nothing else to do
+        });
+
+        submittedFileAdapter = new SubmissionFileAdapter(this, false, null);
+
+        filesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        filesRecyclerView.setAdapter(fileAdapter);
+
+        submittedFilesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        submittedFilesRecyclerView.setAdapter(submittedFileAdapter);
+
+        // Set up click listeners
+        findViewById(R.id.addFileButton).setOnClickListener(v -> selectFiles());
+        actionButton.setOnClickListener(v -> handleActionButtonClick());
+        retryButton.setOnClickListener(v -> loadData());
+
+        // Initially show loading state
+        showLoading();
     }
 
     /**
-     * Load assignment data from Firestore
+     * Load assignment data
      */
-    private void loadAssignment() {
+    private void loadData() {
         showLoading();
-        
-        // Load assignment
+
+        // Set title from lesson if available
+        if (lesson != null) {
+            setTitle(lesson.getTitle());
+        }
+
+        // Load assignment data
         courseService.getAssignment(lessonId, loadedAssignment -> {
             assignment = loadedAssignment;
-            
+
             // Set assignment info
             setupAssignmentInfo();
-            
+
             // Load submission if exists
             loadSubmission();
-            
+
             // Hide loading
             hideLoading();
         }, e -> {
@@ -183,64 +190,46 @@ public class AssignmentLessonActivity extends LessonContentActivity
     }
 
     /**
-     * Load submission if it exists
+     * Load user's submission if it exists
      */
     private void loadSubmission() {
-        String userId = getCurrentUserId();
-        
         courseService.getAssignmentSubmission(userId, assignment.getId(), loadedSubmission -> {
             submission = loadedSubmission;
-            
+
             // Update submission view based on status
             updateSubmissionView();
-            
+
             // Update action button
             updateActionButton();
-            
         }, e -> {
             // No submission yet or error loading
             submission = null;
-            
+
             // Show not submitted view
             submissionViewFlipper.setDisplayedChild(SUBMISSION_VIEW_NOT_SUBMITTED);
-            
+
             // Update action button
             updateActionButton();
         });
     }
 
     /**
-     * Setup assignment info in UI
+     * Set up assignment info
      */
     private void setupAssignmentInfo() {
-        assignmentTitleTextView.setText(assignment.getTitle());
-        assignmentDescriptionTextView.setText(assignment.getDescription());
-        
+        titleTextView.setText(assignment.getTitle());
+        descriptionTextView.setText(assignment.getDescription());
+        instructionsTextView.setText(assignment.getInstructions());
+
         // Set points
         pointsTextView.setText(getString(R.string.points_value, assignment.getPoints()));
-        
+
         // Set deadline
-        Date deadline = assignment.getDeadline();
-        if (deadline != null) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy", Locale.getDefault());
-            deadlineTextView.setText(getString(R.string.due_date, dateFormat.format(deadline)));
+        if (assignment.getDeadline() != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy", Locale.getDefault());
+            deadlineTextView.setText(getString(R.string.due_date, dateFormat.format(assignment.getDeadline())));
         } else {
             deadlineTextView.setText(R.string.no_deadline);
-        }
-        
-        // Load instructions
-        String instructions = assignment.getInstructions();
-        if (instructions != null && !instructions.isEmpty()) {
-            // Wrap content in basic HTML for proper formatting
-            String formattedInstructions = "<html><head>" +
-                    "<style>body{color:#e1e1e6;font-size:14px;line-height:1.5;padding:0;margin:0;}" +
-                    "h1,h2,h3{color:#ffffff;}code{background-color:#272731;padding:2px 4px;border-radius:4px;}" +
-                    "pre{background-color:#272731;padding:8px;border-radius:4px;overflow-x:auto;}" +
-                    "a{color:#ff3d71;}</style></head><body>" +
-                    instructions +
-                    "</body></html>";
-            
-            instructionsWebView.loadDataWithBaseURL(null, formattedInstructions, "text/html", "UTF-8", null);
         }
     }
 
@@ -251,228 +240,252 @@ public class AssignmentLessonActivity extends LessonContentActivity
         if (submission == null) {
             // No submission yet
             submissionViewFlipper.setDisplayedChild(SUBMISSION_VIEW_NOT_SUBMITTED);
-            statusTextView.setText(R.string.not_submitted);
-            statusTextView.setBackgroundResource(R.drawable.bg_status_pending);
-            
-        } else if (submission.getGraded()) {
-            // Graded submission
-            submissionViewFlipper.setDisplayedChild(SUBMISSION_VIEW_GRADED);
-            
-            // Update status
-            boolean isPassed = submission.getGrade() >= assignment.getPassingGrade();
-            if (isPassed) {
-                statusTextView.setText(R.string.passed);
-                statusTextView.setBackgroundResource(R.drawable.bg_status_passed);
-            } else {
-                statusTextView.setText(R.string.failed);
-                statusTextView.setBackgroundResource(R.drawable.bg_status_failed);
-            }
-            
-            // Update grade info
-            gradeTextView.setText(String.valueOf(submission.getGrade()));
-            maxPointsTextView.setText(getString(R.string.out_of_points, assignment.getPoints()));
-            
-            // Set submission date
-            if (submission.getSubmittedAt() != null) {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy", Locale.getDefault());
-                submissionDateTextView.setText(getString(R.string.submitted_date, 
-                        dateFormat.format(submission.getSubmittedAt())));
-            }
-            
-            // Set feedback
-            feedbackTextView.setText(submission.getFeedback());
-            
-            // Set files
-            List<SubmissionFile> files = submission.getFiles();
-            if (files != null && !files.isEmpty()) {
-                gradedFileAdapter.setFiles(files);
-            }
-            
-        } else {
-            // Submitted but not graded
-            submissionViewFlipper.setDisplayedChild(SUBMISSION_VIEW_EDIT);
-            statusTextView.setText(R.string.submitted);
-            statusTextView.setBackgroundResource(R.drawable.bg_status_submitted);
-            
-            // Set files
-            List<SubmissionFile> files = submission.getFiles();
-            if (files != null && !files.isEmpty()) {
-                submissionFileAdapter.setFiles(files);
-            }
-            
-            // Set comment
-            submissionCommentEditText.setText(submission.getComment());
+            return;
         }
+
+        if (submission.getGraded()) {
+            // Submission is graded
+            submissionViewFlipper.setDisplayedChild(SUBMISSION_VIEW_GRADED);
+
+            // Set submission date
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy", Locale.getDefault());
+            submissionDateTextView.setText(getString(R.string.submitted_date,
+                    dateFormat.format(submission.getSubmittedAt())));
+
+            // Set grade and status
+            int grade = submission.getGrade();
+            int points = assignment.getPoints();
+            gradeTextView.setText(getString(R.string.out_of_points, grade, points));
+
+            // Set status
+            boolean passed = grade >= assignment.getPassingGrade();
+            submissionStatusTextView.setText(passed ? R.string.passed : R.string.failed);
+            submissionStatusTextView.setBackgroundResource(
+                    passed ? R.drawable.bg_status_passed : R.drawable.bg_status_failed);
+        } else {
+            // Submission is made but not yet graded
+            submissionViewFlipper.setDisplayedChild(SUBMISSION_VIEW_SUBMITTED);
+
+            // Set submission date
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy", Locale.getDefault());
+            submissionDateTextView.setText(getString(R.string.submitted_date,
+                    dateFormat.format(submission.getSubmittedAt())));
+
+            // Set status as submitted
+            submissionStatusTextView.setText(R.string.submitted);
+            submissionStatusTextView.setBackgroundResource(R.drawable.bg_status_submitted);
+        }
+
+        // Set submitted files
+        submittedFileAdapter.setFiles(submission.getFiles());
     }
 
     /**
      * Update action button based on submission status
      */
     private void updateActionButton() {
+        if (isEditMode) {
+            // In edit mode, show submit button
+            actionButton.setText(submission == null ? R.string.submit : R.string.update_submission);
+            return;
+        }
+
         if (submission == null) {
-            // No submission yet
-            actionButton.setText(R.string.submit_assignment);
-            actionButton.setEnabled(true);
+            // No submission, show submit button
+            actionButton.setText(R.string.submit);
         } else if (submission.getGraded()) {
-            // Graded submission
-            boolean isPassed = submission.getGrade() >= assignment.getPassingGrade();
-            if (isPassed) {
-                // Passed, can continue
-                actionButton.setText(R.string.continue_to_next);
-                actionButton.setEnabled(true);
-            } else {
-                // Failed, can resubmit
-                actionButton.setText(R.string.resubmit_assignment);
-                actionButton.setEnabled(true);
-            }
+            // Graded submission, show continue button
+            actionButton.setText(R.string.continue_to_next);
         } else {
-            // Submitted but not graded
-            actionButton.setText(R.string.update_submission);
-            actionButton.setEnabled(true);
+            // Ungraded submission, show resubmit button
+            actionButton.setText(R.string.resubmit_assignment);
         }
     }
 
     /**
-     * Select files for submission
+     * Handle action button click
      */
-    private void selectFiles() {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("*/*");
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        
-        startActivityForResult(intent, REQUEST_CODE_SELECT_FILES);
+    private void handleActionButtonClick() {
+        if (isEditMode) {
+            // In edit mode, submit the assignment
+            submitAssignment();
+            return;
+        }
+
+        if (submission == null) {
+            // No submission, enter edit mode
+            enterEditMode();
+        } else if (submission.getGraded()) {
+            // Graded submission, navigate to next lesson
+            navigateToNextLesson();
+        } else {
+            // Ungraded submission, enter edit mode
+            enterEditMode();
+        }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        
-        if (requestCode == REQUEST_CODE_SELECT_FILES && resultCode == RESULT_OK && data != null) {
-            // Show edit submission view
-            submissionViewFlipper.setDisplayedChild(SUBMISSION_VIEW_EDIT);
-            
-            // Handle single selection
-            if (data.getData() != null) {
-                Uri uri = data.getData();
-                selectedFileUris.add(uri);
-                
-                // Get persistable URI permission
-                getContentResolver().takePersistableUriPermission(uri, 
-                        Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                
-                // Add to adapter
-                submissionFileAdapter.addFileUri(uri);
-            }
-            // Handle multiple selection
-            else if (data.getClipData() != null) {
-                for (int i = 0; i < data.getClipData().getItemCount(); i++) {
-                    Uri uri = data.getClipData().getItemAt(i).getUri();
-                    selectedFileUris.add(uri);
-                    
-                    // Get persistable URI permission
-                    getContentResolver().takePersistableUriPermission(uri, 
-                            Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    
-                    // Add to adapter
-                    submissionFileAdapter.addFileUri(uri);
-                }
-            }
+    /**
+     * Enter edit mode
+     */
+    private void enterEditMode() {
+        isEditMode = true;
+
+        // Show edit view
+        submissionViewFlipper.setDisplayedChild(SUBMISSION_VIEW_NOT_SUBMITTED);
+
+        // Set comment if exists
+        if (submission != null && submission.getComment() != null) {
+            commentEditText.setText(submission.getComment());
         }
+
+        // Set files if exist
+        if (submission != null && submission.getFiles() != null) {
+            fileAdapter.setFiles(submission.getFiles());
+        }
+
+        // Update action button
+        updateActionButton();
+    }
+
+    /**
+     * Exit edit mode
+     */
+    private void exitEditMode() {
+        isEditMode = false;
+
+        // Clear selected files
+        selectedFiles.clear();
+
+        // Update view
+        updateSubmissionView();
+
+        // Update action button
+        updateActionButton();
     }
 
     /**
      * Submit assignment
      */
     private void submitAssignment() {
-        // Check if files are selected
-        if (submissionFileAdapter.getItemCount() == 0) {
+        // Get files from adapter
+        List<SubmissionFile> files = fileAdapter.getFiles();
+
+        // Validate files
+        if (files.isEmpty()) {
             Toast.makeText(this, R.string.select_at_least_one_file, Toast.LENGTH_SHORT).show();
             return;
         }
-        
+
+        // Get comment
+        String comment = commentEditText.getText().toString().trim();
+
+        // Get submission ID if updating
+        String submissionId = submission != null ? submission.getId() : null;
+
         // Show loading
         showLoading();
-        
-        // Get user ID
-        String userId = getCurrentUserId();
-        
-        // Get comment
-        String comment = submissionCommentEditText.getText().toString().trim();
-        
-        // Submit files to Firebase Storage and create submission
-        courseService.submitAssignment(
-            userId,
-            assignment.getId(),
-            submission != null ? submission.getId() : null,
-            submissionFileAdapter.getFiles(),
-            comment,
-            newSubmission -> {
-                // Success
-                submission = newSubmission;
-                
-                // Hide loading
-                hideLoading();
-                
-                // Show success message
-                Toast.makeText(this, R.string.assignment_submitted, Toast.LENGTH_SHORT).show();
-                
-                // Update view
-                updateSubmissionView();
-                updateActionButton();
-            },
-            e -> {
-                // Error
-                hideLoading();
-                Toast.makeText(this, getString(R.string.error_submitting_assignment, 
-                        e.getMessage()), Toast.LENGTH_SHORT).show();
+
+        // Submit assignment
+        courseService.submitAssignment(userId, assignment.getId(), comment, files, submissionId,
+                newSubmission -> {
+                    // Update submission
+                    submission = newSubmission;
+
+                    // Exit edit mode
+                    exitEditMode();
+
+                    // Hide loading
+                    hideLoading();
+
+                    // Show success message
+                    Toast.makeText(this, R.string.assignment_submitted, Toast.LENGTH_SHORT).show();
+                }, e -> {
+                    // Hide loading
+                    hideLoading();
+
+                    // Show error message
+                    Toast.makeText(this, R.string.error_submitting_assignment, Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    /**
+     * Navigate to next lesson
+     */
+    private void navigateToNextLesson() {
+        // This would navigate to the next lesson
+        // For simplicity, we'll just finish this activity
+        finish();
+    }
+
+    /**
+     * Select files for submission
+     */
+    private void selectFiles() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        startActivityForResult(Intent.createChooser(intent, "Select Files"), REQUEST_PICK_FILES);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_PICK_FILES && resultCode == RESULT_OK && data != null) {
+            // Handle selected files
+            if (data.getClipData() != null) {
+                // Multiple files selected
+                int count = data.getClipData().getItemCount();
+                for (int i = 0; i < count; i++) {
+                    Uri uri = data.getClipData().getItemAt(i).getUri();
+                    fileAdapter.addFileUri(uri);
+                    selectedFiles.add(uri);
+                }
+            } else if (data.getData() != null) {
+                // Single file selected
+                Uri uri = data.getData();
+                fileAdapter.addFileUri(uri);
+                selectedFiles.add(uri);
             }
-        );
+        }
     }
 
-    @Override
-    protected void onActionButtonClicked() {
-        if (submission == null) {
-            // No submission yet, start submission process
-            selectFiles();
-        } else if (submission.getGraded()) {
-            // Graded submission
-            boolean isPassed = submission.getGrade() >= assignment.getPassingGrade();
-            if (isPassed) {
-                // Passed, continue to next lesson
-                markLessonComplete();
-            } else {
-                // Failed, resubmit
-                selectFiles();
-            }
-        } else {
-            // Submitted but not graded, can update
-            submitAssignment();
+    /**
+     * Show loading state
+     */
+    private void showLoading() {
+        loadingProgressBar.setVisibility(View.VISIBLE);
+        contentLayout.setVisibility(View.GONE);
+        errorLayout.setVisibility(View.GONE);
+    }
+
+    /**
+     * Hide loading state
+     */
+    private void hideLoading() {
+        loadingProgressBar.setVisibility(View.GONE);
+        contentLayout.setVisibility(View.VISIBLE);
+        errorLayout.setVisibility(View.GONE);
+    }
+
+    /**
+     * Show error state
+     */
+    private void showError(String errorMessage) {
+        loadingProgressBar.setVisibility(View.GONE);
+        contentLayout.setVisibility(View.GONE);
+        errorLayout.setVisibility(View.VISIBLE);
+
+        // Set error message
+        TextView errorTextView = findViewById(R.id.errorTextView);
+        if (errorTextView != null) {
+            errorTextView.setText(errorMessage);
         }
     }
 
     @Override
-    protected void updateResourcesView() {
-        // Assignment doesn't show resources in the same way
-    }
-
-    @Override
-    public void onRemoveFile(int position) {
-        // Remove file from selected files
-        if (position < selectedFileUris.size()) {
-            selectedFileUris.remove(position);
-        }
-    }
-
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        
-        // Save selected file URIs
-        ArrayList<String> uriStrings = new ArrayList<>();
-        for (Uri uri : selectedFileUris) {
-            uriStrings.add(uri.toString());
-        }
-        outState.putStringArrayList("selectedFileUris", uriStrings);
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

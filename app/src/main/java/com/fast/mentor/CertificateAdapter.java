@@ -97,8 +97,7 @@ public class CertificateAdapter extends RecyclerView.Adapter<CertificateAdapter.
             if (course != null) {
                 int hours = course.getDuration() / 60; // Convert minutes to hours
                 durationTextView.setText(hours + (hours == 1 ? " hour" : " hours"));
-                lessonsTextView.setText(course.getLessonsCount() + 
-                        (course.getLessonsCount() == 1 ? " lesson" : " lessons"));
+                lessonsTextView.setText(course.getLessonsCount() + (course.getLessonsCount() == 1 ? " lesson" : " lessons"));
             } else {
                 durationTextView.setText("");
                 lessonsTextView.setText("");

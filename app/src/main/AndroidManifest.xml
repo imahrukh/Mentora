@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,10 +28,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mentora"
         tools:targetApi="31">
+
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.Mentora">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,12 +39,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true"/>
+
+        <!-- 3) After login: MainActivity with bottom nav -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"/>
         <activity android:name=".CertificatesActivity" android:exported="false"/>
-        <activity android:name=".VideoPlayerActivity" android:configChanges="orientation|screenSize|keyboardHidden" android:exported="false"/>
+        <activity android:name=".VideoLessonActivity" android:configChanges="orientation|screenSize|keyboardHidden" android:exported="false"/>
         <activity android:name=".PDFViewerActivity" android:exported="false"/>
-        <activity android:name=".QuizActivity" android:exported="false"/>
+        <activity android:name=".ProfileEditActivity" />
+        <activity android:name=".CourseHomeActivity" />
+        <activity android:name=".CourseDetailActivity" />
+        <activity android:name=".ChangePasswordActivity" />
+        <activity android:name=".SignupActivity" />
+        <activity android:name=".LessonContentActivity" />
+        <!--<activity android:name=".QuizActivity" android:exported="false"/>-->
         <!--  File Provider for sharing certificates  -->
-        <provider android:name="androidx.core.content.FileProvider" android:authorities="${applicationId}.fileprovider" android:exported="false" android:grantUriPermissions="true">
+        <provider android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths"/>
         </provider>
     </application>

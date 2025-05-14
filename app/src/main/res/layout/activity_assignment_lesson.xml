@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AssignmentLessonActivity"
+    android:background="@color/colorBackground">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Widget.Mentora.CardView">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorSurface"
+            app:popupTheme="@style/Widget.Mentora.CardView" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!-- Loading Progress -->
+        <ProgressBar
+            android:id="@+id/loadingProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <!-- Error Layout -->
+        <LinearLayout
+            android:id="@+id/errorLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:src="@drawable/ic_error"
+                app:tint="?attr/colorError" />
+
+            <TextView
+                android:id="@+id/errorTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="Error loading assignment"
+                android:textAppearance="?attr/textAppearanceBody1" />
+
+            <Button
+                android:id="@+id/retryButton"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Retry" />
+
+        </LinearLayout>
+
+        <!-- Content Layout -->
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/contentLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:padding="16dp"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Assignment Info -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true"
+                    android:background="@color/colorSurface">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/titleTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?attr/textAppearanceHeadline6"
+                            tools:text="Assignment Title" />
+
+                        <TextView
+                            android:id="@+id/pointsTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textColor="@color/black"
+                            tools:text="100 points" />
+
+                        <TextView
+                            android:id="@+id/deadlineTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textColor="@color/black"
+                            tools:text="Due: May 31, 2023" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:background="@color/colorInfo" />
+
+                        <TextView
+                            android:id="@+id/descriptionTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@color/grey"
+                            android:textSize="12sp"
+                            tools:text="This is the assignment description explaining what students need to do." />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="Instructions"
+                            android:textAppearance="@color/grey"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/instructionsTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:textAppearance="@color/grey"
+                            android:textSize="12sp"
+                            tools:text="Step-by-step instructions for completing the assignment." />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Submission Section -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true">
+
+                    <ViewFlipper
+                        android:id="@+id/submissionViewFlipper"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <!-- Not Submitted View -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Your Submission"
+                                android:textAppearance="@color/black"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="Add files to submit"
+                                android:textAppearance="@color/grey"
+                                android:textSize="12sp" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:hint="Comment (optional)">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/commentEditText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="top"
+                                    android:inputType="textMultiLine"
+                                    android:lines="3" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/filesRecyclerView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                tools:itemCount="2"
+                                tools:listitem="@layout/item_submission_file" />
+
+                            <Button
+                                android:id="@+id/addFileButton"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="Add File"
+                                app:icon="@drawable/ic_add_file"
+                                app:iconTint="@color/white"/>
+
+                            <Button
+                                android:id="@+id/actionButton"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:background="@drawable/badge_background_search"
+                                android:text="Submit" />
+
+                        </LinearLayout>
+
+                        <!-- Submitted But Not Graded View -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Your Submission"
+                                    android:textAppearance="@color/black"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/submissionStatusTextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/bg_status_submitted"
+                                    android:text="@string/submitted"
+                                    android:textSize="12sp"
+                                    android:textColor="#2196F3" />
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/submissionDateTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:textAppearance="@color/black"
+                                android:textSize="12sp"
+                                tools:text="Submitted on May 15, 2023" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginBottom="16dp"
+                                android:background="@color/colorInfo" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Submitted Files"
+                                android:textAppearance="@color/black"
+                                android:textSize="12sp"
+                               android:textStyle="bold" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/submittedFilesRecyclerView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                tools:itemCount="2"
+                                tools:listitem="@layout/item_submission_file" />
+
+                            <Button
+                                android:id="@+id/resubmitButton"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:text="@string/resubmit_assignment" />
+
+                        </LinearLayout>
+
+                        <!-- Graded View -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Submission Result"
+                                    android:textAppearance="@color/black"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/gradedStatusTextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/bg_status_passed"
+                                    android:text="@string/passed"
+                                    android:textAppearance="@color/black"
+                                    android:textSize="12sp"
+                                    android:textColor="#4CAF50" />
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/gradeTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:textAppearance="?attr/textAppearanceHeadline6"
+                                android:textColor="@color/colorInfo"
+                                android:textStyle="bold"
+                                android:textSize="12sp"
+                                tools:text="85/100 points" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginBottom="16dp"
+                                android:background="?attr/colorControlHighlight" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Feedback"
+                                android:textAppearance="@color/black"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/feedbackTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:textAppearance="@color/black"
+                                android:textSize="12sp"
+                                tools:text="Good job, but you could improve by..." />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginBottom="16dp"
+                                android:background="?attr/colorControlHighlight" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="@color/black"
+                                android:textSize="12sp"
+                                android:text="Submitted Files"
+                                android:textStyle="bold" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/gradedFilesRecyclerView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                tools:itemCount="2"
+
+                                tools:listitem="@layout/item_submission_file" />
+
+                            <Button
+                                android:id="@+id/continueButton"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:text="@string/continue_to_next" />
+
+                        </LinearLayout>
+
+                    </ViewFlipper>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </FrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

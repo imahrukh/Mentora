@@ -155,4 +155,18 @@ public class ContentItem implements Serializable {
             }
         }
     }
+    public String getButtonText() {
+        switch (type) {
+            case "video":
+                return isCompleted ? "Watch Again" : "Watch";
+            case "reading":
+                return isCompleted ? "Read Again" : "Read";
+            case "quiz":
+                return isCompleted ? "Retry Quiz" : "Start Quiz";
+            case "assignment":
+                return isCompleted ? "Review" : "Start";
+            default:
+                return "Open";
+        }
+    }
 }

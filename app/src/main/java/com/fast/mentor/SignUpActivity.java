@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.fast.mentor.MainActivity;
 import com.fast.mentor.R;
-import com.fast.mentor.models.UserProfile;
+import com.fast.mentor.UserProfile;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

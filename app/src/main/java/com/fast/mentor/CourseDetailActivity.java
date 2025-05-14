@@ -123,16 +123,16 @@ public class CourseDetailActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        
+
         CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsingToolbar);
         collapsingToolbar.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
-        
+
         // Set navigation click listener to finish activity
         toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     private void setupModulesRecyclerView() {
-        moduleAdapter = new ModuleAdapter(this, new ArrayList<>(), isEnrolled);
+        moduleAdapter = new ModuleAdapter(this, new ArrayList<>(), isEnrolled, item->{});
         modulesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         modulesRecyclerView.setHasFixedSize(true);
         modulesRecyclerView.setAdapter(moduleAdapter);
@@ -148,12 +148,12 @@ public class CourseDetailActivity extends AppCompatActivity {
             loadCourseDetails();
         } else {
             // First check if user is enrolled in this course
-            courseService.getUserEnrollment(currentUser.getUid(), courseId, 
+            courseService.getUserEnrollment(currentUser.getUid(), courseId,
                     enrollment -> {
                         this.enrollment = enrollment;
                         isEnrolled = (enrollment != null);
                         loadCourseDetails();
-                    }, 
+                    },
                     e -> {
                         // Continue loading course details even if enrollment check fails
                         isEnrolled = false;
@@ -163,12 +163,12 @@ public class CourseDetailActivity extends AppCompatActivity {
     }
 
     private void loadCourseDetails() {
-        courseService.getCourse(courseId, 
+        courseService.getCourse(courseId,
                 course -> {
                     this.course = course;
                     displayCourseDetails();
                     loadModules();
-                }, 
+                },
                 e -> {
                     hideLoading();
                     showError(getString(R.string.error_loading_course, e.getMessage()));
@@ -176,11 +176,11 @@ public class CourseDetailActivity extends AppCompatActivity {
     }
 
     private void loadModules() {
-        courseService.getCourseModules(courseId, 
+        courseService.getCourseModules(courseId,
                 modules -> {
                     hideLoading();
                     updateModules(modules);
-                }, 
+                },
                 e -> {
                     hideLoading();
                     showError(getString(R.string.error_loading_course_content));
@@ -191,7 +191,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         // Set course title and author
         courseTitleTextView.setText(course.getTitle());
         authorTextView.setText(getString(R.string.course_author_format, course.getAuthor()));
-        
+
         // Set course image
         if (course.getImageUrl() != null && !course.getImageUrl().isEmpty()) {
             Glide.with(this)
@@ -202,23 +202,23 @@ public class CourseDetailActivity extends AppCompatActivity {
         } else {
             courseImageView.setImageResource(R.drawable.placeholder_course);
         }
-        
+
         // Set course stats
         ratingTextView.setText(String.format(Locale.getDefault(), "%.1f", course.getRating()));
         durationTextView.setText(course.getDuration());
-        
+
         // Format students count using plural string resource
         int enrolledCount = course.getEnrolledCount();
         studentsTextView.setText(getResources().getQuantityString(
                 R.plurals.course_enrolled_count, enrolledCount, enrolledCount));
-        
+
         // Set course description
         descriptionTextView.setText(course.getDescription());
-        
+
         // Set course details
         difficultyTextView.setText(course.getDifficulty());
         languageTextView.setText(course.getLanguage());
-        
+
         // Format price (free or paid)
         if (course.isFree()) {
             priceTextView.setText(getString(R.string.enroll_free));
@@ -228,25 +228,25 @@ public class CourseDetailActivity extends AppCompatActivity {
             priceTextView.setText(formattedPrice);
             enrollButton.setText(getString(R.string.enroll_paid, formattedPrice));
         }
-        
+
         // Set requirements
         requirementsTextView.setText(course.getRequirements());
-        
+
         // Handle UI for enrolled status
         updateEnrollmentUI();
     }
-    
+
     private void updateEnrollmentUI() {
         if (isEnrolled) {
             // Show progress
             progressBar.setVisibility(View.VISIBLE);
             progressTextView.setVisibility(View.VISIBLE);
-            
+
             // Set progress
             int progress = enrollment.getProgress();
             progressBar.setProgress(progress);
             progressTextView.setText(getString(R.string.course_progress_format, progress));
-            
+
             // Update enroll button to continue learning or view certificate
             if (enrollment.isCompleted()) {
                 enrollButton.setText(R.string.certificate_download);
@@ -259,7 +259,7 @@ public class CourseDetailActivity extends AppCompatActivity {
             // Hide progress for non-enrolled courses
             progressBar.setVisibility(View.GONE);
             progressTextView.setVisibility(View.GONE);
-            
+
             // Set enroll button
             if (course.isFree()) {
                 enrollButton.setText(R.string.enroll_free);
@@ -269,41 +269,46 @@ public class CourseDetailActivity extends AppCompatActivity {
             }
             enrollButton.setOnClickListener(v -> enrollInCourse());
         }
-        
+
         // Update module adapter with enrollment status
         if (moduleAdapter != null) {
             moduleAdapter.setEnrolled(isEnrolled);
         }
     }
-    
+
     private void updateModules(List<Module> modules) {
         moduleAdapter.updateModules(modules);
     }
-    
+
     private void enrollInCourse() {
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if (currentUser == null) {
             // User needs to log in first
             Toast.makeText(this, "Please log in to enroll in courses", Toast.LENGTH_SHORT).show();
+
             // Start login activity
-            // TODO: Navigate to login screen
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.putExtra("redirect_after_login", CourseDetailActivity.class.getSimpleName());
+            startActivity(intent);
+
+            finish();
             return;
         }
-        
+
         // Show enrolling progress
         enrollButton.setEnabled(false);
         enrollButton.setText(R.string.enrolling);
-        
-        courseService.enrollInCourse(currentUser.getUid(), courseId, 
+
+        courseService.enrollInCourse(currentUser.getUid(), courseId,
                 enrollment -> {
                     this.enrollment = enrollment;
                     isEnrolled = true;
                     updateEnrollmentUI();
                     Toast.makeText(this, R.string.enrollment_success, Toast.LENGTH_SHORT).show();
                     enrollButton.setEnabled(true);
-                }, 
+                },
                 e -> {
-                    Toast.makeText(this, getString(R.string.enrollment_error, e.getMessage()), 
+                    Toast.makeText(this, getString(R.string.enrollment_error, e.getMessage()),
                             Toast.LENGTH_LONG).show();
                     enrollButton.setEnabled(true);
                     if (course.isFree()) {
@@ -314,26 +319,59 @@ public class CourseDetailActivity extends AppCompatActivity {
                     }
                 });
     }
-    
+
     private void continueLearning() {
-        // TODO: Navigate to the next incomplete lesson
+        if (course == null || course.getModules() == null) {
+            Toast.makeText(this, "Course content not available", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        for (Module module : course.getModules()) {
+            if (module.getItems() == null) continue;
+
+            for (ContentItem item : module.getItems()) {
+                if (!item.isCompleted()) {
+                    // Navigate to ContentItemActivity (or whatever activity plays/shows the lesson)
+                    Intent intent = new Intent(this, LessonContentActivity.class);
+                    intent.putExtra("course_id", courseId);
+                    intent.putExtra("module_id", module.getModuleId());
+                    intent.putExtra("content_item", item);
+                    startActivity(intent);
+                    return;
+                }
+            }
+        }
+
+        // All items completed
+        Toast.makeText(this, "You've completed all lessons!", Toast.LENGTH_SHORT).show();
     }
-    
+
+
     private void viewCertificate() {
-        // TODO: Navigate to certificate viewer
+        if (enrollment == null || course == null) {
+            Toast.makeText(this, "Certificate data not available", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Intent intent = new Intent(this, CertificatesActivity.class);
+        intent.putExtra("course_title", course.getTitle());
+        intent.putExtra("user_name", FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        startActivity(intent);
     }
-    
+
+
     private void showLoading() {
         loadingProgressBar.setVisibility(View.VISIBLE);
         errorView.setVisibility(View.GONE);
     }
-    
+
     private void hideLoading() {
         loadingProgressBar.setVisibility(View.GONE);
     }
-    
+
     private void showError(String errorMessage) {
         errorView.setVisibility(View.VISIBLE);
         errorTextView.setText(errorMessage);
     }
+
 }

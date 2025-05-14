@@ -70,8 +70,10 @@ dependencies {
     implementation(libs.firebase.firestore)
 
     // PDF Viewer
-    implementation("com.github.barteksc:AndroidPdfViewer:master-SNAPSHOT")
 
+    // Image Loading
+    implementation("com.github.bumptech.glide:glide:4.15.1")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
 
     // YouTube Player
     implementation(libs.youtube.player)

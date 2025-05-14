@@ -1,5 +1,6 @@
 package com.fast.mentor;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,8 +68,8 @@ public class WeekAdapter extends RecyclerView.Adapter<WeekAdapter.WeekViewHolder
 
         public void bind(final Week week, final OnContentItemClickListener listener) {
             // Set week details
-            tvWeekTitle.setText(String.format("Week %d: %s", week.getNumber(), week.getTitle()));
-            
+            tvWeekTitle.setText(String.format("Week %d: %s", week.getWeekNumber(), week.getTitle()));
+
             if (week.getDescription() != null && !week.getDescription().isEmpty()) {
                 tvWeekDescription.setText(week.getDescription());
                 tvWeekDescription.setVisibility(View.VISIBLE);
@@ -78,19 +79,24 @@ public class WeekAdapter extends RecyclerView.Adapter<WeekAdapter.WeekViewHolder
 
             // Setup expand/collapse functionality
             updateExpandState(week);
-            
+
             itemView.setOnClickListener(v -> {
-                week.toggleExpanded();
+                week.setExpanded(!week.isExpanded());
                 updateExpandState(week);
             });
 
-            // Setup modules recyclerview
+            // Setup modules RecyclerView
             if (week.getModules() != null && !week.getModules().isEmpty()) {
-                ModuleAdapter moduleAdapter = new ModuleAdapter(week.getModules(), listener);
-                rvModules.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
+                Context context = itemView.getContext();
+                boolean isEnrolled = true; // or false depending on your app logic
+
+                ModuleAdapter moduleAdapter = new ModuleAdapter(context, week.getModules(), isEnrolled, listener);
+                rvModules.setLayoutManager(new LinearLayoutManager(context));
                 rvModules.setAdapter(moduleAdapter);
             }
         }
+
+
 
         private void updateExpandState(Week week) {
             // Update UI based on expanded state

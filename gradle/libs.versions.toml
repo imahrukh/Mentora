@@ -15,8 +15,6 @@ material = "1.12.0"
 constraintlayout = "2.2.1"
 navigation = "2.9.0"
 firebase-bom = "33.13.0"
-pdf-viewer = "2.8.2"
-
 youtube-player = "12.1.0"
 glide = "4.16.0"
 circleimageview = "3.1.0"
@@ -53,7 +51,6 @@ firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
 
-android-pdf-viewer = { module = "com.github.barteksc:android-pdf-viewer", version = "placeholder" }
 youtube-player = { group = "com.pierfrancescosoffritti.androidyoutubeplayer", name = "core", version.ref = "youtube-player" }
 
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }

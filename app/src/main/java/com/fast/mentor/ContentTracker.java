@@ -252,7 +252,7 @@ public class ContentTracker {
         dbHelper.updateCourseProgress(userId, content.getCourseId());
         
         // Generate new recommendations based on updated metrics
-        RecommendationEngine.getInstance(null).generateRecommendations(userId);
+        RecommendationEngine.getInstance(null).generateRecommendations(String.valueOf(userId));
         
         Log.d(TAG, "Updated metrics and progress for user " + userId + 
               ", completion rate: " + completionRate + "%");
@@ -345,4 +345,5 @@ public class ContentTracker {
             startTimeMs = System.currentTimeMillis();
         }
     }
+
 }

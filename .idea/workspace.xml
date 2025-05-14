@@ -5,6 +5,11 @@
       <config />
     </shared>
     <layouts>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_assignment_lesson.xml">
+        <config>
+          <theme>@style/Theme.Mentora</theme>
+        </config>
+      </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_assignment_submission.xml">
         <config>
           <theme>@style/Theme.Mentora</theme>
@@ -40,6 +45,11 @@
           <theme>@style/Theme.Mentora</theme>
         </config>
       </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_loading.xml">
+        <config>
+          <theme>@style/Theme.Mentora</theme>
+        </config>
+      </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml">
         <config>
           <theme>@style/Theme.Mentora</theme>
@@ -51,6 +61,11 @@
         </config>
       </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_notification_settings.xml">
+        <config>
+          <theme>@style/Theme.Mentora</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_pdf_lesson.xml">
         <config>
           <theme>@style/Theme.Mentora</theme>
         </config>
@@ -85,7 +100,7 @@
           <theme>@style/Theme.Mentora</theme>
         </config>
       </layout>
-      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_video_player.xml">
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_video_lesson.xml">
         <config>
           <theme>@style/Theme.Mentora</theme>
         </config>
@@ -301,7 +316,106 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c6bc08a4-ebc9-49bc-80e2-3faf4e980082" name="Changes" comment="" />
+    <list default="true" id="c6bc08a4-ebc9-49bc-80e2-3faf4e980082" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/checksums/md5-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/checksums/sha1-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/dependencies-accessors/0a4915d9cedb52693c89e13496ae80a0862ba39a/metadata.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/dependencies-accessors/0a4915d9cedb52693c89e13496ae80a0862ba39a/sources/org/gradle/accessors/dm/LibrariesForLibs.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/dependencies-accessors/0a4915d9cedb52693c89e13496ae80a0862ba39a/sources/org/gradle/accessors/dm/LibrariesForLibsInPluginsBlock.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/dependencies-accessors/d3b9b4543e2e3a04571fcfa3317285a9c87e278d/metadata.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/dependencies-accessors/d3b9b4543e2e3a04571fcfa3317285a9c87e278d/sources/org/gradle/accessors/dm/LibrariesForLibs.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/dependencies-accessors/d3b9b4543e2e3a04571fcfa3317285a9c87e278d/sources/org/gradle/accessors/dm/LibrariesForLibsInPluginsBlock.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/config.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/config.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/pdfjs/web/viewer.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/pdfjs/web/viewer.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/Assignment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/Assignment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/AssignmentLessonActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/AssignmentLessonActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/AssignmentSubmission.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/AssignmentSubmission.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/AssignmentSubmissionActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/AssignmentSubmissionActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/Certificate.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/Certificate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/CertificateAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/CertificateAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/CertificateGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/CertificateGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/CertificateManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/CertificateManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/CertificateService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/CertificateService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/CertificatesActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/CertificatesActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/ContentItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/ContentItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/ContentItemAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/ContentItemAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/ContentTracker.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/ContentTracker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/Course.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/CourseContentFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/CourseContentFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/CourseDetailActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/CourseDetailActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/CourseDiscussionsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/CourseDiscussionsFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/CourseHomeActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/CourseHomeActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/CourseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/CourseService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/DatabaseHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/DatabaseHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/DocumentLessonActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/DownloadManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/DownloadManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/Enrollment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/Enrollment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/ExploreFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/ExploreFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/LearnFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/LearnFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/Lesson.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/Lesson.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/LessonAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/LessonAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/LessonContentActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/LessonContentActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/LessonProgressManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/LessonProgressManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/Module.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/Module.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/ModuleAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/ModuleAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/PDFViewerActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/PDFViewerActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/ProfileEditActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/ProfileEditActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/ProfileFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/ProfileFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/QuizActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/QuizActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/QuizLessonActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/QuizLessonActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/QuizQuestionAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/QuizQuestionAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/RecommendationEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/RecommendationEngine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/Resource.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/Resource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/ResourceAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/ResourceAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/SearchAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/SearchAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/SearchFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/SearchFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/SearchService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/SearchService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/SignUpActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/SignUpActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/SplashActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/SplashActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/SubmissionFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/SubmissionFile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/SubmissionFileAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/SubmissionFileAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/VideoLessonActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/VideoLessonActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/VideoPlayerActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/Week.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/Week.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/WeekAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fast/mentor/WeekAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/color/bottom_nav_selector.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/color/bottom_nav_selector.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_completed.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_completed.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_error.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_error.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_pdf.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_pdf.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_pending.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_pending.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_profile_placeholder.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_profile_placeholder.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_video.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_video.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/progress_bar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/progress_bar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_assignment_submission.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_assignment_submission.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_pdf_viewer.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_pdf_viewer.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_video_player.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/content_video_lesson.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/content_video_lesson.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_explore.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_explore.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_learn.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_learn.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_profile.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_profile.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/item_course.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/item_course.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/item_search_result.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/item_search_result.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/item_submission_file.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/item_submission_file.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/xml/file_paths.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/xml/file_paths.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/libs.versions.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -310,24 +424,78 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=C:\Users\memah\.android\avd\Samsung_A15_API_35.avd)]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
   </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$/app">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Mentora" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Mentora" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Mentora" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Mentora" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="other" type="c8890929:TasksNode$1" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="resourceFile" />
+        <option value="layoutResourceFile" />
+        <option value="Interface" />
         <option value="valueResourceFile" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/AI/AI2002" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "imahrukh"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/imahrukh/Mentora.git",
+    "accountId": "6e7bbc04-9d39-4bbe-930e-e6efd3909f25"
+  }
+}]]></component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
+    <option name="showPreview" value="true" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
@@ -337,22 +505,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Android App.app.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/6-semm/SMD/Mentora",
-    "project.structure.last.edited": "Dependencies",
-    "project.structure.proportion": "0.17",
-    "project.structure.side.proportion": "0.2"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Android App.app.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;com.google.services.firebase.aqiPopupShown&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/6-semm/SMD/Mentora&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Dependencies&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;memory.settings&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\6-sem\app\src\main\assets\pdfjs" />
@@ -454,12 +624,12 @@
       <map>
         <entry key="com.fast.mentor">
           <value>
-            <CheckInfo lastCheckTimestamp="1746896012654" />
+            <CheckInfo lastCheckTimestamp="1747194937909" />
           </value>
         </entry>
         <entry key="com.fast.mentor.test">
           <value>
-            <CheckInfo lastCheckTimestamp="1746896012654" />
+            <CheckInfo lastCheckTimestamp="1747194937905" />
           </value>
         </entry>
       </map>

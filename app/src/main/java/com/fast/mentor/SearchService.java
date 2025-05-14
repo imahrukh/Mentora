@@ -2,7 +2,7 @@ package com.fast.mentor;
 
 import androidx.annotation.NonNull;
 
-import com.fast.mentor.model.SearchResult;
+import com.fast.mentor.SearchResult;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;

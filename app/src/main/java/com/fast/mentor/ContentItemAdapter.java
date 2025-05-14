@@ -3,20 +3,14 @@ package com.fast.mentor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fast.mentor.R;
-
 import java.util.List;
 
-/**
- * Adapter for displaying content items (videos, readings, quizzes, etc.)
- */
 public class ContentItemAdapter extends RecyclerView.Adapter<ContentItemAdapter.ContentItemViewHolder> {
 
     private final List<ContentItem> contentItems;
@@ -46,43 +40,31 @@ public class ContentItemAdapter extends RecyclerView.Adapter<ContentItemAdapter.
     }
 
     static class ContentItemViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView ivContentType;
+        private final ImageView ivContentIcon;
         private final TextView tvContentTitle;
-        private final TextView tvContentDuration;
-        private final Button btnAction;
-        private final ImageView ivCompleted;
+        private final TextView tvContentInfo;
+        private final ImageView ivCompletionStatus;
 
         public ContentItemViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivContentType = itemView.findViewById(R.id.ivContentType);
+            ivContentIcon = itemView.findViewById(R.id.ivContentIcon);
             tvContentTitle = itemView.findViewById(R.id.tvContentTitle);
-            tvContentDuration = itemView.findViewById(R.id.tvContentDuration);
-            btnAction = itemView.findViewById(R.id.btnAction);
-            ivCompleted = itemView.findViewById(R.id.ivCompleted);
+            tvContentInfo = itemView.findViewById(R.id.tvContentInfo);
+            ivCompletionStatus = itemView.findViewById(R.id.ivCompletionStatus);
         }
 
         public void bind(final ContentItem contentItem, final WeekAdapter.OnContentItemClickListener listener) {
             // Set content item details
             tvContentTitle.setText(contentItem.getTitle());
-            tvContentDuration.setText(contentItem.getFormattedDuration());
-            
+            tvContentInfo.setText(contentItem.getType().substring(0, 1).toUpperCase() + contentItem.getType().substring(1) + " • " + contentItem.getFormattedDuration());
+
             // Set appropriate icon based on content type
-            ivContentType.setImageResource(contentItem.getIconResource());
-            
+            ivContentIcon.setImageResource(contentItem.getTypeIconResource());
+
             // Set completion status
-            ivCompleted.setVisibility(contentItem.isCompleted() ? View.VISIBLE : View.GONE);
-            
-            // Set button text based on content type and completion status
-            btnAction.setText(contentItem.getButtonText());
-            
-            // Set click listener for the action button
-            btnAction.setOnClickListener(v -> {
-                if (listener != null) {
-                    listener.onContentItemClick(contentItem);
-                }
-            });
-            
-            // Make the entire item clickable as well
+            ivCompletionStatus.setVisibility(contentItem.isCompleted() ? View.VISIBLE : View.GONE);
+
+            // Make the entire item clickable
             itemView.setOnClickListener(v -> {
                 if (listener != null) {
                     listener.onContentItemClick(contentItem);

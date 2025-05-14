@@ -8,6 +8,7 @@ import android.provider.OpenableColumns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -15,135 +16,175 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fast.mentor.R;
-import com.fast.mentor.model.SubmissionFile;
-import com.fast.mentor.util.FileUtils;
+import com.fast.mentor.SubmissionFile;
+import com.fast.mentor.FileUtils;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 /**
  * Adapter for displaying submission files in a RecyclerView.
  */
 public class SubmissionFileAdapter extends RecyclerView.Adapter<SubmissionFileAdapter.FileViewHolder> {
 
-    private final Context context;
-    private final List<Object> items = new ArrayList<>(); // Can be Uri or SubmissionFile
-    private final boolean isEditMode;
-    private final SubmissionFileListener listener;
+    private Context context;
+    private List<SubmissionFile> files = new ArrayList<>();
+    private boolean editable;
+    private OnFileRemovedListener onFileRemovedListener;
+    private FirebaseStorage storage;
 
     /**
-     * Interface for file operations
+     * Interface for file removal callback
      */
-    public interface SubmissionFileListener {
-        void onRemoveFile(int position);
+    public interface OnFileRemovedListener {
+        void onFileRemoved(int position);
     }
 
     /**
      * Constructor
      */
-    public SubmissionFileAdapter(Context context, boolean isEditMode, SubmissionFileListener listener) {
+    public SubmissionFileAdapter(Context context, boolean editable, OnFileRemovedListener listener) {
         this.context = context;
-        this.isEditMode = isEditMode;
-        this.listener = listener;
+        this.editable = editable;
+        this.onFileRemovedListener = listener;
+        this.storage = FirebaseStorage.getInstance();
     }
 
     /**
-     * Set existing submission files
+     * Set files
      */
     public void setFiles(List<SubmissionFile> files) {
-        items.clear();
-        if (files != null) {
-            items.addAll(files);
-        }
+        this.files = files != null ? files : new ArrayList<>();
         notifyDataSetChanged();
     }
 
     /**
-     * Add a new file URI for upload
+     * Get files
      */
-    public void addFileUri(Uri uri) {
-        items.add(uri);
-        notifyItemInserted(items.size() - 1);
+    public List<SubmissionFile> getFiles() {
+        return files;
     }
 
     /**
-     * Get all files (existing and new) as SubmissionFile objects
+     * Add file from URI
      */
-    public List<SubmissionFile> getFiles() {
-        List<SubmissionFile> result = new ArrayList<>();
-        
-        for (Object item : items) {
-            if (item instanceof SubmissionFile) {
-                result.add((SubmissionFile) item);
-            } else if (item instanceof Uri) {
-                // Create new SubmissionFile from Uri
-                Uri uri = (Uri) item;
-                String fileName = getFileNameFromUri(uri);
-                String fileType = FileUtils.getResourceTypeFromExtension(fileName);
-                
-                SubmissionFile file = new SubmissionFile();
-                file.setName(fileName);
-                file.setType(fileType);
-                file.setUri(uri.toString()); // Store local uri temporarily
-                file.setLocal(true); // Mark as local file
-                
-                result.add(file);
+    public void addFileUri(Uri uri) {
+        // Get file name
+        String fileName = getFileNameFromUri(uri);
+
+        // Create submission file
+        SubmissionFile file = new SubmissionFile();
+        file.setId(UUID.randomUUID().toString());
+        file.setName(fileName);
+        file.setLocalUri(uri.toString());
+        file.setType(getFileType(uri));
+
+        // Add to list
+        files.add(file);
+
+        // Notify adapter
+        notifyItemInserted(files.size() - 1);
+    }
+
+    /**
+     * Get file name from URI
+     */
+    private String getFileNameFromUri(Uri uri) {
+        String result = null;
+
+        // Try to get display name from content resolver
+        if (uri.getScheme().equals("content")) {
+            String[] projection = {android.provider.MediaStore.MediaColumns.DISPLAY_NAME};
+            try (android.database.Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null)) {
+                if (cursor != null && cursor.moveToFirst()) {
+                    int columnIndex = cursor.getColumnIndexOrThrow(android.provider.MediaStore.MediaColumns.DISPLAY_NAME);
+                    result = cursor.getString(columnIndex);
+                }
+            } catch (Exception e) {
+                // Fallback to path
             }
         }
-        
+
+        // If not found, try to get last path segment
+        if (result == null) {
+            result = uri.getLastPathSegment();
+        }
+
+        // If still not found, use a default name
+        if (result == null) {
+            result = "file_" + UUID.randomUUID().toString().substring(0, 8);
+        }
+
         return result;
     }
 
     /**
-     * Get filename from URI
+     * Get file type from URI
      */
-    private String getFileNameFromUri(Uri uri) {
-        String result = null;
-        if (uri.getScheme().equals("content")) {
-            try (Cursor cursor = context.getContentResolver().query(uri, null, null, null, null)) {
-                if (cursor != null && cursor.moveToFirst()) {
-                    int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-                    if (nameIndex != -1) {
-                        result = cursor.getString(nameIndex);
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+    private String getFileType(Uri uri) {
+        String mimeType = context.getContentResolver().getType(uri);
+
+        if (mimeType == null) {
+            // Try to get from file extension
+            String fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri.toString());
+            if (fileExtension != null) {
+                mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension);
             }
         }
-        
-        if (result == null) {
-            result = uri.getLastPathSegment();
+
+        if (mimeType != null) {
+            if (mimeType.startsWith("image/")) {
+                return "image";
+            } else if (mimeType.startsWith("audio/")) {
+                return "audio";
+            } else if (mimeType.startsWith("video/")) {
+                return "video";
+            } else if (mimeType.startsWith("text/")) {
+                return "text";
+            } else if (mimeType.equals("application/pdf")) {
+                return "pdf";
+            } else if (mimeType.contains("msword") || mimeType.contains("wordprocessingml")) {
+                return "doc";
+            } else if (mimeType.contains("spreadsheet") || mimeType.contains("excel")) {
+                return "xls";
+            } else if (mimeType.contains("presentation") || mimeType.contains("powerpoint")) {
+                return "ppt";
+            } else if (mimeType.contains("zip") || mimeType.contains("rar") || mimeType.contains("tar") || mimeType.contains("compressed")) {
+                return "archive";
+            } else if (mimeType.contains("code") || mimeType.contains("java") || mimeType.contains("javascript") ||
+                    mimeType.contains("python") || mimeType.contains("html") || mimeType.contains("css")) {
+                return "code";
+            }
         }
-        
-        return result != null ? result : "file";
+
+        // Default type
+        return "file";
     }
 
     /**
-     * Get file size from URI
+     * Remove file at position
      */
-    private long getFileSizeFromUri(Uri uri) {
-        long size = 0;
-        if (uri.getScheme().equals("content")) {
-            try (Cursor cursor = context.getContentResolver().query(uri, null, null, null, null)) {
-                if (cursor != null && cursor.moveToFirst()) {
-                    int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
-                    if (sizeIndex != -1) {
-                        size = cursor.getLong(sizeIndex);
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+    public void removeFile(int position) {
+        if (position >= 0 && position < files.size()) {
+            files.remove(position);
+            notifyItemRemoved(position);
+
+            if (onFileRemovedListener != null) {
+                onFileRemovedListener.onFileRemoved(position);
             }
         }
-        
-        return size;
     }
 
     @NonNull
@@ -156,213 +197,154 @@ public class SubmissionFileAdapter extends RecyclerView.Adapter<SubmissionFileAd
 
     @Override
     public void onBindViewHolder(@NonNull FileViewHolder holder, int position) {
-        Object item = items.get(position);
-        holder.bind(item, position);
+        SubmissionFile file = files.get(position);
+
+        // Set file name
+        holder.fileNameTextView.setText(file.getName());
+
+        // Set file type icon
+        holder.fileTypeImageView.setImageResource(getFileTypeIcon(file.getType()));
+
+        // Set visibility of remove button
+        holder.removeButton.setVisibility(editable ? View.VISIBLE : View.GONE);
+
+        // Set click listener for remove button
+        holder.removeButton.setOnClickListener(v -> removeFile(holder.getAdapterPosition()));
+
+        // Set click listener for file view
+        holder.itemView.setOnClickListener(v -> {
+            if (editable) return; // Don't open file in edit mode
+
+            // Check if file has remote URL or local URI
+            if (file.getUrl() != null && !file.getUrl().isEmpty()) {
+                // Remote file needs to be downloaded first
+                downloadAndOpenFile(file);
+            } else if (file.getLocalUri() != null && !file.getLocalUri().isEmpty()) {
+                // Local file can be opened directly
+                try {
+                    openFile(Uri.parse(file.getLocalUri()));
+                } catch (Exception e) {
+                    Toast.makeText(context, R.string.no_app_to_open_file, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        // Reset progress visibility
+        holder.progressBar.setVisibility(View.GONE);
+    }
+
+    /**
+     * Download and open a file
+     */
+    private void downloadAndOpenFile(SubmissionFile file) {
+        // Show downloading toast
+        Toast.makeText(context, R.string.downloading_file_to_view, Toast.LENGTH_SHORT).show();
+
+        // Get file reference
+        StorageReference fileRef = storage.getReferenceFromUrl(file.getUrl());
+
+        // Create local file
+        try {
+            File localFile = File.createTempFile("download_", getFileExtension(file.getName()));
+
+            // Download file
+            fileRef.getFile(localFile)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        // File downloaded successfully
+                        Uri fileUri = FileProvider.getUriForFile(context,
+                                context.getPackageName() + ".fileprovider",
+                                localFile);
+
+                        // Open file
+                        try {
+                            openFile(fileUri);
+                        } catch (Exception e) {
+                            Toast.makeText(context, R.string.no_app_to_open_file, Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handle failed download
+                        Toast.makeText(context, "Error downloading file: " + e.getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    });
+        } catch (IOException e) {
+            Toast.makeText(context, "Error creating temp file: " + e.getMessage(),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * Open a file with an appropriate app
+     */
+    private void openFile(Uri fileUri) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(fileUri, context.getContentResolver().getType(fileUri));
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+        if (intent.resolveActivity(context.getPackageManager()) != null) {
+            context.startActivity(intent);
+        } else {
+            Toast.makeText(context, R.string.no_app_to_open_file, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * Get file extension from name
+     */
+    private String getFileExtension(String fileName) {
+        int dotIndex = fileName.lastIndexOf(".");
+        if (dotIndex >= 0 && dotIndex < fileName.length() - 1) {
+            return fileName.substring(dotIndex);
+        }
+        return "";
+    }
+
+    /**
+     * Get icon resource for file type
+     */
+    private int getFileTypeIcon(String type) {
+        switch (type) {
+            case "image":
+                return R.drawable.ic_image;
+            case "audio":
+                return R.drawable.ic_audio;
+            case "video":
+                return R.drawable.ic_video;
+            case "pdf":
+                return R.drawable.ic_pdf;
+            case "doc":
+                return R.drawable.ic_doc;
+            case "xls":
+                return R.drawable.ic_xls;
+            case "ppt":
+                return R.drawable.ic_ppt;
+            case "code":
+                return R.drawable.ic_code;
+            default:
+                return R.drawable.ic_file;
+        }
     }
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return files.size();
     }
 
     /**
-     * ViewHolder for submission files
+     * ViewHolder for file items
      */
-    class FileViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView fileIconImageView;
-        private final TextView fileNameTextView;
-        private final TextView fileInfoTextView;
-        private final ImageButton viewFileButton;
-        private final ImageButton downloadFileButton;
-        private final ImageButton removeFileButton;
-        private final ProgressBar uploadProgressBar;
+    public static class FileViewHolder extends RecyclerView.ViewHolder {
+        public ImageView fileTypeImageView;
+        public TextView fileNameTextView;
+        public ImageButton removeButton;
+        public ProgressBar progressBar;
 
-        FileViewHolder(@NonNull View itemView) {
+        public FileViewHolder(@NonNull View itemView) {
             super(itemView);
-            fileIconImageView = itemView.findViewById(R.id.fileIconImageView);
+            fileTypeImageView = itemView.findViewById(R.id.fileTypeImageView);
             fileNameTextView = itemView.findViewById(R.id.fileNameTextView);
-            fileInfoTextView = itemView.findViewById(R.id.fileInfoTextView);
-            viewFileButton = itemView.findViewById(R.id.viewFileButton);
-            downloadFileButton = itemView.findViewById(R.id.downloadFileButton);
-            removeFileButton = itemView.findViewById(R.id.removeFileButton);
-            uploadProgressBar = itemView.findViewById(R.id.uploadProgressBar);
-        }
-
-        /**
-         * Bind file data to view
-         */
-        void bind(Object item, int position) {
-            // Setup based on item type
-            if (item instanceof SubmissionFile) {
-                bindSubmissionFile((SubmissionFile) item);
-            } else if (item instanceof Uri) {
-                bindFileUri((Uri) item);
-            }
-            
-            // Show remove button only in edit mode
-            removeFileButton.setVisibility(isEditMode ? View.VISIBLE : View.GONE);
-            
-            // Set click listener for remove button
-            removeFileButton.setOnClickListener(v -> {
-                if (listener != null) {
-                    listener.onRemoveFile(position);
-                }
-                items.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, items.size() - position);
-            });
-        }
-
-        /**
-         * Bind submission file data
-         */
-        private void bindSubmissionFile(SubmissionFile file) {
-            fileNameTextView.setText(file.getName());
-            
-            // Set file info text
-            StringBuilder infoBuilder = new StringBuilder();
-            
-            // Add file type
-            String type = getDisplayFileType(file.getType());
-            infoBuilder.append(type);
-            
-            // Add file size if available
-            if (file.getSize() > 0) {
-                infoBuilder.append(" • ").append(FileUtils.formatFileSize(file.getSize()));
-            }
-            
-            // Add upload date if available
-            Date uploadDate = file.getUploadedAt();
-            if (uploadDate != null) {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy", Locale.getDefault());
-                infoBuilder.append(" • ").append(dateFormat.format(uploadDate));
-            }
-            
-            fileInfoTextView.setText(infoBuilder.toString());
-            
-            // Set file type icon
-            fileIconImageView.setImageResource(getFileTypeIcon(file.getType()));
-            
-            // Setup buttons
-            if (file.isLocal()) {
-                // Local file (not yet uploaded)
-                uploadProgressBar.setVisibility(View.VISIBLE);
-                viewFileButton.setOnClickListener(v -> openLocalFile(Uri.parse(file.getUri())));
-                downloadFileButton.setVisibility(View.GONE);
-            } else {
-                // Remote file
-                uploadProgressBar.setVisibility(View.GONE);
-                viewFileButton.setOnClickListener(v -> viewRemoteFile(file));
-                downloadFileButton.setOnClickListener(v -> downloadRemoteFile(file));
-            }
-        }
-
-        /**
-         * Bind file URI data
-         */
-        private void bindFileUri(Uri uri) {
-            // Get file info
-            String fileName = getFileNameFromUri(uri);
-            long fileSize = getFileSizeFromUri(uri);
-            String fileType = FileUtils.getResourceTypeFromExtension(fileName);
-            
-            // Set file name
-            fileNameTextView.setText(fileName);
-            
-            // Set file info text
-            String type = getDisplayFileType(fileType);
-            String size = fileSize > 0 ? FileUtils.formatFileSize(fileSize) : "";
-            
-            if (!size.isEmpty()) {
-                fileInfoTextView.setText(String.format("%s • %s", type, size));
-            } else {
-                fileInfoTextView.setText(type);
-            }
-            
-            // Set file type icon
-            fileIconImageView.setImageResource(getFileTypeIcon(fileType));
-            
-            // Setup buttons
-            uploadProgressBar.setVisibility(View.GONE);
-            viewFileButton.setOnClickListener(v -> openLocalFile(uri));
-            downloadFileButton.setVisibility(View.GONE);
-        }
-
-        /**
-         * Get display file type string
-         */
-        private String getDisplayFileType(String type) {
-            switch (type) {
-                case "pdf":
-                    return "PDF";
-                case "document":
-                    return "Document";
-                case "image":
-                    return "Image";
-                case "video":
-                    return "Video";
-                case "audio":
-                    return "Audio";
-                case "code":
-                    return "Code";
-                default:
-                    return "File";
-            }
-        }
-
-        /**
-         * Get file type icon resource
-         */
-        private int getFileTypeIcon(String type) {
-            switch (type) {
-                case "pdf":
-                    return R.drawable.ic_document;
-                case "document":
-                    return R.drawable.ic_document;
-                case "image":
-                    return R.drawable.ic_image;
-                case "video":
-                    return R.drawable.ic_video;
-                case "audio":
-                    return R.drawable.ic_audio;
-                case "code":
-                    return R.drawable.ic_code;
-                default:
-                    return R.drawable.ic_file;
-            }
-        }
-
-        /**
-         * Open local file
-         */
-        private void openLocalFile(Uri uri) {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setDataAndType(uri, context.getContentResolver().getType(uri));
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            
-            try {
-                context.startActivity(intent);
-            } catch (Exception e) {
-                Toast.makeText(context, R.string.no_app_to_open_file, Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        /**
-         * View remote file
-         */
-        private void viewRemoteFile(SubmissionFile file) {
-            // In a real implementation, this would download the file first if not cached
-            // For simplicity, we'll just show a toast message
-            Toast.makeText(context, R.string.downloading_file_to_view, Toast.LENGTH_SHORT).show();
-        }
-
-        /**
-         * Download remote file
-         */
-        private void downloadRemoteFile(SubmissionFile file) {
-            // In a real implementation, this would download the file
-            // For simplicity, we'll just show a toast message
-            Toast.makeText(context, R.string.downloading_file, Toast.LENGTH_SHORT).show();
+            removeButton = itemView.findViewById(R.id.removeButton);
+            progressBar = itemView.findViewById(R.id.progressBar);
         }
     }
 }

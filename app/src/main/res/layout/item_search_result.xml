@@ -39,8 +39,8 @@
             android:paddingTop="2dp"
             android:paddingEnd="8dp"
             android:paddingBottom="2dp"
-            android:textColor="@android:color/red"
-            android:textSize="10sp"
+            android:textColor="@color/red"
+            android:textSize="11sp"
             app:layout_constraintStart_toEndOf="@+id/image_search_result"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Course" />

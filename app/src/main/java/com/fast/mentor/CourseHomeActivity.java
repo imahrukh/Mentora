@@ -94,7 +94,7 @@ public class CourseHomeActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText(R.string.content));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.info));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.grades));
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.discussions));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.recommendations));
         
         // Set tab listener
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -115,7 +115,7 @@ public class CourseHomeActivity extends AppCompatActivity {
                         break;
                     case 3:
                         // Discussions tab
-                        loadFragment(CourseDiscussionsFragment.newInstance(courseId));
+                        loadFragment(CourseRecommendationsFragment.newInstance(courseId));
                         break;
                 }
             }

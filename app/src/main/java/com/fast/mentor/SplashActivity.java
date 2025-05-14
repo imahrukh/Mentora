@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.fast.mentor.auth.LoginActivity;
+import com.fast.mentor.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 /**
@@ -69,5 +69,16 @@ public class SplashActivity extends AppCompatActivity {
         logoImageView.startAnimation(fadeIn);
         appNameTextView.startAnimation(fadeIn);
         taglineTextView.startAnimation(fadeIn);
+
+        // Delay then launch LoginActivity
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            } else {
+                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+            }
+            finish(); // so the user can't come back to the splash
+        }, SPLASH_DURATION);
     }
+
 }

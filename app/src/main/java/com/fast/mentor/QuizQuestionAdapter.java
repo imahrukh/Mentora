@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.fast.mentor.R;
-import com.fast.mentor.model.QuizQuestion;
+import com.fast.mentor.QuizQuestion;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -146,7 +146,7 @@ public class QuizQuestionAdapter extends RecyclerView.Adapter<QuizQuestionAdapte
                 Glide.with(context)
                         .load(question.getImageUrl())
                         .apply(new RequestOptions()
-                                .placeholder(R.drawable.ic_placeholder)
+                                .placeholder(R.drawable.ic_image)
                                 .error(R.drawable.ic_error))
                         .into(questionImageView);
             } else {
@@ -240,7 +240,7 @@ public class QuizQuestionAdapter extends RecyclerView.Adapter<QuizQuestionAdapte
                 // Enable radio buttons
                 for (RadioButton button : optionButtons) {
                     button.setEnabled(true);
-                    button.setTextColor(context.getResources().getColor(R.color.selector_option_text));
+                    button.setTextColor(context.getResources().getColor(R.color.white));
                 }
             }
         }

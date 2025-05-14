@@ -8,10 +8,19 @@ public class Week {
     private String title;
     private String description;
     private List<Module> modules;
+    private String courseId;
+
+    public String getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
+    }
+    private boolean expanded = false; // ✅ added for expand/collapse state
 
     // Empty constructor required for Firestore
-    public Week() {
-    }
+    public Week() {}
 
     public Week(String weekId, int weekNumber, String title, String description) {
         this.weekId = weekId;
@@ -59,5 +68,23 @@ public class Week {
 
     public void setModules(List<Module> modules) {
         this.modules = modules;
+    }
+
+    // ✅ Expand/collapse logic
+    public boolean isExpanded() {
+        return expanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
+    }
+
+    public void toggleExpanded() {
+        this.expanded = !this.expanded;
+    }
+
+    // Optional: getNumber() alias for consistency in adapter
+    public int getNumber() {
+        return getWeekNumber();
     }
 }

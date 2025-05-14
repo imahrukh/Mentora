@@ -19,7 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fast.mentor.R;
-import com.fast.mentor.model.SearchResult;
+import com.fast.mentor.SearchResult;
+import com.fast.mentor.SearchService;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 

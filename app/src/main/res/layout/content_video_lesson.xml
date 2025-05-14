@@ -23,13 +23,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <!-- ExoPlayer will be added programmatically -->
             <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
                 android:id="@+id/playerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:show_buffering="when_playing"
-                app:show_shuffle_button="false" />
+                android:layout_height="match_parent" />
 
             <!-- Loading indicator for video -->
             <ProgressBar
